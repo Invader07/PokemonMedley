@@ -4,28 +4,28 @@ AsleepTreeMonsNite:
 	dw CATERPIE
 	dw METAPOD
 	dw BUTTERFREE
-	dw WEEDLE
-	dw KAKUNA
-	dw BEEDRILL
-	dw SPEAROW
+	dw CATERPIE
+	dw CATERPIE
+	dw CATERPIE
+	dw CATERPIE
 	dw EKANS
 	dw EXEGGCUTE
-	dw LEDYBA
-	dw AIPOM
+	dw CATERPIE
+	dw CATERPIE
 	dw -1 ; end
 
 AsleepTreeMonsDay:
 	dw VENONAT
-	dw HOOTHOOT
-	dw NOCTOWL
-	dw SPINARAK
+	dw CATERPIE
+	dw CATERPIE
+	dw CATERPIE
 	dw HERACROSS
 	dw -1 ; end
 
 AsleepTreeMonsMorn:
 	dw VENONAT
-	dw HOOTHOOT
-	dw NOCTOWL
-	dw SPINARAK
+	dw CATERPIE
+	dw CATERPIE
+	dw CATERPIE
 	dw HERACROSS
 	dw -1 ; end

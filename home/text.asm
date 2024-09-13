@@ -275,47 +275,14 @@ ENDM
 	dict "<PROMPT>",  PromptText
 	dict "<PKMN>",    PlacePKMN
 	dict "<POKE>",    PlacePOKE
-	dict "<WBR>",     NextChar
-	dict "<BSP>",     " "
+	dict "%",         NextChar
+	dict "¯",         " "
 	dict "<DEXEND>",  PlaceDexEnd
 	dict "<TARGET>",  PlaceMoveTargetsName
 	dict "<USER>",    PlaceMoveUsersName
 	dict "<ENEMY>",   PlaceEnemysName
 	dict "<PLAY_G>",  PlaceGenderedPlayerName
-	dict "ﾟ",         .place
-	dict "ﾞ",         .place
 
-	cp FIRST_REGULAR_TEXT_CHAR
-	jr nc, .place
-; dakuten or handakuten
-	cp "パ"
-	jr nc, .handakuten
-; dakuten
-	cp FIRST_HIRAGANA_DAKUTEN_CHAR
-	jr nc, .hiragana_dakuten
-; katakana dakuten
-	add "カ" - "ガ"
-	jr .place_dakuten
-
-.hiragana_dakuten
-	add "か" - "が"
-.place_dakuten
-	ld b, "ﾞ" ; dakuten
-	jr .place
-
-.handakuten
-	cp "ぱ"
-	jr nc, .hiragana_handakuten
-; katakana handakuten
-	add "ハ" - "パ"
-	jr .place_handakuten
-
-.hiragana_handakuten
-	add "は" - "ぱ"
-.place_handakuten
-	ld b, "ﾟ" ; handakuten
-
-.place
 	ld [hli], a
 	call PrintLetterDelay
 	jp NextChar
@@ -688,7 +655,7 @@ PokeFluteTerminator::
 PrintTextboxTextAt::
 	ld a, [wTextboxFlags]
 	push af
-	set TEXT_DELAY_F, a
+	set NO_TEXT_DELAY_F, a
 	ld [wTextboxFlags], a
 
 	call DoTextUntilTerminator

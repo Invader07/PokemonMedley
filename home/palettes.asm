@@ -293,13 +293,16 @@ ClearVBank1::
 	ld a, 1
 	ldh [rVBK], a
 
-	ld hl, STARTOF(VRAM)
-	ld bc, SIZEOF(VRAM)
+	ld hl, VRAM_Begin
+	ld bc, VRAM_End - VRAM_Begin
 	xor a
 	call ByteFill
 
-	xor a
+	ld a, 0
 	ldh [rVBK], a
+	ret
+
+GSReloadPalettes:: ; dummied out
 	ret
 
 ReloadSpritesNoPalettes::
@@ -318,10 +321,11 @@ ReloadSpritesNoPalettes::
 	ldh [rSVBK], a
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
-	jp DelayFrame
+	call DelayFrame
+	ret
 
-LoadOverworldAttrmapPals::
-	homecall _LoadOverworldAttrmapPals
+SwapTextboxPalettes::
+	homecall _SwapTextboxPalettes
 	ret
 
 ScrollBGMapPalettes::

@@ -15,17 +15,6 @@ GetPartyLocation::
 	ld bc, PARTYMON_STRUCT_LENGTH
 	jp AddNTimes
 
-FarSkipEvolutions::
-; Calls SkipEvolutions from another bank. It can't be a farcall because it uses hl.
-	ldh a, [hROMBank]
-	push af
-	ld a, BANK(SkipEvolutions)
-	rst Bankswitch
-	call SkipEvolutions
-	pop af
-	rst Bankswitch
-	ret
-
 UserPartyAttr::
 	push af
 	ldh a, [hBattleTurn]
@@ -191,7 +180,8 @@ BattleTextbox::
 	call UpdateSprites
 	call ApplyTilemap
 	pop hl
-	jp PrintTextboxText
+	call PrintTextboxText
+	ret
 
 StdBattleTextbox::
 ; Open a textbox and print battle text at 20:hl.
@@ -251,6 +241,7 @@ GetBattleAnimByte::
 
 	ld a, [wBattleAnimByte]
 	ret
+
 
 PushLYOverrides::
 	ldh a, [hLCDCPointer]

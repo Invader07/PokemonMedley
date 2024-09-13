@@ -9,12 +9,13 @@ BattleCommand_Encore:
 .ok
 	ld a, BATTLE_VARS_LAST_MOVE_OPP
 	call GetBattleVar
+	and a
+	jp z, .failed
+	cp STRUGGLE
+	jp z, .failed
+	cp ENCORE
+	jp z, .failed
 	ld b, a
-	push hl
-	ld hl, .invalid_moves
-	call CheckMoveInList
-	pop hl
-	jp c, .failed
 
 .got_move
 	ld a, [hli]
@@ -71,6 +72,7 @@ BattleCommand_Encore:
 	ld [wCurMoveNum], a
 	ld a, b
 	ld [wCurPlayerMove], a
+	dec a
 	ld de, wPlayerMoveStruct
 	call GetMoveData
 	jr .finish_move
@@ -101,6 +103,7 @@ BattleCommand_Encore:
 	ld [wCurEnemyMoveNum], a
 	ld a, b
 	ld [wCurEnemyMove], a
+	dec a
 	ld de, wEnemyMoveStruct
 	call GetMoveData
 
@@ -111,10 +114,3 @@ BattleCommand_Encore:
 
 .failed
 	jp PrintDidntAffect2
-
-.invalid_moves
-	dw NO_MOVE
-	dw STRUGGLE
-	dw ENCORE
-	dw MIRROR_MOVE
-	dw -1

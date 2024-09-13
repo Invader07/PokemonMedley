@@ -1,8 +1,8 @@
 DEF NAMINGSCREEN_CURSOR     EQU $7e
 
-DEF NAMINGSCREEN_BORDER     EQU "■" ; $60
+DEF NAMINGSCREEN_BORDER     EQU "■" ; $d7
 DEF NAMINGSCREEN_MIDDLELINE EQU "→" ; $eb
-DEF NAMINGSCREEN_UNDERLINE  EQU "<DOT>" ; $f2
+DEF NAMINGSCREEN_UNDERLINE  EQU "☎" ; $d9
 
 _NamingScreen:
 	call DisableSpriteUpdates
@@ -86,7 +86,6 @@ NamingScreen:
 .Pokemon:
 	ld a, [wCurPartySpecies]
 	ld [wTempIconSpecies], a
-
 	; Is it a PartyMon or a BoxMon?
 	ld a, [wMonType]
 	and a
@@ -101,7 +100,9 @@ NamingScreen:
 	inc de
 	ld a, [hl]
 	ld [de], a
-
+	ld a, [wMonType]
+	cp BOXMON
+	call z, CloseSRAM
 	ld hl, LoadMenuMonIcon
 	ld a, BANK(LoadMenuMonIcon)
 	ld e, MONICON_NAMINGSCREEN
@@ -226,12 +227,21 @@ NamingScreen:
 	pop de
 	ld b, SPRITE_ANIM_OBJ_RED_WALK
 	ld a, d
-	cp HIGH(KrisSpriteGFX)
+	cp HIGH(MainBoySpriteGFX)
+	jr nz, .not_chris
+	ld a, e
+	cp LOW(MainBoySpriteGFX)
+	jr nz, .not_chris
+	ld b, SPRITE_ANIM_OBJ_BLUE_WALK
+	jr .not_kris
+.not_chris
+	ld a, d
+	cp HIGH(MainGirlSpriteGFX)
 	jr nz, .not_kris
 	ld a, e
-	cp LOW(KrisSpriteGFX)
+	cp LOW(MainGirlSpriteGFX)
 	jr nz, .not_kris
-	ld b, SPRITE_ANIM_OBJ_BLUE_WALK
+	ld b, SPRITE_ANIM_OBJ_RED_WALK
 .not_kris
 	ld a, b
 	depixel 4, 4, 4, 0
@@ -249,7 +259,7 @@ NamingScreen:
 	jr .StoreParams
 
 .StoreBoxIconParams:
-	; the terminator isn't saved, so no "- 1" is needed.
+; the terminator isn't saved, so no "- 1" is needed.
 	ld a, BOX_NAME_LENGTH
 	hlcoord 5, 4
 	jr .StoreParams
@@ -392,7 +402,7 @@ NamingScreenJoypadLoop:
 	depixel 10, 3
 	call NamingScreen_IsTargetBox
 	jr nz, .got_cursor_position
-	ld d, 8 * TILE_WIDTH
+	ld d, 8 * 8
 .got_cursor_position
 	ld a, SPRITE_ANIM_OBJ_NAMING_SCREEN_CURSOR
 	call InitSpriteAnimStruct
@@ -708,6 +718,17 @@ NamingScreen_AdvanceCursor_CheckEndOfString:
 	scf
 	ret
 
+AddDakutenToCharacter: ; unreferenced
+	ld a, [wNamingScreenCurNameLength]
+	and a
+	ret z
+	push hl
+	ld hl, wNamingScreenCurNameLength
+	dec [hl]
+	call NamingScreen_GetTextCursorPosition
+	ld c, [hl]
+	pop hl
+
 .loop
 	ld a, [hli]
 	cp -1
@@ -720,6 +741,8 @@ NamingScreen_AdvanceCursor_CheckEndOfString:
 .done
 	ld a, [hl]
 	jr NamingScreen_LoadNextCharacter
+
+INCLUDE "data/text/unused_dakutens.asm"
 
 NamingScreen_DeleteCharacter:
 	ld hl, wNamingScreenCurNameLength
@@ -848,7 +871,7 @@ LoadNamingScreenGFX:
 	lb bc, BANK(NamingScreenGFX_UnderLine), 1
 	call Get1bpp
 
-	ld de, vTiles2 tile NAMINGSCREEN_BORDER
+	ld de, vTiles0 tile NAMINGSCREEN_BORDER
 	ld hl, NamingScreenGFX_Border
 	ld bc, 1 tiles
 	ld a, BANK(NamingScreenGFX_Border)
@@ -971,6 +994,9 @@ INCBIN "gfx/naming_screen/mail.2bpp"
 	ld a, MAIL_MSG_LENGTH + 1
 	ld [wNamingScreenMaxNameLength], a
 	ret
+
+.PleaseWriteAMailString: ; unreferenced
+	db "メールを　かいてね@"
 
 .InitCharset:
 	call WaitTop
@@ -1153,7 +1179,7 @@ INCBIN "gfx/naming_screen/mail.2bpp"
 	call .PlaceMailCharset
 	ret
 
-; called from engine/sprite_anims/functions.asm
+; called from engine/gfx/sprite_anims.asm
 
 ComposeMail_AnimateCursor:
 	call .GetDPad
@@ -1334,6 +1360,18 @@ ComposeMail_GetCursorPosition:
 MailComposition_TryAddLastCharacter:
 	ld a, [wNamingScreenLastCharacter]
 	jp MailComposition_TryAddCharacter
+
+.add_dakuten ; unreferenced
+	ld a, [wNamingScreenCurNameLength]
+	and a
+	ret z
+	cp $11
+	jr nz, .one_back
+	push hl
+	ld hl, wNamingScreenCurNameLength
+	dec [hl]
+	dec [hl]
+	jr .continue
 
 .one_back
 	push hl

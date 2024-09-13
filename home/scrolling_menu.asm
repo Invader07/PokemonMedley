@@ -17,8 +17,8 @@ ScrollingMenu::
 	ret
 
 .UpdatePalettes:
-	ld hl, wStateFlags
-	bit SPRITE_UPDATES_DISABLED_F, [hl]
+	ld hl, wVramState
+	bit 0, [hl]
 	jp nz, UpdateTimePals
 	jp SetDefaultBGPAndOBP
 

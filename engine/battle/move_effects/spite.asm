@@ -13,12 +13,9 @@ BattleCommand_Spite:
 	call GetBattleVar
 	and a
 	jr z, .failed
-	ld b, a
-	push bc
-	ld bc, STRUGGLE
-	call CompareMove
-	pop bc
+	cp STRUGGLE
 	jr z, .failed
+	ld b, a
 	ld c, -1
 .loop
 	inc c

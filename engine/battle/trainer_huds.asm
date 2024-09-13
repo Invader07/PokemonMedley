@@ -20,11 +20,11 @@ ShowPlayerMonsRemaining:
 	ld de, wPartyCount
 	call StageBallTilesData
 	; ldpixel wPlaceBallsX, 12, 12
-	ld a, 12 * TILE_WIDTH
+	ld a, 12 * 8
 	ld hl, wPlaceBallsX
 	ld [hli], a
 	ld [hl], a
-	ld a, TILE_WIDTH
+	ld a, 8
 	ld [wPlaceBallsDirection], a
 	ld hl, wShadowOAMSprite00
 	jp LoadTrainerHudOAM
@@ -36,10 +36,10 @@ ShowOTTrainerMonsRemaining:
 	call StageBallTilesData
 	; ldpixel wPlaceBallsX, 9, 4
 	ld hl, wPlaceBallsX
-	ld a, 9 * TILE_WIDTH
+	ld a, 9 * 8
 	ld [hli], a
-	ld [hl], 4 * TILE_WIDTH
-	ld a, -TILE_WIDTH
+	ld [hl], 4 * 8
+	ld a, -8
 	ld [wPlaceBallsDirection], a
 	ld hl, wShadowOAMSprite00 + PARTY_LENGTH * SPRITEOAMSTRUCT_LENGTH
 	jp LoadTrainerHudOAM
@@ -125,8 +125,8 @@ DrawPlayerPartyIconHUDBorder:
 	jr PlaceHUDBorderTiles
 
 .tiles
-	db $73 ; right side
-	db $5c ; bottom right
+	db $7c ; right side
+	db $7c ; bottom right
 	db $6f ; bottom left
 	db $76 ; bottom side
 .tiles_end
@@ -143,17 +143,18 @@ DrawEnemyHUDBorder:
 	dec a
 	ret nz
 	ld a, [wTempEnemyMonSpecies]
+	dec a
 	call CheckCaughtMon
 	ret z
 	hlcoord 1, 1
-	ld [hl], $5d
+	ld [hl], $74
 	ret
 
 .tiles
-	db $6d ; left side
-	db $74 ; bottom left
-	db $78 ; bottom right
-	db $76 ; bottom side
+	db $7c ; left side
+	db $7c ; bottom left
+	db $7c ; bottom right
+	db $7c ; bottom side
 .tiles_end
 
 PlaceHUDBorderTiles:
@@ -181,10 +182,10 @@ LinkBattle_TrainerHuds:
 	ld de, wPartyCount
 	call StageBallTilesData
 	ld hl, wPlaceBallsX
-	ld a, 10 * TILE_WIDTH
+	ld a, 10 * 8
 	ld [hli], a
-	ld [hl], 8 * TILE_WIDTH
-	ld a, TILE_WIDTH
+	ld [hl], 8 * 8
+	ld a, 8
 	ld [wPlaceBallsDirection], a
 	ld hl, wShadowOAMSprite00
 	call LoadTrainerHudOAM
@@ -193,9 +194,9 @@ LinkBattle_TrainerHuds:
 	ld de, wOTPartyCount
 	call StageBallTilesData
 	ld hl, wPlaceBallsX
-	ld a, 10 * TILE_WIDTH
+	ld a, 10 * 8
 	ld [hli], a
-	ld [hl], 13 * TILE_WIDTH
+	ld [hl], 13 * 8
 	ld hl, wShadowOAMSprite00 + PARTY_LENGTH * SPRITEOAMSTRUCT_LENGTH
 	jp LoadTrainerHudOAM
 
@@ -209,7 +210,7 @@ LoadTrainerHudOAM:
 	ld [hli], a ; x
 	ld a, [de]
 	ld [hli], a ; tile id
-	ld a, PAL_BATTLE_OB_YELLOW
+	ld a, PAL_BATTLE_OB_GREEN
 	ld [hli], a ; attributes
 	ld a, [wPlaceBallsX]
 	ld b, a

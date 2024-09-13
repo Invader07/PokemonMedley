@@ -43,8 +43,13 @@ PrintMoveType:
 
 	push hl
 	ld a, b
+	dec a
+	ld bc, MOVE_LENGTH
+	ld hl, Moves
+	call AddNTimes
 	ld de, wStringBuffer1
-	call GetMoveData
+	ld a, BANK(Moves)
+	call FarCopyBytes
 	ld a, [wStringBuffer1 + MOVE_TYPE]
 	pop hl
 

@@ -22,7 +22,7 @@ DoBattleTransition:
 	ld a, [hl]
 	push af
 	vc_hook Reduce_battle_transition_flashing
-	ld [hl], VBLANK_CUTSCENE
+	ld [hl], $1
 
 .loop
 	ld a, [wJumptableIndex]
@@ -656,9 +656,8 @@ StartTrainerBattle_LoadPokeBallGraphics:
 
 .cgb
 	ld hl, .pals
-	ld a, [wTimeOfDayPal]
-	maskbits NUM_DAYTIMES
-	cp DARKNESS_F
+	ld a, [wTimeOfDayPalset]
+	cp DARKNESS_PALSET
 	jr nz, .not_dark
 	ld hl, .darkpals
 .not_dark

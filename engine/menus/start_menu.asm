@@ -33,7 +33,7 @@ StartMenu::
 	call DrawVariableLengthMenuBox
 	call .DrawBugContestStatusBox
 	call SafeUpdateSprites
-	call HDMATransferTilemapAndAttrmap_Menu
+	call HDMATransferTilemapAndAttrmap
 	farcall LoadFonts_NoOAMUpdate
 	call .DrawBugContestStatus
 	call UpdateTimePals
@@ -511,9 +511,9 @@ StartMenu_Pokemon:
 
 .menunoreload
 	farcall WritePartyMenuTilemap
-	farcall PlacePartyMenuText
+	farcall PrintPartyMenuText
 	call WaitBGMap
-	call SetDefaultBGPAndOBP
+	call SetDefaultBGPAndOBP ; load regular palettes?
 	call DelayFrame
 	farcall PartyMenuSelect
 	jr c, .return ; if cancelled or pressed B

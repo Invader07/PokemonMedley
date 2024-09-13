@@ -2,7 +2,7 @@ TrainerClassAttributes:
 ; entries correspond to trainer classes (see constants/trainer_constants.asm)
 	table_width NUM_TRAINER_ATTRIBUTES, TrainerClassAttributes
 
-; Falkner
+; Bastian
 	db NO_ITEM, NO_ITEM ; items
 	db 25 ; base reward
 	dw AI_BASIC | AI_SETUP | AI_SMART | AI_AGGRESSIVE | AI_CAUTIOUS | AI_STATUS | AI_RISKY
@@ -50,7 +50,7 @@ TrainerClassAttributes:
 	dw AI_BASIC | AI_SETUP | AI_SMART | AI_AGGRESSIVE | AI_CAUTIOUS | AI_STATUS | AI_RISKY
 	dw CONTEXT_USE | SWITCH_SOMETIMES
 
-; Rival1
+; Rival
 	db NO_ITEM, NO_ITEM ; items
 	db 15 ; base reward
 	dw AI_BASIC | AI_SETUP | AI_SMART | AI_AGGRESSIVE | AI_CAUTIOUS | AI_STATUS | AI_RISKY
@@ -68,7 +68,7 @@ TrainerClassAttributes:
 	dw AI_BASIC | AI_SETUP | AI_SMART | AI_AGGRESSIVE | AI_CAUTIOUS | AI_STATUS | AI_RISKY
 	dw CONTEXT_USE | SWITCH_SOMETIMES
 
-; Cal
+; Harrison
 	db NO_ITEM, NO_ITEM ; items
 	db 25 ; base reward
 	dw AI_BASIC | AI_SETUP | AI_SMART | AI_AGGRESSIVE | AI_CAUTIOUS | AI_STATUS | AI_RISKY
@@ -131,7 +131,7 @@ TrainerClassAttributes:
 ; Youngster
 	db NO_ITEM, NO_ITEM ; items
 	db 4 ; base reward
-	dw AI_BASIC | AI_STATUS
+	dw AI_BASIC | AI_SETUP
 	dw CONTEXT_USE | SWITCH_SOMETIMES
 
 ; Schoolboy
@@ -402,6 +402,144 @@ TrainerClassAttributes:
 	db NO_ITEM, NO_ITEM ; items
 	db 25 ; base reward
 	dw AI_BASIC | AI_SETUP | AI_SMART | AI_AGGRESSIVE | AI_CAUTIOUS | AI_STATUS | AI_RISKY
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Blaire
+	db NO_ITEM, NO_ITEM ; items
+	db 15 ; base reward
+	dw AI_BASIC | AI_SETUP | AI_SMART | AI_AGGRESSIVE | AI_CAUTIOUS | AI_STATUS | AI_RISKY
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Percy
+	db NO_ITEM, NO_ITEM ; items
+	db 15 ; base reward
+	dw AI_BASIC | AI_SETUP | AI_SMART | AI_AGGRESSIVE | AI_CAUTIOUS | AI_STATUS | AI_RISKY
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Breeder
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Bug Maniac
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Clown
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Cyclist
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Nurse
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Engineer
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Hex Maniac
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Mystery Man
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Painter
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Ranger
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Ruin Maniac
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Scuba Diver
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Super Trainer
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Surfer
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Rocket Capt
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Rocket Sci
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Tourist
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Survivalist
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Farmer
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Gardener
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
+	dw CONTEXT_USE | SWITCH_SOMETIMES
+
+; Dancer
+	db NO_ITEM, NO_ITEM ; items
+	db 4 ; base reward
+	dw AI_BASIC | AI_SETUP
 	dw CONTEXT_USE | SWITCH_SOMETIMES
 
 	assert_table_length NUM_TRAINER_CLASSES

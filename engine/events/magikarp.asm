@@ -8,23 +8,10 @@ CheckMagikarpLength:
 	farcall SelectMonFromParty
 	jr c, .declined
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	ld a, l
-	sub LOW(MAGIKARP)
-	if HIGH(MAGIKARP) == 0
-		or h
-	else
-		jr nz, .not_magikarp
-		if HIGH(MAGIKARP) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(MAGIKARP)
-		endc
-	endc
+	cp MAGIKARP
 	jr nz, .not_magikarp
 
-	; Now let's compute its length based on its DVs and Trainer ID.
+	; Now let's compute its length based on its DVs and ID.
 	ld a, [wCurPartyMon]
 	ld hl, wPartyMon1Species
 	ld bc, PARTYMON_STRUCT_LENGTH
@@ -35,7 +22,7 @@ CheckMagikarpLength:
 	ld d, h
 	ld e, l
 	pop hl
-	ld bc, MON_OT_ID
+	ld bc, MON_ID
 	add hl, bc
 	ld b, h
 	ld c, l
@@ -88,18 +75,7 @@ CheckMagikarpLength:
 	text_far _MagikarpGuruMeasureText
 	text_end
 
-Magikarp_LoadFeetInchesChars:
-	ld hl, vTiles2 tile "′" ; $6e
-	ld de, .feetinchchars
-	lb bc, BANK(.feetinchchars), 2
-	call Request2bpp
-	ret
-
-.feetinchchars
-INCBIN "gfx/font/feet_inches.2bpp"
-
 PrintMagikarpLength:
-	call Magikarp_LoadFeetInchesChars
 	ld hl, wStringBuffer1
 	ld de, wMagikarpLength
 	lb bc, PRINTNUM_LEFTALIGN | 1, 2

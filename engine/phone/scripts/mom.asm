@@ -3,9 +3,9 @@ MomPhoneCalleeScript:
 	iftrue .started_quest
 	checkevent EVENT_DUDE_TALKED_TO_YOU
 	iftrue MomPhoneLectureScript
-	checkevent EVENT_GAVE_MYSTERY_EGG_TO_ELM
+	checkevent EVENT_GOT_MAP_FROM_EDWARD
 	iftrue MomPhoneNoGymQuestScript
-	checkevent EVENT_GOT_A_POKEMON_FROM_ELM
+	checkevent EVENT_GOT_A_POKEMON_FROM_OAK
 	iftrue MomPhoneNoPokedexScript
 	sjump MomPhoneNoPokemonScript
 
@@ -26,12 +26,13 @@ MomPhoneLandmark:
 	sjump MomSavingMoney
 
 MomPhoneInTown:
+; TODO: Pick maps for Mom's phone dialog to change.
 	readvar VAR_MAPGROUP
 	ifequal GROUP_NEW_BARK_TOWN, .newbark
-	ifequal GROUP_CHERRYGROVE_CITY, .cherrygrove
-	ifequal GROUP_VIOLET_CITY, .violet
-	ifequal GROUP_AZALEA_TOWN, .azalea
-	ifequal GROUP_GOLDENROD_CITY, .goldenrod
+	ifequal GROUP_NONE, .cherrygrove
+	ifequal GROUP_NONE, .violet
+	ifequal GROUP_NONE, .azalea
+	ifequal GROUP_NONE, .goldenrod
 	farwritetext MomPhoneGenericAreaText
 	promptbutton
 	sjump MomSavingMoney
@@ -47,13 +48,13 @@ MomPhoneInTown:
 	sjump MomSavingMoney
 
 .violet
-	getlandmarkname STRING_BUFFER_4, LANDMARK_SPROUT_TOWER
+	getlandmarkname STRING_BUFFER_4, LANDMARK_SPECIAL
 	sjump MomPhoneLandmark
 .azalea
-	getlandmarkname STRING_BUFFER_4, LANDMARK_SLOWPOKE_WELL
+	getlandmarkname STRING_BUFFER_4, LANDMARK_SPECIAL
 	sjump MomPhoneLandmark
 .goldenrod
-	getlandmarkname STRING_BUFFER_4, LANDMARK_RADIO_TOWER
+	getlandmarkname STRING_BUFFER_4, LANDMARK_SPECIAL
 	sjump MomPhoneLandmark
 
 MomPhoneOnRoute:

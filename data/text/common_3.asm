@@ -1,19 +1,19 @@
 _OakText6::
-	text "Now, what did you"
-	line "say your name was?"
+	text "Remind me, what is"
+	line "your name?"
 	prompt
 
 _OakText7::
 	text "<PLAYER>, are you"
 	line "ready?"
 
-	para "Your very own"
-	line "#MON story is"
-	cont "about to unfold."
+	para "You'll be joining"
+	line "me on THE MONEGO"
+	cont "ISLES as an aide."
 
-	para "You'll face fun"
-	line "times and tough"
-	cont "challenges."
+	para "You'll learn and"
+	line "grow through your"
+	cont "experiences there."
 
 	para "A world of dreams"
 	line "and adventures"
@@ -21,8 +21,11 @@ _OakText7::
 	para "with #MON"
 	line "awaits! Let's go!"
 
-	para "I'll be seeing you"
-	line "later!"
+	para "The boat will be"
+	line "leaving very soon!"
+
+	para ""
+
 	done
 
 _ClockTimeMayBeWrongText::
@@ -595,6 +598,51 @@ _PharmacyNoMoneyText::
 _PharmacyComeAgainText::
 	text "All right."
 	line "See you around."
+	done
+
+_MartHouseIntroText::
+	text "Hey, I'm trying to"
+	line "move out, but I've"
+
+	para "got to get rid of"
+	line "some things."
+
+	para "Could you buy any"
+	line "of these? Thanks!"
+	done
+
+_MartHouseHowManyText::
+	text "How many?"
+	done
+
+_MartHouseFinalPriceText::
+	text_decimal wItemQuantityChange, 1, 2
+	text " @"
+	text_ram wStringBuffer2
+	text "(S)"
+	line "will cost ¥@"
+	text_decimal hMoneyTemp, 3, 6
+	text "."
+	done
+
+_MartHouseThanksText::
+	text "Thanks a bunch!"
+	done
+
+_MartHousePackFullText::
+	text "I don't think you"
+	line "can carry this..."
+	done
+
+_MartHouseNoMoneyText::
+	text "Huh? That's not"
+	line "enough money."
+	done
+
+_MartHouseComeAgainText::
+	text "Thanks! That makes"
+	line "moving so much"
+	cont "easier."
 	done
 
 _NothingToSellText::

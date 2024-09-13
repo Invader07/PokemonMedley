@@ -101,6 +101,8 @@ EvosAttacksPointers2::
 	dw LugiaEvosAttacks
 	dw HoOhEvosAttacks
 	dw CelebiEvosAttacks
+	dw Extra1EvosAttacks
+	dw Extra2EvosAttacks
 .IndirectEnd::
 
 ChikoritaEvosAttacks:
@@ -112,7 +114,7 @@ ChikoritaEvosAttacks:
 	dbw 12, REFLECT
 	dbw 15, POISONPOWDER
 	dbw 22, SYNTHESIS
-	dbw 29, BODY_SLAM
+	dbw 29, POUND
 	dbw 36, LIGHT_SCREEN
 	dbw 43, SAFEGUARD
 	dbw 50, SOLARBEAM
@@ -129,7 +131,7 @@ BayleefEvosAttacks:
 	dbw 12, REFLECT
 	dbw 15, POISONPOWDER
 	dbw 23, SYNTHESIS
-	dbw 31, BODY_SLAM
+	dbw 31, POUND
 	dbw 39, LIGHT_SCREEN
 	dbw 47, SAFEGUARD
 	dbw 55, SOLARBEAM
@@ -145,7 +147,7 @@ MeganiumEvosAttacks:
 	dbw 12, REFLECT
 	dbw 15, POISONPOWDER
 	dbw 23, SYNTHESIS
-	dbw 31, BODY_SLAM
+	dbw 31, POUND
 	dbw 41, LIGHT_SCREEN
 	dbw 51, SAFEGUARD
 	dbw 61, SOLARBEAM
@@ -243,7 +245,7 @@ SentretEvosAttacks:
 	dbw 5, DEFENSE_CURL
 	dbw 11, QUICK_ATTACK
 	dbw 17, FURY_SWIPES
-	dbw 25, SLAM
+	dbw 25, POUND
 	dbw 33, REST
 	dbw 41, AMNESIA
 	db 0 ; no more level-up moves
@@ -256,13 +258,13 @@ FurretEvosAttacks:
 	dbw 5, DEFENSE_CURL
 	dbw 11, QUICK_ATTACK
 	dbw 18, FURY_SWIPES
-	dbw 28, SLAM
+	dbw 28, POUND
 	dbw 38, REST
 	dbw 48, AMNESIA
 	db 0 ; no more level-up moves
 
 HoothootEvosAttacks:
-	dbbw EVOLVE_LEVEL, 20, NOCTOWL
+	dbbw EVOLVE_LEVEL, 20, EKANS
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, GROWL
@@ -291,11 +293,11 @@ NoctowlEvosAttacks:
 	db 0 ; no more level-up moves
 
 LedybaEvosAttacks:
-	dbbw EVOLVE_LEVEL, 18, LEDIAN
+	dbbw EVOLVE_LEVEL, 18, EKANS
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 8, SUPERSONIC
-	dbw 15, COMET_PUNCH
+	dbw 15, POUND
 	dbw 22, LIGHT_SCREEN
 	dbw 22, REFLECT
 	dbw 22, SAFEGUARD
@@ -310,7 +312,7 @@ LedianEvosAttacks:
 	dbw 1, TACKLE
 	dbw 1, SUPERSONIC
 	dbw 8, SUPERSONIC
-	dbw 15, COMET_PUNCH
+	dbw 15, POUND
 	dbw 24, LIGHT_SCREEN
 	dbw 24, REFLECT
 	dbw 24, SAFEGUARD
@@ -321,16 +323,16 @@ LedianEvosAttacks:
 	db 0 ; no more level-up moves
 
 SpinarakEvosAttacks:
-	dbbw EVOLVE_LEVEL, 22, ARIADOS
+	dbbw EVOLVE_LEVEL, 22, EKANS
 	db 0 ; no more evolutions
 	dbw 1, POISON_STING
 	dbw 1, STRING_SHOT
 	dbw 6, SCARY_FACE
-	dbw 11, CONSTRICT
+	dbw 11, POUND
 	dbw 17, NIGHT_SHADE
 	dbw 23, LEECH_LIFE
 	dbw 30, FURY_SWIPES
-	dbw 37, SPIDER_WEB
+	dbw 37, POUND
 	dbw 45, AGILITY
 	dbw 53, PSYCHIC_M
 	db 0 ; no more level-up moves
@@ -340,13 +342,13 @@ AriadosEvosAttacks:
 	dbw 1, POISON_STING
 	dbw 1, STRING_SHOT
 	dbw 1, SCARY_FACE
-	dbw 1, CONSTRICT
+	dbw 1, POUND
 	dbw 6, SCARY_FACE
-	dbw 11, CONSTRICT
+	dbw 11, POUND
 	dbw 17, NIGHT_SHADE
 	dbw 25, LEECH_LIFE
 	dbw 34, FURY_SWIPES
-	dbw 43, SPIDER_WEB
+	dbw 43, POUND
 	dbw 53, AGILITY
 	dbw 63, PSYCHIC_M
 	db 0 ; no more level-up moves
@@ -367,7 +369,7 @@ CrobatEvosAttacks:
 ChinchouEvosAttacks:
 	dbbw EVOLVE_LEVEL, 27, LANTURN
 	db 0 ; no more evolutions
-	dbw 1, BUBBLE
+	dbw 1, POUND
 	dbw 1, THUNDER_WAVE
 	dbw 5, SUPERSONIC
 	dbw 13, FLAIL
@@ -380,7 +382,7 @@ ChinchouEvosAttacks:
 
 LanturnEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, BUBBLE
+	dbw 1, POUND
 	dbw 1, THUNDER_WAVE
 	dbw 1, SUPERSONIC
 	dbw 5, SUPERSONIC
@@ -403,7 +405,7 @@ PichuEvosAttacks:
 	db 0 ; no more level-up moves
 
 CleffaEvosAttacks:
-	dbbw EVOLVE_HAPPINESS, TR_ANYTIME, CLEFAIRY
+	dbbw EVOLVE_HAPPINESS, TR_ANYTIME, EKANS
 	db 0 ; no more evolutions
 	dbw 1, POUND
 	dbw 1, CHARM
@@ -413,7 +415,7 @@ CleffaEvosAttacks:
 	db 0 ; no more level-up moves
 
 IgglybuffEvosAttacks:
-	dbbw EVOLVE_HAPPINESS, TR_ANYTIME, JIGGLYPUFF
+	dbbw EVOLVE_HAPPINESS, TR_ANYTIME, EKANS
 	db 0 ; no more evolutions
 	dbw 1, SING
 	dbw 1, CHARM
@@ -423,7 +425,7 @@ IgglybuffEvosAttacks:
 	db 0 ; no more level-up moves
 
 TogepiEvosAttacks:
-	dbbw EVOLVE_HAPPINESS, TR_ANYTIME, TOGETIC
+	dbbw EVOLVE_HAPPINESS, TR_ANYTIME, EKANS
 	db 0 ; no more evolutions
 	dbw 1, GROWL
 	dbw 1, CHARM
@@ -446,12 +448,12 @@ TogeticEvosAttacks:
 	db 0 ; no more level-up moves
 
 NatuEvosAttacks:
-	dbbw EVOLVE_LEVEL, 25, XATU
+	dbbw EVOLVE_LEVEL, 25, EKANS
 	db 0 ; no more evolutions
 	dbw 1, PECK
 	dbw 1, LEER
 	dbw 10, NIGHT_SHADE
-	dbw 20, TELEPORT
+	dbw 20, POUND
 	dbw 30, FUTURE_SIGHT
 	dbw 40, CONFUSE_RAY
 	dbw 50, PSYCHIC_M
@@ -463,7 +465,7 @@ XatuEvosAttacks:
 	dbw 1, LEER
 	dbw 1, NIGHT_SHADE
 	dbw 10, NIGHT_SHADE
-	dbw 20, TELEPORT
+	dbw 20, POUND
 	dbw 35, FUTURE_SIGHT
 	dbw 50, CONFUSE_RAY
 	dbw 65, PSYCHIC_M
@@ -476,7 +478,7 @@ MareepEvosAttacks:
 	dbw 1, GROWL
 	dbw 9, THUNDERSHOCK
 	dbw 16, THUNDER_WAVE
-	dbw 23, COTTON_SPORE
+	dbw 23, POUND
 	dbw 30, LIGHT_SCREEN
 	dbw 37, THUNDER
 	db 0 ; no more level-up moves
@@ -489,7 +491,7 @@ FlaaffyEvosAttacks:
 	dbw 1, THUNDERSHOCK
 	dbw 9, THUNDERSHOCK
 	dbw 18, THUNDER_WAVE
-	dbw 27, COTTON_SPORE
+	dbw 27, POUND
 	dbw 36, LIGHT_SCREEN
 	dbw 45, THUNDER
 	db 0 ; no more level-up moves
@@ -502,7 +504,7 @@ AmpharosEvosAttacks:
 	dbw 1, THUNDER_WAVE
 	dbw 9, THUNDERSHOCK
 	dbw 18, THUNDER_WAVE
-	dbw 27, COTTON_SPORE
+	dbw 27, POUND
 	dbw 30, THUNDERPUNCH
 	dbw 42, LIGHT_SCREEN
 	dbw 57, THUNDER
@@ -511,21 +513,21 @@ AmpharosEvosAttacks:
 BellossomEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, ABSORB
-	dbw 1, SWEET_SCENT
+	dbw 1, POUND
 	dbw 1, STUN_SPORE
-	dbw 1, PETAL_DANCE
+	dbw 1, POUND
 	dbw 55, SOLARBEAM
 	db 0 ; no more level-up moves
 
 MarillEvosAttacks:
-	dbbw EVOLVE_LEVEL, 18, AZUMARILL
+	dbbw EVOLVE_LEVEL, 18, EKANS
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 3, DEFENSE_CURL
 	dbw 6, TAIL_WHIP
 	dbw 10, WATER_GUN
 	dbw 15, ROLLOUT
-	dbw 21, BUBBLEBEAM
+	dbw 21, POUND
 	dbw 28, DOUBLE_EDGE
 	dbw 36, RAIN_DANCE
 	db 0 ; no more level-up moves
@@ -540,7 +542,7 @@ AzumarillEvosAttacks:
 	dbw 6, TAIL_WHIP
 	dbw 10, WATER_GUN
 	dbw 15, ROLLOUT
-	dbw 25, BUBBLEBEAM
+	dbw 25, POUND
 	dbw 36, DOUBLE_EDGE
 	dbw 48, RAIN_DANCE
 	db 0 ; no more level-up moves
@@ -548,19 +550,19 @@ AzumarillEvosAttacks:
 SudowoodoEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, ROCK_THROW
-	dbw 1, MIMIC
+	dbw 1, POUND
 	dbw 10, FLAIL
-	dbw 19, LOW_KICK
+	dbw 19, POUND
 	dbw 28, ROCK_SLIDE
 	dbw 37, FAINT_ATTACK
-	dbw 46, SLAM
+	dbw 46, POUND
 	db 0 ; no more level-up moves
 
 PolitoedEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, WATER_GUN
 	dbw 1, HYPNOSIS
-	dbw 1, DOUBLESLAP
+	dbw 1, POUND
 	dbw 1, PERISH_SONG
 	dbw 35, PERISH_SONG
 	dbw 51, SWAGGER
@@ -569,7 +571,7 @@ PolitoedEvosAttacks:
 HoppipEvosAttacks:
 	dbbw EVOLVE_LEVEL, 18, SKIPLOOM
 	db 0 ; no more evolutions
-	dbw 1, SPLASH
+	dbw 1, POUND
 	dbw 5, SYNTHESIS
 	dbw 5, TAIL_WHIP
 	dbw 10, TACKLE
@@ -577,14 +579,14 @@ HoppipEvosAttacks:
 	dbw 15, STUN_SPORE
 	dbw 17, SLEEP_POWDER
 	dbw 20, LEECH_SEED
-	dbw 25, COTTON_SPORE
+	dbw 25, POUND
 	dbw 30, MEGA_DRAIN
 	db 0 ; no more level-up moves
 
 SkiploomEvosAttacks:
 	dbbw EVOLVE_LEVEL, 27, JUMPLUFF
 	db 0 ; no more evolutions
-	dbw 1, SPLASH
+	dbw 1, POUND
 	dbw 1, SYNTHESIS
 	dbw 1, TAIL_WHIP
 	dbw 1, TACKLE
@@ -595,13 +597,13 @@ SkiploomEvosAttacks:
 	dbw 15, STUN_SPORE
 	dbw 17, SLEEP_POWDER
 	dbw 22, LEECH_SEED
-	dbw 29, COTTON_SPORE
+	dbw 29, POUND
 	dbw 36, MEGA_DRAIN
 	db 0 ; no more level-up moves
 
 JumpluffEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, SPLASH
+	dbw 1, POUND
 	dbw 1, SYNTHESIS
 	dbw 1, TAIL_WHIP
 	dbw 1, TACKLE
@@ -612,7 +614,7 @@ JumpluffEvosAttacks:
 	dbw 15, STUN_SPORE
 	dbw 17, SLEEP_POWDER
 	dbw 22, LEECH_SEED
-	dbw 33, COTTON_SPORE
+	dbw 33, POUND
 	dbw 44, MEGA_DRAIN
 	db 0 ; no more level-up moves
 
@@ -646,7 +648,7 @@ SunfloraEvosAttacks:
 	dbw 4, GROWTH
 	dbw 10, RAZOR_LEAF
 	dbw 19, SUNNY_DAY
-	dbw 31, PETAL_DANCE
+	dbw 31, POUND
 	dbw 46, SOLARBEAM
 	db 0 ; no more level-up moves
 
@@ -656,19 +658,19 @@ YanmaEvosAttacks:
 	dbw 1, FORESIGHT
 	dbw 7, QUICK_ATTACK
 	dbw 13, DOUBLE_TEAM
-	dbw 19, SONICBOOM
-	dbw 25, DETECT
+	dbw 19, POUND
+	dbw 25, POUND
 	dbw 31, SUPERSONIC
 	dbw 37, WING_ATTACK
 	dbw 43, SCREECH
 	db 0 ; no more level-up moves
 
 WooperEvosAttacks:
-	dbbw EVOLVE_LEVEL, 20, QUAGSIRE
+	dbbw EVOLVE_LEVEL, 20, EKANS
 	db 0 ; no more evolutions
 	dbw 1, WATER_GUN
 	dbw 1, TAIL_WHIP
-	dbw 11, SLAM
+	dbw 11, POUND
 	dbw 21, AMNESIA
 	dbw 31, EARTHQUAKE
 	dbw 41, RAIN_DANCE
@@ -680,7 +682,7 @@ QuagsireEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, WATER_GUN
 	dbw 1, TAIL_WHIP
-	dbw 11, SLAM
+	dbw 11, POUND
 	dbw 23, AMNESIA
 	dbw 35, EARTHQUAKE
 	dbw 47, RAIN_DANCE
@@ -742,8 +744,8 @@ SlowkingEvosAttacks:
 MisdreavusEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, GROWL
-	dbw 1, PSYWAVE
-	dbw 6, SPITE
+	dbw 1, POUND
+	dbw 6, POUND
 	dbw 12, CONFUSE_RAY
 	dbw 19, MEAN_LOOK
 	dbw 27, PSYBEAM
@@ -769,9 +771,9 @@ GirafarigEvosAttacks:
 	dbw 1, TACKLE
 	dbw 1, GROWL
 	dbw 1, CONFUSION
-	dbw 1, STOMP
+	dbw 1, POUND
 	dbw 7, CONFUSION
-	dbw 13, STOMP
+	dbw 13, POUND
 	dbw 20, AGILITY
 	dbw 30, BATON_PASS
 	dbw 41, PSYBEAM
@@ -779,14 +781,14 @@ GirafarigEvosAttacks:
 	db 0 ; no more level-up moves
 
 PinecoEvosAttacks:
-	dbbw EVOLVE_LEVEL, 31, FORRETRESS
+	dbbw EVOLVE_LEVEL, 31, EKANS
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, PROTECT
 	dbw 8, SELFDESTRUCT
 	dbw 15, TAKE_DOWN
 	dbw 22, RAPID_SPIN
-	dbw 29, BIDE
+	dbw 29, POUND
 	dbw 36, EXPLOSION
 	dbw 43, SPIKES
 	dbw 50, DOUBLE_EDGE
@@ -800,7 +802,7 @@ ForretressEvosAttacks:
 	dbw 8, SELFDESTRUCT
 	dbw 15, TAKE_DOWN
 	dbw 22, RAPID_SPIN
-	dbw 29, BIDE
+	dbw 29, POUND
 	dbw 39, EXPLOSION
 	dbw 49, SPIKES
 	dbw 59, DOUBLE_EDGE
@@ -811,7 +813,7 @@ DunsparceEvosAttacks:
 	dbw 1, RAGE
 	dbw 5, DEFENSE_CURL
 	dbw 13, GLARE
-	dbw 18, SPITE
+	dbw 18, POUND
 	dbw 26, PURSUIT
 	dbw 30, SCREECH
 	dbw 38, TAKE_DOWN
@@ -826,24 +828,24 @@ GligarEvosAttacks:
 	dbw 28, FAINT_ATTACK
 	dbw 36, SLASH
 	dbw 44, SCREECH
-	dbw 52, GUILLOTINE
+	dbw 52, POUND
 	db 0 ; no more level-up moves
 
 SteelixEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, SCREECH
-	dbw 10, BIND
+	dbw 10, POUND
 	dbw 14, ROCK_THROW
 	dbw 23, HARDEN
 	dbw 27, RAGE
 	dbw 36, SANDSTORM
-	dbw 40, SLAM
+	dbw 40, POUND
 	dbw 49, CRUNCH
 	db 0 ; no more level-up moves
 
 SnubbullEvosAttacks:
-	dbbw EVOLVE_LEVEL, 23, GRANBULL
+	dbbw EVOLVE_LEVEL, 23, EKANS
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, SCARY_FACE
@@ -875,7 +877,7 @@ QwilfishEvosAttacks:
 	dbw 1, TACKLE
 	dbw 1, POISON_STING
 	dbw 10, HARDEN
-	dbw 10, MINIMIZE
+	dbw 10, POUND
 	dbw 19, WATER_GUN
 	dbw 28, PIN_MISSILE
 	dbw 37, TAKE_DOWN
@@ -898,12 +900,12 @@ ScizorEvosAttacks:
 
 ShuckleEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, CONSTRICT
-	dbw 1, WITHDRAW
+	dbw 1, POUND
+	dbw 1, POUND
 	dbw 9, WRAP
 	dbw 14, ENCORE
 	dbw 23, SAFEGUARD
-	dbw 28, BIDE
+	dbw 28, POUND
 	dbw 37, REST
 	db 0 ; no more level-up moves
 
@@ -911,7 +913,7 @@ HeracrossEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, LEER
-	dbw 6, HORN_ATTACK
+	dbw 6, POUND
 	dbw 12, ENDURE
 	dbw 19, FURY_ATTACK
 	dbw 27, COUNTER
@@ -930,12 +932,12 @@ SneaselEvosAttacks:
 	dbw 33, FURY_SWIPES
 	dbw 41, AGILITY
 	dbw 49, SLASH
-	dbw 57, BEAT_UP
+	dbw 57, POUND
 	dbw 65, METAL_CLAW
 	db 0 ; no more level-up moves
 
 TeddiursaEvosAttacks:
-	dbbw EVOLVE_LEVEL, 30, URSARING
+	dbbw EVOLVE_LEVEL, 30, EKANS
 	db 0 ; no more evolutions
 	dbw 1, SCRATCH
 	dbw 1, LEER
@@ -944,8 +946,8 @@ TeddiursaEvosAttacks:
 	dbw 22, FAINT_ATTACK
 	dbw 29, REST
 	dbw 36, SLASH
-	dbw 43, SNORE
-	dbw 50, THRASH
+	dbw 43, POUND
+	dbw 50, POUND
 	db 0 ; no more level-up moves
 
 UrsaringEvosAttacks:
@@ -959,12 +961,12 @@ UrsaringEvosAttacks:
 	dbw 22, FAINT_ATTACK
 	dbw 29, REST
 	dbw 39, SLASH
-	dbw 49, SNORE
-	dbw 59, THRASH
+	dbw 49, POUND
+	dbw 59, POUND
 	db 0 ; no more level-up moves
 
 SlugmaEvosAttacks:
-	dbbw EVOLVE_LEVEL, 38, MAGCARGO
+	dbbw EVOLVE_LEVEL, 38, EKANS
 	db 0 ; no more evolutions
 	dbw 1, SMOG
 	dbw 8, EMBER
@@ -973,7 +975,7 @@ SlugmaEvosAttacks:
 	dbw 29, AMNESIA
 	dbw 36, FLAMETHROWER
 	dbw 43, ROCK_SLIDE
-	dbw 50, BODY_SLAM
+	dbw 50, POUND
 	db 0 ; no more level-up moves
 
 MagcargoEvosAttacks:
@@ -987,14 +989,14 @@ MagcargoEvosAttacks:
 	dbw 29, AMNESIA
 	dbw 36, FLAMETHROWER
 	dbw 48, ROCK_SLIDE
-	dbw 60, BODY_SLAM
+	dbw 60, POUND
 	db 0 ; no more level-up moves
 
 SwinubEvosAttacks:
 	dbbw EVOLVE_LEVEL, 33, PILOSWINE
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
-	dbw 10, POWDER_SNOW
+	dbw 10, POUND
 	dbw 19, ENDURE
 	dbw 28, TAKE_DOWN
 	dbw 37, MIST
@@ -1004,10 +1006,10 @@ SwinubEvosAttacks:
 
 PiloswineEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, HORN_ATTACK
-	dbw 1, POWDER_SNOW
+	dbw 1, POUND
+	dbw 1, POUND
 	dbw 1, ENDURE
-	dbw 10, POWDER_SNOW
+	dbw 10, POUND
 	dbw 19, ENDURE
 	dbw 28, TAKE_DOWN
 	dbw 33, FURY_ATTACK
@@ -1020,22 +1022,22 @@ CorsolaEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 7, HARDEN
-	dbw 13, BUBBLE
+	dbw 13, POUND
 	dbw 19, RECOVER
-	dbw 25, BUBBLEBEAM
-	dbw 31, SPIKE_CANNON
+	dbw 25, POUND
+	dbw 31, POUND
 	dbw 37, MIRROR_COAT
 	dbw 43, ANCIENTPOWER
 	db 0 ; no more level-up moves
 
 RemoraidEvosAttacks:
-	dbbw EVOLVE_LEVEL, 25, OCTILLERY
+	dbbw EVOLVE_LEVEL, 25, EKANS
 	db 0 ; no more evolutions
 	dbw 1, WATER_GUN
-	dbw 11, LOCK_ON
+	dbw 11, POUND
 	dbw 22, PSYBEAM
 	dbw 22, AURORA_BEAM
-	dbw 22, BUBBLEBEAM
+	dbw 22, POUND
 	dbw 33, FOCUS_ENERGY
 	dbw 44, ICE_BEAM
 	dbw 55, HYPER_BEAM
@@ -1044,11 +1046,11 @@ RemoraidEvosAttacks:
 OctilleryEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, WATER_GUN
-	dbw 11, CONSTRICT
+	dbw 11, POUND
 	dbw 22, PSYBEAM
 	dbw 22, AURORA_BEAM
-	dbw 22, BUBBLEBEAM
-	dbw 25, OCTAZOOKA
+	dbw 22, POUND
+	dbw 25, POUND
 	dbw 38, FOCUS_ENERGY
 	dbw 54, ICE_BEAM
 	dbw 70, HYPER_BEAM
@@ -1056,15 +1058,15 @@ OctilleryEvosAttacks:
 
 DelibirdEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, PRESENT
+	dbw 1, POUND
 	db 0 ; no more level-up moves
 
 MantineEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
-	dbw 1, BUBBLE
+	dbw 1, POUND
 	dbw 10, SUPERSONIC
-	dbw 18, BUBBLEBEAM
+	dbw 18, POUND
 	dbw 25, TAKE_DOWN
 	dbw 32, AGILITY
 	dbw 40, WING_ATTACK
@@ -1109,7 +1111,7 @@ HoundoomEvosAttacks:
 
 KingdraEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, BUBBLE
+	dbw 1, POUND
 	dbw 1, SMOKESCREEN
 	dbw 1, LEER
 	dbw 1, WATER_GUN
@@ -1122,7 +1124,7 @@ KingdraEvosAttacks:
 	db 0 ; no more level-up moves
 
 PhanpyEvosAttacks:
-	dbbw EVOLVE_LEVEL, 25, DONPHAN
+	dbbw EVOLVE_LEVEL, 25, EKANS
 	db 0 ; no more evolutions
 	dbw 1, TACKLE
 	dbw 1, GROWL
@@ -1136,7 +1138,7 @@ PhanpyEvosAttacks:
 
 DonphanEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, HORN_ATTACK
+	dbw 1, POUND
 	dbw 1, GROWL
 	dbw 9, DEFENSE_CURL
 	dbw 17, FLAIL
@@ -1155,7 +1157,7 @@ Porygon2EvosAttacks:
 	dbw 12, PSYBEAM
 	dbw 20, RECOVER
 	dbw 24, DEFENSE_CURL
-	dbw 32, LOCK_ON
+	dbw 32, POUND
 	dbw 36, TRI_ATTACK
 	dbw 44, ZAP_CANNON
 	db 0 ; no more level-up moves
@@ -1165,7 +1167,7 @@ StantlerEvosAttacks:
 	dbw 1, TACKLE
 	dbw 8, LEER
 	dbw 15, HYPNOSIS
-	dbw 23, STOMP
+	dbw 23, POUND
 	dbw 31, SAND_ATTACK
 	dbw 40, TAKE_DOWN
 	dbw 49, CONFUSE_RAY
@@ -1195,24 +1197,24 @@ TyrogueEvosAttacks:
 
 HitmontopEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, ROLLING_KICK
+	dbw 1, POUND
 	dbw 7, FOCUS_ENERGY
 	dbw 13, PURSUIT
 	dbw 19, QUICK_ATTACK
 	dbw 25, RAPID_SPIN
 	dbw 31, COUNTER
 	dbw 37, AGILITY
-	dbw 43, DETECT
+	dbw 43, POUND
 	dbw 49, TRIPLE_KICK
 	db 0 ; no more level-up moves
 
 SmoochumEvosAttacks:
-	dbbw EVOLVE_LEVEL, 30, JYNX
+	dbbw EVOLVE_LEVEL, 30, EKANS
 	db 0 ; no more evolutions
 	dbw 1, POUND
 	dbw 1, LICK
 	dbw 9, SWEET_KISS
-	dbw 13, POWDER_SNOW
+	dbw 13, POUND
 	dbw 21, CONFUSION
 	dbw 25, SING
 	dbw 33, MEAN_LOOK
@@ -1222,7 +1224,7 @@ SmoochumEvosAttacks:
 	db 0 ; no more level-up moves
 
 ElekidEvosAttacks:
-	dbbw EVOLVE_LEVEL, 30, ELECTABUZZ
+	dbbw EVOLVE_LEVEL, 30, EKANS
 	db 0 ; no more evolutions
 	dbw 1, QUICK_ATTACK
 	dbw 1, LEER
@@ -1235,7 +1237,7 @@ ElekidEvosAttacks:
 	db 0 ; no more level-up moves
 
 MagbyEvosAttacks:
-	dbbw EVOLVE_LEVEL, 30, MAGMAR
+	dbbw EVOLVE_LEVEL, 30, EKANS
 	db 0 ; no more evolutions
 	dbw 1, EMBER
 	dbw 7, LEER
@@ -1253,11 +1255,11 @@ MiltankEvosAttacks:
 	dbw 1, TACKLE
 	dbw 4, GROWL
 	dbw 8, DEFENSE_CURL
-	dbw 13, STOMP
-	dbw 19, MILK_DRINK
-	dbw 26, BIDE
+	dbw 13, POUND
+	dbw 19, POUND
+	dbw 26, POUND
 	dbw 34, ROLLOUT
-	dbw 43, BODY_SLAM
+	dbw 43, POUND
 	dbw 53, HEAL_BELL
 	db 0 ; no more level-up moves
 
@@ -1266,11 +1268,11 @@ BlisseyEvosAttacks:
 	dbw 1, POUND
 	dbw 4, GROWL
 	dbw 7, TAIL_WHIP
-	dbw 10, SOFTBOILED
-	dbw 13, DOUBLESLAP
-	dbw 18, MINIMIZE
+	dbw 10, POUND
+	dbw 13, POUND
+	dbw 18, POUND
 	dbw 23, SING
-	dbw 28, EGG_BOMB
+	dbw 28, POUND
 	dbw 33, DEFENSE_CURL
 	dbw 40, LIGHT_SCREEN
 	dbw 47, DOUBLE_EDGE
@@ -1295,8 +1297,8 @@ EnteiEvosAttacks:
 	dbw 1, LEER
 	dbw 11, EMBER
 	dbw 21, ROAR
-	dbw 31, FIRE_SPIN
-	dbw 41, STOMP
+	dbw 31, POUND
+	dbw 41, POUND
 	dbw 51, FLAMETHROWER
 	dbw 61, SWAGGER
 	dbw 71, FIRE_BLAST
@@ -1306,7 +1308,7 @@ SuicuneEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, BITE
 	dbw 1, LEER
-	dbw 11, BUBBLEBEAM
+	dbw 11, POUND
 	dbw 21, RAIN_DANCE
 	dbw 31, GUST
 	dbw 41, AURORA_BEAM
@@ -1323,7 +1325,7 @@ LarvitarEvosAttacks:
 	dbw 8, SANDSTORM
 	dbw 15, SCREECH
 	dbw 22, ROCK_SLIDE
-	dbw 29, THRASH
+	dbw 29, POUND
 	dbw 36, SCARY_FACE
 	dbw 43, CRUNCH
 	dbw 50, EARTHQUAKE
@@ -1340,7 +1342,7 @@ PupitarEvosAttacks:
 	dbw 8, SANDSTORM
 	dbw 15, SCREECH
 	dbw 22, ROCK_SLIDE
-	dbw 29, THRASH
+	dbw 29, POUND
 	dbw 38, SCARY_FACE
 	dbw 47, CRUNCH
 	dbw 56, EARTHQUAKE
@@ -1356,7 +1358,7 @@ TyranitarEvosAttacks:
 	dbw 8, SANDSTORM
 	dbw 15, SCREECH
 	dbw 22, ROCK_SLIDE
-	dbw 29, THRASH
+	dbw 29, POUND
 	dbw 38, SCARY_FACE
 	dbw 47, CRUNCH
 	dbw 61, EARTHQUAKE
@@ -1365,7 +1367,7 @@ TyranitarEvosAttacks:
 
 LugiaEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, AEROBLAST
+	dbw 1, POUND
 	dbw 11, SAFEGUARD
 	dbw 22, GUST
 	dbw 33, RECOVER
@@ -1379,7 +1381,7 @@ LugiaEvosAttacks:
 
 HoOhEvosAttacks:
 	db 0 ; no more evolutions
-	dbw 1, SACRED_FIRE
+	dbw 1, POUND
 	dbw 11, SAFEGUARD
 	dbw 22, GUST
 	dbw 33, RECOVER
@@ -1402,4 +1404,36 @@ CelebiEvosAttacks:
 	dbw 30, FUTURE_SIGHT
 	dbw 40, BATON_PASS
 	dbw 50, PERISH_SONG
+	db 0 ; no more level-up moves
+
+Extra1EvosAttacks:
+	db 0 ; no more evolutions
+	dbw 1, TACKLE
+	dbw 1, GROWL
+	dbw 1, RAZOR_LEAF
+	dbw 1, REFLECT
+	dbw 8, RAZOR_LEAF
+	dbw 12, REFLECT
+	dbw 15, POISONPOWDER
+	dbw 23, SYNTHESIS
+	dbw 31, POUND
+	dbw 41, LIGHT_SCREEN
+	dbw 51, SAFEGUARD
+	dbw 61, SOLARBEAM
+	db 0 ; no more level-up moves
+
+Extra2EvosAttacks:
+	db 0 ; no more evolutions
+	dbw 1, TACKLE
+	dbw 1, GROWL
+	dbw 1, RAZOR_LEAF
+	dbw 1, REFLECT
+	dbw 8, RAZOR_LEAF
+	dbw 12, REFLECT
+	dbw 15, POISONPOWDER
+	dbw 23, SYNTHESIS
+	dbw 31, POUND
+	dbw 41, LIGHT_SCREEN
+	dbw 51, SAFEGUARD
+	dbw 61, SOLARBEAM
 	db 0 ; no more level-up moves

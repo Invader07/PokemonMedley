@@ -205,7 +205,7 @@ wSpriteAnimData::
 
 wSpriteAnimDict::
 ; wSpriteAnimDict pairs keys with values
-; keys: SPRITE_ANIM_DICT_* indexes (taken from SpriteAnimObjects)
+; keys: SPRITE_ANIM_DICT_* indexes (taken from SpriteAnimSeqData)
 ; values: vTiles0 offsets
 	ds NUM_SPRITEANIMDICT_ENTRIES * 2
 
@@ -213,7 +213,7 @@ wSpriteAnimationStructs::
 ; wSpriteAnim1 - wSpriteAnim10
 for n, 1, NUM_SPRITE_ANIM_STRUCTS + 1
 ; field  0:   index
-; fields 1-3: loaded from SpriteAnimObjects
+; fields 1-3: loaded from SpriteAnimSeqData
 wSpriteAnim{d:n}:: sprite_anim_struct wSpriteAnim{d:n}
 endr
 wSpriteAnimationStructsEnd::
@@ -435,8 +435,6 @@ wBattleScriptBufferAddress:: dw
 
 wTurnEnded:: db
 
-	ds 1
-
 wPlayerStats::
 wPlayerAttack::  dw
 wPlayerDefense:: dw
@@ -510,6 +508,8 @@ wWhichMonFaintedFirst:: db
 ; exists so you can't counter on switch
 wLastPlayerCounterMove:: db
 wLastEnemyCounterMove:: db
+
+wTrickRoom:: db
 
 wEnemyMinimized:: db
 
@@ -1357,8 +1357,8 @@ SECTION "Video", WRAM0
 
 UNION
 ; bg map
-wBGMapBuffer::    ds 2 * SCREEN_WIDTH
-wBGMapPalBuffer:: ds 2 * SCREEN_WIDTH
+wBGMapBuffer::    ds 40
+wBGMapPalBuffer:: ds 40
 wBGMapBufferPointers:: ds 20 * 2
 wBGMapBufferEnd::
 
@@ -1874,7 +1874,6 @@ SECTION "16-bit WRAM home data", WRAM0
 
 wConversionTableBitmap:: ds $20
 
-
 SECTION "WRAM 1", WRAMX
 
 wGBCOnlyDecompressBuffer:: ; a $540-byte buffer that continues past this SECTION
@@ -1988,7 +1987,6 @@ wNumRadioLinesPrinted:: db
 wOaksPKMNTalkSegmentCounter:: db
 	ds 5
 wRadioText:: ds 2 * SCREEN_WIDTH
-
 
 SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
@@ -2264,7 +2262,7 @@ wWalkingDirection:: db
 wFacingDirection:: db
 wWalkingX:: db
 wWalkingY:: db
-wWalkingTileCollision:: db
+wWalkingTile:: db
 	ds 6
 wPlayerTurningDirection:: db
 
@@ -2314,7 +2312,7 @@ wStringBuffer5:: ds STRING_BUFFER_LENGTH
 
 wBattleMenuCursorPosition:: db
 
-	ds 1
+wBuffer1:: db
 
 wCurBattleMon::
 ; index of the player's mon currently in battle (0-5)
@@ -2330,6 +2328,8 @@ wItemsPocketCursor::    db
 wKeyItemsPocketCursor:: db
 wBallsPocketCursor::    db
 wTMHMPocketCursor::     db
+wMedicinePocketCursor:: db
+wBerriesPocketCursor::    db
 
 wPCItemsScrollPosition::        db
 	ds 1
@@ -2337,6 +2337,8 @@ wItemsPocketScrollPosition::    db
 wKeyItemsPocketScrollPosition:: db
 wBallsPocketScrollPosition::    db
 wTMHMPocketScrollPosition::     db
+wMedicinePocketScrollPosition:: db
+wBerriesPocketScrollPosition:: 		db
 
 wSwitchMon::
 wSwitchItem::
@@ -2360,11 +2362,12 @@ wBattlePlayerAction::
 wSolvedUnownPuzzle::
 	db
 
-wStateFlags::
+wVramState::
 ; bit 0: overworld sprite updating on/off
-; bit 1: last 12 sprite OAM structs reserved
-; bit 6: in text state
-; bit 7: in scripted movement
+; bit 1: something to do with sprite updates
+; bit 6: something to do with text
+; bit 7: on when surf initiates
+;        flickers when climbing waterfall
 	db
 
 wBattleResult::
@@ -2731,7 +2734,7 @@ wMoveSelectionMenuType:: db
 
 ; corresponds to the data/pokemon/base_stats/*.asm contents
 wCurBaseData::
-wBaseSpecies:: db
+wBaseDexNo:: db
 wBaseStats::
 wBaseHP:: db
 wBaseAttack:: db
@@ -2767,6 +2770,7 @@ wCurDamage:: dw
 wMornEncounterRate::  db
 wDayEncounterRate::   db
 wNiteEncounterRate::  db
+wEveEncounterRate::   db
 wWaterEncounterRate:: db
 wListMoves_MoveIndicesBuffer:: ds NUM_MOVES
 wPutativeTMHMMove:: db
@@ -2786,6 +2790,7 @@ wTempPP::
 wNextBoxOrPartyIndex::
 wChosenCableClubRoom::
 wBreedingCompatibility::
+wMoveGrammar::
 wApplyStatLevelMultipliersToEnemy::
 wUsePPUp::
 wd265:: ; mobile
@@ -2848,6 +2853,8 @@ NEXTU
 wDudeNumItems:: db
 wDudeItems:: ds 2 * 4 + 1
 
+wDudeNumMedicine::
+wDudeNumBerries::
 wDudeNumKeyItems:: db
 wDudeKeyItems:: ds 18 + 1
 
@@ -2868,7 +2875,7 @@ wScriptFlags::
 ; bit 3: run deferred script
 	db
 	ds 1
-wEnabledPlayerEvents::
+wScriptFlags2::
 ; bit 0: count steps
 ; bit 1: coord events
 ; bit 2: warps and connections
@@ -3000,8 +3007,6 @@ endr
 
 wCmdQueue:: ds CMDQUEUE_CAPACITY * CMDQUEUE_ENTRY_SIZE
 
-	ds 40
-
 wMapObjects::
 wPlayerObject:: map_object wPlayer ; player is map object 0
 ; wMap1Object - wMap15Object
@@ -3073,8 +3078,15 @@ wKeyItems:: ds MAX_KEY_ITEMS + 1
 wNumBalls:: db
 wBalls:: ds MAX_BALLS * 2 + 1
 
+wNumMedicine:: db
+wMedicine:: ds MAX_MEDICINE * 2 + 1
+
+wNumBerries:: db
+wBerries:: ds MAX_BERRIES * 2 + 1
+
 wNumPCItems:: db
 wPCItems:: ds MAX_PC_ITEMS * 2 + 1
+
 
 wPokegearFlags::
 ; bit 0: map
@@ -3102,87 +3114,32 @@ wFarfetchdPosition:: db
 	ds 13
 
 ; map scene ids
-wPokecenter2FSceneID::                            db
-wTradeCenterSceneID::                             db
-wColosseumSceneID::                               db
-wTimeCapsuleSceneID::                             db
-wPowerPlantSceneID::                              db
-wCeruleanGymSceneID::                             db
-wRoute25SceneID::                                 db
-wTrainerHouseB1FSceneID::                         db
-wVictoryRoadGateSceneID::                         db
-wSaffronMagnetTrainStationSceneID::               db
-wRoute16GateSceneID::                             db
-wRoute17Route18GateSceneID::                      db
-wIndigoPlateauPokecenter1FSceneID::               db
-wWillsRoomSceneID::                               db
-wKogasRoomSceneID::                               db
-wBrunosRoomSceneID::                              db
-wKarensRoomSceneID::                              db
-wLancesRoomSceneID::                              db
-wHallOfFameSceneID::                              db
-wRoute27SceneID::                                 db
-wNewBarkTownSceneID::                             db
-wElmsLabSceneID::                                 db
-wPlayersHouse1FSceneID::                          db
-wRoute29SceneID::                                 db
-wCherrygroveCitySceneID::                         db
-wMrPokemonsHouseSceneID::                         db
-wRoute32SceneID::                                 db
-wRoute35NationalParkGateSceneID::                 db
-wRoute36SceneID::                                 db
-wRoute36NationalParkGateSceneID::                 db
-wAzaleaTownSceneID::                              db
-wGoldenrodGymSceneID::                            db
-wGoldenrodMagnetTrainStationSceneID::             db
-wGoldenrodPokecenter1FSceneID::                   db
-wOlivineCitySceneID::                             db
-wRoute34SceneID::                                 db
-wRoute34IlexForestGateSceneID::                   db
-wEcruteakTinTowerEntranceSceneID::                db
-wWiseTriosRoomSceneID::                           db
-wEcruteakPokecenter1FSceneID::                    db
-wEcruteakGymSceneID::                             db
-wMahoganyTownSceneID::                            db
-wRoute42SceneID::                                 db
-wCianwoodCitySceneID::                            db
-wBattleTower1FSceneID::                           db
-wBattleTowerBattleRoomSceneID::                   db
-wBattleTowerElevatorSceneID::                     db
-wBattleTowerHallwaySceneID::                      db
-wBattleTowerOutsideSceneID::                      db
-wRoute43GateSceneID::                             db
-wMountMoonSceneID::                               db
-wSproutTower3FSceneID::                           db
-wTinTower1FSceneID::                              db
-wBurnedTower1FSceneID::                           db
-wBurnedTowerB1FSceneID::                          db
-wRadioTower5FSceneID::                            db
-wRuinsOfAlphOutsideSceneID::                      db
-wRuinsOfAlphResearchCenterSceneID::               db
-wRuinsOfAlphHoOhChamberSceneID::                  db
-wRuinsOfAlphKabutoChamberSceneID::                db
-wRuinsOfAlphOmanyteChamberSceneID::               db
-wRuinsOfAlphAerodactylChamberSceneID::            db
-wRuinsOfAlphInnerChamberSceneID::                 db
-wMahoganyMart1FSceneID::                          db
-wTeamRocketBaseB1FSceneID::                       db
-wTeamRocketBaseB2FSceneID::                       db
-wTeamRocketBaseB3FSceneID::                       db
-wGoldenrodUndergroundSwitchRoomEntrancesSceneID:: db
-wSilverCaveRoom3SceneID::                         db
-wVictoryRoadSceneID::                             db
-wDragonsDenB1FSceneID::                           db
-wDragonShrineSceneID::                            db
-wOlivinePortSceneID::                             db
-wVermilionPortSceneID::                           db
-wFastShip1FSceneID::                              db
-wFastShipB1FSceneID::                             db
-wMountMoonSquareSceneID::                         db
-wMobileTradeRoomSceneID::                         db
-wMobileBattleRoomSceneID::                        db
+wPokecenter2FSceneID::              db
+wTradeCenterSceneID::               db
+wColosseumSceneID::                 db
+wTimeCapsuleSceneID::               db
+wBattleTower1FSceneID::             db
+wBattleTowerBattleRoomSceneID::     db
+wBattleTowerElevatorSceneID::       db
+wBattleTowerHallwaySceneID::        db
+wPlayersHouse1FSceneID::            db
+wIndigoPlateauPokecenter1FSceneID:: db
+wWillsRoomSceneID::                 db
+wKogasRoomSceneID::                 db
+wBrunosRoomSceneID::                db
+wKarensRoomSceneID::                db
+wLancesRoomSceneID::                db
+wHallOfFameSceneID::                db
+wHeraldCoveSceneID::								db
+wHeraldLabSceneID::									db
+wHeraldPortSceneID::								db
+wHeraldRouteSceneID::								db
+wBeachRouteSceneID::								db
+wMountainGymSceneID::								db
+wMountainGymBreakSceneID::					db
+wMountainGymArenaSceneID::					db
 
-	ds 49
+	ds 105
 
 ; fight counts
 wJackFightCount::    db
@@ -3214,7 +3171,7 @@ wKenjiFightCount::   db ; unreferenced
 wParryFightCount::   db
 wErinFightCount::    db
 
-	ds 100
+	ds 68
 
 wEventFlags:: flag_array NUM_EVENTS
 
@@ -3238,8 +3195,8 @@ wBikeFlags::
 wCurMapSceneScriptPointer:: dw
 
 wCurCaller:: dw
-wCurMapWarpEventCount:: db
-wCurMapWarpEventsPointer:: dw
+wCurMapWarpCount:: db
+wCurMapWarpsPointer:: dw
 wCurMapCoordEventCount:: db
 wCurMapCoordEventsPointer:: dw
 wCurMapBGEventCount:: db
@@ -3333,6 +3290,7 @@ wPlayerDataEnd::
 wCurMapData::
 
 wVisitedSpawns:: flag_array NUM_SPAWNS
+	ds 2
 
 wDigWarpNumber:: db
 wDigMapGroup::   db
@@ -3344,7 +3302,6 @@ wBackupWarpNumber:: db
 wBackupMapGroup::   db
 wBackupMapNumber::  db
 
-	ds 3
 
 wLastSpawnMapGroup:: db
 wLastSpawnMapNumber:: db
@@ -3386,7 +3343,7 @@ wPartyMon{d:n}Nickname:: ds MON_NAME_LENGTH
 endr
 wPartyMonNicknamesEnd::
 
-	ds 22
+	ds 13
 
 wPokedexCaught:: flag_array NUM_POKEMON
 wEndPokedexCaught::
@@ -3498,7 +3455,6 @@ SECTION "16-bit WRAM tables", WRAMX
 	wram_conversion_table wPokemonIndexTable, MON_TABLE
 	wram_conversion_table wMoveIndexTable, MOVE_TABLE
 
-
 SECTION "Battle Tower RAM", WRAMX
 
 w3_d000:: ds 1
@@ -3601,7 +3557,6 @@ wMagnetTrainPlayerSpriteInitX:: db
 	align 8
 wLYOverridesBackup:: ds SCREEN_HEIGHT_PX
 wLYOverridesBackupEnd::
-
 
 SECTION "Used Storage", WRAMX
 
@@ -3715,11 +3670,7 @@ wScratchTilemap:: ds BG_MAP_WIDTH * BG_MAP_HEIGHT
 wScratchAttrmap:: ds BG_MAP_WIDTH * BG_MAP_HEIGHT
 
 NEXTU
-wDecompressScratch:: ds $100 tiles
-
-NEXTU
-
-	ds $80 tiles
+wDecompressScratch:: ds $80 tiles
 wDecompressEnemyFrontpic:: ds $80 tiles
 
 NEXTU
@@ -3732,5 +3683,3 @@ SECTION "Stack RAM", WRAMX
 
 wWindowStack:: ds $1000 - 1
 wWindowStackBottom:: ds 1
-
-ENDSECTION

@@ -1,10 +1,10 @@
-	db "SEED@" ; species name
-	dw 100, 40 ; height, weight
+	db "PSI@" ; species name
+	dw 211, 430 ; height, weight
 
-	db   "It is very weak."
-	next "Its only means of"
-	next "defense is to"
+	db   "It hypnotizes"
+	next "itself so that it"
+	next "can teleport away"
 
-	page "shake its leaves"
-	next "desperately at its"
-	next "attacker.@"
+	page "when it senses"
+	next "danger, even"
+	next "if it is asleep.@"

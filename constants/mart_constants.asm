@@ -5,6 +5,7 @@
 	const MARTTYPE_BARGAIN
 	const MARTTYPE_PHARMACY
 	const MARTTYPE_ROOFTOP
+	const MARTTYPE_HOUSE
 
 ; Marts indexes (see data/items/marts.asm)
 	const_def
@@ -42,4 +43,10 @@
 	const MART_MT_MOON
 	const MART_INDIGO_PLATEAU
 	const MART_UNDERGROUND
+	const MART_HERALD_COVE
+	const MART_HERALD_BERRIES
+	const MART_CRAGGY_COAST1
+	const MART_CRAGGY_COAST2
+	const MART_CRAGGY_COAST3
+	const MART_CRAGGY_COAST4
 DEF NUM_MARTS EQU const_value

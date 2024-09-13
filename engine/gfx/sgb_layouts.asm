@@ -22,7 +22,6 @@ LoadSGBLayout:
 	jp hl
 
 SGBLayoutJumptable:
-; entries correspond to SCGB_* constants (see constants/scgb_constants.asm)
 	table_width 2, SGBLayoutJumptable
 	dw .SGB_BattleGrayscale
 	dw .SGB_BattleColors
@@ -446,7 +445,8 @@ endr
 	ld bc, PALPACKET_LENGTH
 	call CopyBytes
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
+	ld l, a
+	ld h, 0
 	add hl, hl
 	add hl, hl
 	add hl, hl

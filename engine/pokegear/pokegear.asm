@@ -33,10 +33,10 @@ PokeGear:
 	push af
 	ld a, $1
 	ldh [hInMenu], a
-	ld a, [wStateFlags]
+	ld a, [wVramState]
 	push af
 	xor a
-	ld [wStateFlags], a
+	ld [wVramState], a
 	call .InitTilemap
 	call DelayFrame
 .loop
@@ -55,7 +55,7 @@ PokeGear:
 	call PlaySFX
 	call WaitSFX
 	pop af
-	ld [wStateFlags], a
+	ld [wVramState], a
 	pop af
 	ldh [hInMenu], a
 	pop af
@@ -226,7 +226,7 @@ TownMap_InitCursorAndPlayerIconPositions:
 
 .FastShip:
 	ld [wPokegearMapPlayerIconLandmark], a
-	ld a, LANDMARK_NEW_BARK_TOWN
+	ld a, LANDMARK_SPECIAL
 	ld [wPokegearMapCursorLandmark], a
 	ret
 
@@ -565,8 +565,9 @@ PokegearMap_KantoMap:
 	jr PokegearMap_ContinueMap
 
 PokegearMap_JohtoMap:
-	ld d, LANDMARK_SILVER_CAVE
-	ld e, LANDMARK_NEW_BARK_TOWN
+; TODO: Change these to the last and first landmarks of the Johto region.
+	ld d, LANDMARK_HERALD_COVE
+	ld e, LANDMARK_MT_MONEGO
 PokegearMap_ContinueMap:
 	ld hl, hJoyLast
 	ld a, [hl]
@@ -725,6 +726,7 @@ PokegearMap_UpdateCursorPosition:
 	ret
 
 TownMap_GetKantoLandmarkLimits:
+; TODO: Change these to the last and first landmarks of the Kanto region, depending on postgame.
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_HALL_OF_FAME_F, a
 	jr z, .not_hof
@@ -1363,7 +1365,7 @@ INCBIN "gfx/pokegear/clock.tilemap.rle"
 _UpdateRadioStation:
 	jr UpdateRadioStation
 
-; called from engine/sprite_anims/functions.asm
+; called from engine/gfx/sprite_anims.asm
 
 AnimateTuningKnob:
 	push bc
@@ -1489,7 +1491,7 @@ RadioChannels:
 
 .RuinsOfAlphRadio:
 	ld a, [wPokegearMapPlayerIconLandmark]
-	cp LANDMARK_RUINS_OF_ALPH
+	cp LANDMARK_SPECIAL
 	jr nz, .NoSignal
 	jp LoadStation_UnownRadio
 
@@ -1523,11 +1525,11 @@ RadioChannels:
 	bit STATUSFLAGS_ROCKET_SIGNAL_F, a
 	jr z, .NoSignal
 	ld a, [wPokegearMapPlayerIconLandmark]
-	cp LANDMARK_MAHOGANY_TOWN
+	cp LANDMARK_SPECIAL
 	jr z, .ok
-	cp LANDMARK_ROUTE_43
+	cp LANDMARK_SPECIAL
 	jr z, .ok
-	cp LANDMARK_LAKE_OF_RAGE
+	cp LANDMARK_SPECIAL
 	jr nz, .NoSignal
 .ok
 	jp LoadStation_EvolutionRadio
@@ -1764,10 +1766,10 @@ _TownMap:
 	ld a, $1
 	ldh [hInMenu], a
 
-	ld a, [wStateFlags]
+	ld a, [wVramState]
 	push af
 	xor a
-	ld [wStateFlags], a
+	ld [wVramState], a
 
 	call ClearBGPalettes
 	call ClearTilemap
@@ -1819,7 +1821,7 @@ _TownMap:
 
 .resume
 	pop af
-	ld [wStateFlags], a
+	ld [wVramState], a
 	pop af
 	ldh [hInMenu], a
 	pop af
@@ -2535,12 +2537,11 @@ Pokedex_GetArea:
 	ld [hli], a ; tile id
 	inc de
 	push bc
-	ld c, PAL_OW_RED
+	ld c, PAL_OW_BLUE
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .male
-	assert PAL_OW_RED + 1 == PAL_OW_BLUE
-	inc c
+	inc c ; PAL_OW_RED
 .male
 	ld a, c
 	ld [hli], a ; attributes
@@ -2556,10 +2557,10 @@ Pokedex_GetArea:
 
 .PlayerOAM:
 	; y pxl, x pxl, tile offset
-	db -1 * TILE_WIDTH, -1 * TILE_WIDTH, 0 ; top left
-	db -1 * TILE_WIDTH,  0 * TILE_WIDTH, 1 ; top right
-	db  0 * TILE_WIDTH, -1 * TILE_WIDTH, 2 ; bottom left
-	db  0 * TILE_WIDTH,  0 * TILE_WIDTH, 3 ; bottom right
+	db -1 * 8, -1 * 8, 0 ; top left
+	db -1 * 8,  0 * 8, 1 ; top right
+	db  0 * 8, -1 * 8, 2 ; bottom left
+	db  0 * 8,  0 * 8, 3 ; bottom right
 	db $80 ; terminator
 
 .CheckPlayerLocation:
@@ -2749,11 +2750,11 @@ TownMapPlayerIcon:
 	call Request2bpp
 ; Animation/palette
 	depixel 0, 0
-	ld b, SPRITE_ANIM_OBJ_RED_WALK ; Male
+	ld b, SPRITE_ANIM_OBJ_BLUE_WALK ; Male
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .got_gender
-	ld b, SPRITE_ANIM_OBJ_BLUE_WALK ; Female
+	ld b, SPRITE_ANIM_OBJ_RED_WALK ; Female
 .got_gender
 	ld a, b
 	call InitSpriteAnimStruct

@@ -1,5 +1,5 @@
 ArniePhoneCalleeScript:
-	gettrainername STRING_BUFFER_3, BUG_CATCHER, ARNIE1
+	gettrainername STRING_BUFFER_3, BUG_CATCHER, BLAINE
 	checkflag ENGINE_ARNIE_READY_FOR_REMATCH
 	iftrue .WantsBattle
 	farscall PhoneScript_AnswerPhone_Male
@@ -16,15 +16,15 @@ ArniePhoneCalleeScript:
 	farsjump ArnieHangUpScript
 
 .WantsBattle:
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_35
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	farsjump ArnieReminderScript
 
 .AlreadySwarming:
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_35
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	farsjump ArnieHurryScript
 
 ArniePhoneCallerScript:
-	gettrainername STRING_BUFFER_3, BUG_CATCHER, ARNIE1
+	gettrainername STRING_BUFFER_3, BUG_CATCHER, BLAINE
 	farscall PhoneScript_GreetPhone_Male
 	checkflag ENGINE_ARNIE_READY_FOR_REMATCH
 	iftrue .Swarm
@@ -44,7 +44,7 @@ ArnieTuesdayMorning:
 	setflag ENGINE_ARNIE_TUESDAY_MORNING
 
 ArnieWantsBattle:
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_35
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	setflag ENGINE_ARNIE_READY_FOR_REMATCH
 	farsjump PhoneScript_WantsToBattle_Male
 
@@ -53,8 +53,9 @@ ArnieYanmaSwarm: ; start swarm
 	iftrue ArnieYanmaAlreadySwarming
 	setflag ENGINE_YANMA_SWARM
 	getmonname STRING_BUFFER_4, YANMA
-	swarm SWARM_YANMA, ROUTE_35
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_35
+; TODO: Pick a map for the Yanma swarm, and add its wild data to the appropriate data/wild/ file.
+;	swarm SWARM_YANMA, NONE
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	farsjump ArnieSwarmScript
 
 ArnieFoundRare:

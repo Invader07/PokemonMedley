@@ -1,9 +1,9 @@
 	db 0 ; species ID placeholder
 
-	db  55, 130, 115,  75,  50,  50
+	db  55, 130,  50,  85,  50, 105
 	;   hp  atk  def  spd  sat  sdf
 
-	db WATER, WATER ; type
+	db POISON, WATER ; type
 	db 60 ; catch rate
 	db 206 ; base exp
 	db NO_ITEM, NO_ITEM ; items
@@ -17,5 +17,5 @@
 	dn EGG_WATER_3, EGG_WATER_3 ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE, TOXIC, ROCK_SMASH, HIDDEN_POWER, SNORE, BLIZZARD, HYPER_BEAM, ICY_WIND, PROTECT, RAIN_DANCE, ENDURE, FRUSTRATION, RETURN, MUD_SLAP, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, REST, ATTRACT, THIEF, FURY_CUTTER, CUT, SURF, STRENGTH, WHIRLPOOL, ICE_BEAM
-	; end
+	tmhm CURSE
+		; end

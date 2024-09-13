@@ -56,10 +56,7 @@ BattleCommand_StoreEnergy:
 
 	ld a, BATTLE_VARS_MOVE_ANIM
 	call GetBattleVarAddr
-	push hl
-	ld hl, BIDE
-	call GetMoveIDFromIndex
-	pop hl
+	ld a, BIDE
 	ld [hl], a
 
 	ld b, unleashenergy_command

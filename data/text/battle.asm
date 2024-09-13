@@ -145,6 +145,11 @@ BattleText_TheSandstormRages:
 	line "rages."
 	prompt
 
+BattleText_HailContinuesToFall:
+	text "Hail continues to"
+	line "fall."
+	prompt
+
 BattleText_TheRainStopped:
 	text "The rain stopped."
 	prompt
@@ -157,6 +162,10 @@ BattleText_TheSunlightFaded:
 BattleText_TheSandstormSubsided:
 	text "The SANDSTORM"
 	line "subsided."
+	prompt
+
+BattleText_TheHailStopped:
+	text "The hail stopped."
 	prompt
 
 BattleText_EnemyMonFainted:
@@ -428,12 +437,24 @@ AlreadyConfusedText:
 	line "already confused!"
 	prompt
 
+BattleText_UserLostSomeOfItsHP:
+	text "<USER> lost"
+	line "some HP!"
+	prompt
+
 BattleText_UsersHurtByStringBuffer1:
 	text "<USER>'s"
 	line "hurt by"
 	cont "@"
 	text_ram wStringBuffer1
 	text "!"
+	prompt
+
+BattleText_RockyHelmet:
+	text "<USER>"
+	line "was hurt by"
+	cont "<TARGET>'s"
+	cont "ROCKY HELMET!"
 	prompt
 
 BattleText_UserWasReleasedFromStringBuffer1:
@@ -455,7 +476,7 @@ WhirlpoolTrapText:
 	line "was trapped!"
 	prompt
 
-FireSpinTrapText:
+SandTombTrapText:
 	text "<TARGET>"
 	line "was trapped!"
 	prompt
@@ -1106,3 +1127,34 @@ BattleText_NoTimeLeftToday: ; unreferenced
 	text "There is no time"
 	line "left today!"
 	done
+
+ItStartedToHailText:
+	text "It started"
+	line "to hail!"
+	prompt
+
+PeltedByHailText:
+	text "<USER>"
+	line "is pelted by HAIL!"
+	prompt
+
+WeatherStoppedText:
+	text "The weather"
+	line "stopped!"
+	prompt
+
+KnockOffText:
+	text "<USER> knocked"
+	line "off its foe's"
+	cont "item!"
+	prompt
+
+TrickRoomText:
+	text "The dimentions"
+	line "were twisted!"
+	prompt
+
+TrickRoomEndedText:
+	text "Everything went"
+	line "back to normal!"
+	prompt

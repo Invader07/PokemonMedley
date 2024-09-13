@@ -27,7 +27,7 @@
 	tilecoll WALL, WALL, WALL, WALL ; 1a
 	tilecoll WALL, WATER, WALL, WALL ; 1b
 	tilecoll WATER_21, WATER_21, WALL, WALL ; 1c
-	tilecoll WATER_21, WATER_21, WALL, WALL ; 1d
+	tilecoll WALL, DOOR, WALL, FLOOR ; 1d
 	tilecoll WATER_21, WATER_21, WALL, WALL ; 1e
 	tilecoll WALL, WALL, WALL, WATER ; 1f
 	tilecoll WALL, FLOOR, WATER, WARP_CARPET_DOWN ; 20
@@ -56,7 +56,7 @@
 	tilecoll FLOOR, WATER, FLOOR, WATER ; 37
 	tilecoll WATER, FLOOR, WATER, FLOOR ; 38
 	tilecoll WATER, WATER, FLOOR, FLOOR ; 39
-	tilecoll FLOOR, FLOOR, FLOOR, WALL ; 3a
+	tilecoll FLOOR, WARP_CARPET_RIGHT, FLOOR, WARP_CARPET_RIGHT ; 3a
 	tilecoll FLOOR, FLOOR, FLOOR, WALL ; 3b
 	tilecoll FLOOR, FLOOR, FLOOR, WALL ; 3c
 	tilecoll FLOOR, FLOOR, FLOOR, WALL ; 3d

@@ -6,8 +6,7 @@ GiveShuckle:
 	ld [wMonType], a
 
 ; Level 15 Shuckle.
-	ld hl, SHUCKLE
-	call GetPokemonIDFromIndex
+	ld a, EKANS
 	ld [wCurPartySpecies], a
 	ld a, 15
 	ld [wCurPartyLevel], a
@@ -77,20 +76,7 @@ ReturnShuckie:
 	jr c, .refused
 
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	ld a, l
-	sub LOW(SHUCKLE)
-	if HIGH(SHUCKLE) == 0
-		or h
-	else
-		jr nz, .DontReturn
-		if HIGH(SHUCKLE) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(SHUCKLE)
-		endc
-	endc
+	cp EKANS
 	jr nz, .DontReturn
 
 	ld a, [wCurPartyMon]

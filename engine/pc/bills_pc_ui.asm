@@ -194,9 +194,9 @@ UseBillsPC:
 	newfarcall WipeAttrmap
 	call ClearSprites
 	newfarcall ClearSpriteAnims
-	ld a, [wStateFlags]
+	ld a, [wVramState]
 	res SPRITE_UPDATES_DISABLED_F, a
-	ld [wStateFlags], a
+	ld [wVramState], a
 
 	; the UI needs CGB Doublespeed to work as it should.
 	ldh a, [rIE]

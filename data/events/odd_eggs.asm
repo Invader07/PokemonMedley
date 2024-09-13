@@ -12,19 +12,19 @@ DEF prob_total = 0
 ; Pichu
 	prob 8
 	prob 1
-; Cleffa
+; EKANS
 	prob 16
 	prob 3
-; Igglybuff
+; EKANS
 	prob 16
 	prob 3
-; Smoochum
+; EKANS
 	prob 14
 	prob 2
-; Magby
+; EKANS
 	prob 10
 	prob 2
-; Elekid
+; EKANS
 	prob 12
 	prob 2
 ; Tyrogue
@@ -37,16 +37,16 @@ OddEggSpecies:
 	table_width 2, OddEggSpecies
 	dw PICHU
 	dw PICHU
-	dw CLEFFA
-	dw CLEFFA
-	dw IGGLYBUFF
-	dw IGGLYBUFF
-	dw SMOOCHUM
-	dw SMOOCHUM
-	dw MAGBY
-	dw MAGBY
-	dw ELEKID
-	dw ELEKID
+	dw EKANS
+	dw EKANS
+	dw EKANS
+	dw EKANS
+	dw EKANS
+	dw EKANS
+	dw EKANS
+	dw EKANS
+	dw EKANS
+	dw EKANS
 	dw TYROGUE
 	dw TYROGUE
 	assert_table_length NUM_ODD_EGGS

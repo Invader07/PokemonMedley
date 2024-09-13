@@ -40,15 +40,15 @@ Function100022:
 	farcall Stubbed_Function106462
 	farcall Function106464 ; load broken gfx
 	farcall Function11615a ; init RAM
-	ld hl, wStateFlags
-	set LAST_12_SPRITE_OAM_STRUCTS_RESERVED_F, [hl]
+	ld hl, wVramState
+	set 1, [hl]
 	ret
 
 Function100057:
 	call DisableMobile
 	call ReturnToMapFromSubmenu
-	ld hl, wStateFlags
-	res LAST_12_SPRITE_OAM_STRUCTS_RESERVED_F, [hl]
+	ld hl, wVramState
+	res 1, [hl]
 	ret
 
 SetRAMStateForMobile:
@@ -94,7 +94,6 @@ DisableMobile:
 	xor a
 	ldh [hMobileReceive], a
 	ldh [hMobile], a
-	assert VBLANK_NORMAL == 0
 	xor a
 	ldh [hVBlank], a
 	call NormalSpeed
@@ -239,7 +238,7 @@ Function10016f:
 	jr z, .asm_1001af
 	cp $f8
 	ret z
-	ret ; ???
+	ret   ; ????????????????????????????
 
 .asm_1001af
 	ld a, $d7
@@ -305,7 +304,7 @@ Function10016f:
 Function10020b:
 	xor a
 	ld [wc303], a
-	farcall FadeOutToWhite
+	farcall FadeOutPalettes
 	farcall Function106464
 	call HideSprites
 	call DelayFrame
@@ -361,7 +360,7 @@ Function100276:
 	ret
 
 .asm_100296
-	farcall Script_refreshmap
+	farcall Script_reloadmappart
 	ld c, $04
 	ret
 
@@ -371,7 +370,7 @@ Function100276:
 	ret
 
 .asm_1002a5
-	farcall Script_refreshmap
+	farcall Script_reloadmappart
 	call Function1002ed
 	ld c, $03
 	ret
@@ -427,7 +426,7 @@ Function100301:
 	ret
 
 Function100320:
-	farcall Mobile_HDMATransferTilemapAndAttrmap_Overworld
+	farcall Mobile_ReloadMapPart
 	ret
 
 Function100327: ; unreferenced
@@ -1379,7 +1378,7 @@ Function1008e0:
 	push bc
 	xor a
 	ldh [hBGMapMode], a
-	ld a, VBLANK_CUTSCENE_CGB
+	ld a, $03
 	ldh [hVBlank], a
 	call Function100970
 	call Function100902
@@ -1412,7 +1411,7 @@ Function100902:
 	call PrintNum
 	ld de, SFX_TWO_PC_BEEPS
 	call PlaySFX
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ld c, $3c
 	call DelayFrames
 	ret
@@ -1423,7 +1422,7 @@ Function100902:
 	call PlaceString
 	ld de, SFX_4_NOTE_DITTY
 	call PlaySFX
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ld c, 120
 	call DelayFrames
 	ret
@@ -1449,7 +1448,7 @@ Function100989:
 	decoord 0, 0
 	call Function1009a5
 	call Function1009ae
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ld hl, w3_dd68
 	decoord 0, 0, wAttrmap
 	call Function1009a5
@@ -1553,19 +1552,9 @@ _LinkBattleSendReceiveAction:
 	and a ; BATTLEPLAYERACTION_USEMOVE?
 	jr nz, .switch
 	ld a, [wCurPlayerMove]
-	call GetMoveIndexFromID
 	ld b, BATTLEACTION_STRUGGLE
-	ld a, h
-	if HIGH(STRUGGLE)
-		cp HIGH(STRUGGLE)
-	else
-		and a
-	endc
-	jr nz, .not_struggle
-	ld a, l
-	cp LOW(STRUGGLE)
+	cp STRUGGLE
 	jr z, .struggle
-.not_struggle
 	ld b, BATTLEACTION_SKIPTURN
 	cp $ff
 	jr z, .struggle
@@ -1598,7 +1587,7 @@ _LinkBattleSendReceiveAction:
 
 	vc_hook Wireless_end_exchange
 	vc_patch Wireless_net_delay_3
-if DEF(_CRYSTAL_VC)
+if DEF(_CRYSTAL11_VC)
 	ld b, 26
 else
 	ld b, 10
@@ -1612,7 +1601,7 @@ endc
 
 	vc_hook Wireless_start_send_zero_bytes
 	vc_patch Wireless_net_delay_4
-if DEF(_CRYSTAL_VC)
+if DEF(_CRYSTAL11_VC)
 	ld b, 26
 else
 	ld b, 10
@@ -2411,7 +2400,7 @@ MACRO macro_100fc0
 	;     Bit 7 set: Not SRAM
 	;     Lower 7 bits: Bank if SRAM
 	; address, size[, OT address]
-	db ($80 * (\1 >= STARTOF(SRAM) + SIZEOF(SRAM))) | (BANK(\1) * (\1 < STARTOF(SRAM) + SIZEOF(SRAM)))
+	db ($80 * (\1 >= SRAM_End)) | (BANK(\1) * (\1 < SRAM_End))
 	dw \1, \2
 	if _NARG == 3
 		dw \3
@@ -2455,8 +2444,9 @@ Unknown_10102c:
 Function101050:
 	call Function10107d
 	ld a, [wOTPartyCount]
+rept 2 ; ???
 	ld hl, wc608
-	ld hl, wc608 ; redundant
+endr
 	ld bc, wc7bb - wc608
 	call Function1010de
 	ld hl, wc7bb
@@ -2747,7 +2737,7 @@ Jumptable_101247:
 
 Function101251:
 	call UpdateSprites
-	call ReanchorMap
+	call RefreshScreen
 	ld hl, ClosingLinkText
 	call Function1021e0
 	call Function1020ea
@@ -2762,7 +2752,7 @@ Function101265:
 
 Function10126c:
 	call UpdateSprites
-	farcall Script_refreshmap
+	farcall Script_reloadmappart
 	ld hl, ClosingLinkText
 	call Function1021e0
 	ret
@@ -4924,7 +4914,7 @@ Function10224b:
 .asm_10225e
 	res 1, [hl]
 	res 2, [hl]
-	farcall Mobile_HDMATransferTilemapAndAttrmap_Overworld
+	farcall Mobile_ReloadMapPart
 	scf
 	ret
 
@@ -5172,7 +5162,7 @@ Function102423:
 	ret nc
 	farcall SaveAfterLinkTrade
 	farcall StubbedTrainerRankings_Trades
-	farcall BackupGSBallFlag
+	farcall BackupMobileEventIndex
 	ld hl, wcd4b
 	set 1, [hl]
 	ld a, 0
@@ -6418,6 +6408,7 @@ Function102d48:
 	ld [wTempSpecies], a
 	cp EGG
 	jr z, .asm_102d6d
+	dec a
 	call SetSeenAndCaughtMon
 	ld a, [wcd4c]
 	dec a
@@ -6428,20 +6419,7 @@ Function102d48:
 
 .asm_102d6d
 	ld a, [wTempSpecies]
-	call GetPokemonIndexFromID
-	ld a, l
-	sub LOW(UNOWN)
-	if HIGH(UNOWN) == 0
-		or h
-	else
-		jr nz, .asm_102d98
-		if HIGH(UNOWN) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(UNOWN)
-		endc
-	endc
+	cp UNOWN
 	jr nz, .asm_102d98
 	ld a, [wcd4c]
 	dec a
@@ -7372,7 +7350,7 @@ MenuData_103648:
 	db "ケーブル@"
 
 Function103654:
-	farcall CheckMobileAdapterStatus
+	farcall Mobile_AlwaysReturnNotCarry
 	bit 7, c
 	jr nz, .asm_103666
 	ld hl, wcd2a
@@ -7387,7 +7365,7 @@ Function103654:
 	ret
 
 Mobile_SelectThreeMons:
-	farcall CheckMobileAdapterStatus
+	farcall Mobile_AlwaysReturnNotCarry
 	bit 7, c
 	jr z, .asm_10369b
 	ld hl, MobileBattleMustPickThreeMonText
@@ -7647,7 +7625,8 @@ MobileBattleNoTimeLeftForLinkingText:
 	text_end
 
 MobileCheckRemainingBattleTime:
-	farcall CheckMobileAdapterStatus
+; Returns carry if less than one minute remains
+	farcall Mobile_AlwaysReturnNotCarry
 	bit 7, c
 	jr nz, .ok
 	farcall MobileBattleGetRemainingTime
@@ -7674,7 +7653,7 @@ Function10383c:
 	ld hl, PickThreeMonForMobileBattleText
 	call PrintText
 	call JoyWaitAorB
-	farcall Script_refreshmap
+	farcall Script_reloadmappart
 	farcall Function4a94e
 	jr c, .asm_103870
 	ld hl, wd002
@@ -7695,7 +7674,7 @@ PickThreeMonForMobileBattleText:
 	text_end
 
 Function10387b:
-	farcall CheckMobileAdapterStatus
+	farcall Mobile_AlwaysReturnNotCarry
 	bit 7, c
 	ret nz
 	farcall MobileBattleGetRemainingTime

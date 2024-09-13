@@ -76,7 +76,7 @@ CheckPartyFullAfterContest:
 	call GetPartyLocation
 	ld a, [hl]
 	and CAUGHT_GENDER_MASK
-	ld b, LANDMARK_NATIONAL_PARK
+	ld b, LANDMARK_SPECIAL
 	or b
 	ld [hl], a
 	xor a
@@ -131,7 +131,7 @@ CheckPartyFullAfterContest:
 	ld hl, wBufferMonCaughtLocation
 	ld a, [hl]
 	and CAUGHT_GENDER_MASK
-	ld b, LANDMARK_NATIONAL_PARK
+	ld b, LANDMARK_SPECIAL
 	or b
 	ld [hl], a
 	newfarcall UpdateStorageBoxMonFromTemp
@@ -165,6 +165,7 @@ SetBoxmonOrEggmonCaughtData:
 	inc a
 	rrca
 	rrca
+	and CAUGHT_TIME_MASK
 	ld b, a
 	ld a, [wCurPartyLevel]
 	or b

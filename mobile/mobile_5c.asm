@@ -211,24 +211,12 @@ CheckBTMonMovesForErrors:
 	ld hl, wBT_OTTempMon1Moves
 .loop
 	push hl
-	ld a, [hl]
-	cp MOVE_TABLE_ENTRIES + 1
-	jr c, .okay
-	push hl
-	ld hl, POUND
-	call GetMoveIDFromIndex
-	pop hl
-	ld [hl], a
-
-.okay
-	inc hl
+	ld a, [hli]
 	ld b, NUM_MOVES - 1
 .loop2
 	ld a, [hl]
 	and a
-	jr z, .loop3
-	cp MOVE_TABLE_ENTRIES + 1
-	jr c, .next
+	jr nz, .next
 
 .loop3
 	xor a
@@ -329,7 +317,7 @@ Function1719ed:
 	call ClearBGPalettes
 	call ClearSprites
 	farcall Function171d2b
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	farcall ClearSpriteAnims
 	ret
 
@@ -341,7 +329,7 @@ Function171a11:
 	jr nz, .done
 	call Function171a36
 	farcall PlaySpriteAnimations
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	jr .loop
 .done
 	farcall ClearSpriteAnims
@@ -591,7 +579,7 @@ Function171beb:
 	call LoadMenuHeader
 	call MenuBox
 	call MenuBoxCoord2Tile
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	hlcoord 1, 14
 	ld de, String_171c73
 	call PlaceString
@@ -869,7 +857,13 @@ Stadium2N64GFX:
 INCBIN "gfx/mobile/stadium2_n64.2bpp"
 
 Stadium2N64Tilemap:
+if DEF(_CRYSTAL11)
+; BUG: Crystal 1.1 corrupted this tilemap by treating $0a bytes as
+; Unix newlines, and converting them to $0d $0a Windows newlines.
+INCBIN "gfx/mobile/stadium2_n64_corrupt.tilemap"
+else
 INCBIN "gfx/mobile/stadium2_n64.tilemap"
+endc
 
 Stadium2N64Attrmap:
 INCBIN "gfx/mobile/stadium2_n64.attrmap"

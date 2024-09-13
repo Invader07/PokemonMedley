@@ -3,7 +3,9 @@ LoadOverworldMonIcon:
 	ld [wCurIcon], a
 	; fallthrough
 _LoadOverworldMonIcon:
-	call GetPokemonIndexFromID
+	ld [wCurIcon], a
+	ld l, a
+	ld h, 0
 	add hl, hl
 	ld de, IconPointers
 	add hl, de
@@ -108,18 +110,13 @@ _FinishMenuMonIconColor:
 GetMonPalInBCDE:
 ; Sets BCDE to mon icon palette.
 ; Input: c = species, b = shininess (1=true, 0=false)
-	ld a, c
-	call GetPokemonIndexFromID
-	dec hl
-	ld d, h
-	ld e, l
-
 	ld hl, MonMenuIconPals
+	dec c
 
 	; This sets z if mon is shiny.
 	dec b
 	ld b, 0
-	add hl, de
+	add hl, bc
 	ld a, [hl]
 	jr z, .shiny
 	swap a
@@ -152,10 +149,9 @@ GetMenuMonIconPalette:
 GetMenuMonIconPalette_PredeterminedShininess:
 	push af
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	dec hl
-	ld b, h
-	ld c, l
+	dec a
+	ld c, a
+	ld b, 0
 	ld hl, MonMenuIconPals
 	add hl, bc
 	ld e, [hl]
@@ -242,11 +238,11 @@ Mobile_InitAnimatedMonIcon:
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_XCOORD
 	add hl, bc
-	ld a, 9 * TILE_WIDTH
+	ld a, 9 * 8
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
-	ld a, 9 * TILE_WIDTH
+	ld a, 9 * 8
 	ld [hl], a
 	ret
 
@@ -259,11 +255,11 @@ Mobile_InitPartyMenuBGPal71:
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_XCOORD
 	add hl, bc
-	ld a, 3 * TILE_WIDTH
+	ld a, 3 * 8
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
-	ld a, 12 * TILE_WIDTH
+	ld a, 12 * 8
 	ld [hl], a
 	ld a, c
 	ld [wc608], a
@@ -391,8 +387,8 @@ MoveList_InitAnimatedMonIcon:
 	ld [wCurIcon], a
 	xor a
 	call GetIconGFX
-	ld d, 3 * TILE_WIDTH + 2 ; depixel 3, 4, 2, 4
-	ld e, 4 * TILE_WIDTH + 4
+	ld d, 3 * 8 + 2 ; depixel 3, 4, 2, 4
+	ld e, 4 * 8 + 4
 	ld a, SPRITE_ANIM_OBJ_PARTY_MON
 	call _InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_ANIM_SEQ_ID
@@ -428,24 +424,6 @@ FlyFunction_GetMonIcon:
 	pop de
 	ld a, e
 	call GetIcon_a
-
-	; Edit the OBJ 0 palette so that the cursor Pokémon has the right colors.
-	ld a, MON_DVS
-	call GetPartyParamLocation
-	call GetMenuMonIconPalette
-	add a
-	add a
-	add a
-	ld e, a
-	farcall SetFirstOBJPalette
-	ret
-
-GetMonIconDE: ; unreferenced
-	push de
-	ld a, [wTempIconSpecies]
-	ld [wCurIcon], a
-	pop de
-	call GetIcon_de
 	ret
 
 GetMemIconGFX:
@@ -490,15 +468,12 @@ endr
 	push hl
 
 	ld a, [wCurIcon]
-	cp EGG
 	push hl
-	ld hl, IconPointers - (3 * 2)
-	jr z, .is_egg
-	call GetPokemonIndexFromID
+	ld l, a
+	ld h, 0
 	add hl, hl
 	ld de, IconPointers
 	add hl, de
-.is_egg
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
@@ -511,19 +486,11 @@ endr
 	ret
 
 GetIconBank:
-	push hl
 	ld a, [wCurIcon]
-	call GetPokemonIndexFromID
-	ld a, h
-	cp HIGH(MAGIKARP) ; first species in "Mon Icons 2"
+	cp ICON_TURTONATOR ; first icon in Icons2
 	lb bc, BANK("Mon Icons 1"), 8
-	jr c, .return
-	ld a, l
-	cp LOW(MAGIKARP)
-	jr c, .return
+	ret c
 	ld b, BANK("Mon Icons 2")
-.return
-	pop hl
 	ret
 
 GetGFXUnlessMobile:
@@ -531,7 +498,6 @@ GetGFXUnlessMobile:
 	cp LINK_MOBILE
 	jp nz, Request2bpp
 	jp Get2bppViaHDMA
-
 
 GetStorageIcon_a:
 ; Load frame 1 icon graphics into VRAM starting from tile a
@@ -636,6 +602,6 @@ HoldSwitchmonIcon:
 	jr nz, .loop
 	ret
 
-INCLUDE "data/pokemon/menu_icon_pals.asm"
 
-INCLUDE "data/pokemon/icon_pointers.asm"
+INCLUDE "data/pokemon/menu_icon_pals.asm"
+INCLUDE "data/icon_pointers.asm"

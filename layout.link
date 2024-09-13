@@ -41,8 +41,8 @@ ROMX $05
 	"bank5"
 ROMX $06
 	"Tileset Data 1"
-ROMX $07
 	"Roofs"
+ROMX $07
 	"Tileset Data 2"
 	"Extra Songs 1"
 ROMX $08
@@ -356,7 +356,7 @@ WRAMX 5
 	"GBC Video"
 	org $d300
 	"Battle Animations"
-	org $d500
+	org $d800
 	"Mobile RAM and Pokedex Listings"
 WRAMX 6
 	"Scratch RAM"

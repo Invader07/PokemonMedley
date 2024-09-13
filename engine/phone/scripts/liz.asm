@@ -1,5 +1,5 @@
 LizPhoneCalleeScript:
-	gettrainername STRING_BUFFER_3, PICNICKER, LIZ1
+	gettrainername STRING_BUFFER_3, PICNICKER, BLAINE
 	checkflag ENGINE_LIZ_READY_FOR_REMATCH
 	iftrue .WantsBattle
 	farscall PhoneScript_AnswerPhone_Female
@@ -15,11 +15,11 @@ LizPhoneCalleeScript:
 	farsjump LizHangUpScript
 
 .WantsBattle:
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_32
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	farsjump LizReminderScript
 
 LizPhoneCallerScript:
-	gettrainername STRING_BUFFER_3, PICNICKER, LIZ1
+	gettrainername STRING_BUFFER_3, PICNICKER, BLAINE
 	farscall PhoneScript_Random4
 	ifequal 0, LizWrongNumber
 	farscall PhoneScript_GreetPhone_Female
@@ -31,7 +31,8 @@ LizPhoneCallerScript:
 .next:
 	farscall PhoneScript_Random2
 	ifequal 0, LizGossip
-	checkflag ENGINE_FLYPOINT_GOLDENROD
+; TODO: Change this flypoint to a midgame one like Goldenrod.
+	checkflag ENGINE_FLYPOINT_NEW_BARK
 	iffalse .Generic
 	farscall PhoneScript_Random2
 	ifequal 0, LizWantsBattle
@@ -43,7 +44,7 @@ LizThursdayAfternoon:
 	setflag ENGINE_LIZ_THURSDAY_AFTERNOON
 
 LizWantsBattle:
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_32
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	setflag ENGINE_LIZ_READY_FOR_REMATCH
 	farsjump PhoneScript_WantsToBattle_Female
 

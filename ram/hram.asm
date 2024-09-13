@@ -147,7 +147,7 @@ hSPBuffer::  dw
 hBGMapUpdate::    db
 hBGMapTileCount:: db
 
-hTemp:: db ; ffdd
+	ds 1
 
 hMapAnims::      db
 hTileAnimFrame:: db
@@ -176,6 +176,8 @@ hDebugRoomMenuPage::
 endc
 hClockResetTrigger:: db
 
+hDelayFrameLY:: db
+
 hFarCallSavedA:: db
 hFarCallSavedHL::
 hFarCallSavedL:: db
@@ -187,6 +189,4 @@ hFunctionTarget::
 hFunctionTargetLo:: db
 hFunctionTargetHi:: db
 
-	ds 13
-
-ENDSECTION
+	ds 12

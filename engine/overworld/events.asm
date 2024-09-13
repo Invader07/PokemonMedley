@@ -22,76 +22,76 @@ OverworldLoop::
 
 DisableEvents:
 	xor a
-	ld [wEnabledPlayerEvents], a
+	ld [wScriptFlags2], a
 	ret
 
 EnableEvents::
 	ld a, $ff
-	ld [wEnabledPlayerEvents], a
+	ld [wScriptFlags2], a
 	ret
 
 CheckEnabledMapEventsBit5:
-	ld hl, wEnabledPlayerEvents
+	ld hl, wScriptFlags2
 	bit 5, [hl]
 	ret
 
-DisableWarpsConnections: ; unreferenced
-	ld hl, wEnabledPlayerEvents
+DisableWarpsConnxns: ; unreferenced
+	ld hl, wScriptFlags2
 	res 2, [hl]
 	ret
 
 DisableCoordEvents: ; unreferenced
-	ld hl, wEnabledPlayerEvents
+	ld hl, wScriptFlags2
 	res 1, [hl]
 	ret
 
 DisableStepCount: ; unreferenced
-	ld hl, wEnabledPlayerEvents
+	ld hl, wScriptFlags2
 	res 0, [hl]
 	ret
 
 DisableWildEncounters: ; unreferenced
-	ld hl, wEnabledPlayerEvents
+	ld hl, wScriptFlags2
 	res 4, [hl]
 	ret
 
-EnableWarpsConnections: ; unreferenced
-	ld hl, wEnabledPlayerEvents
+EnableWarpsConnxns: ; unreferenced
+	ld hl, wScriptFlags2
 	set 2, [hl]
 	ret
 
 EnableCoordEvents: ; unreferenced
-	ld hl, wEnabledPlayerEvents
+	ld hl, wScriptFlags2
 	set 1, [hl]
 	ret
 
 EnableStepCount: ; unreferenced
-	ld hl, wEnabledPlayerEvents
+	ld hl, wScriptFlags2
 	set 0, [hl]
 	ret
 
 EnableWildEncounters:
-	ld hl, wEnabledPlayerEvents
+	ld hl, wScriptFlags2
 	set 4, [hl]
 	ret
 
-CheckWarpConnectionsEnabled:
-	ld hl, wEnabledPlayerEvents
+CheckWarpConnxnScriptFlag:
+	ld hl, wScriptFlags2
 	bit 2, [hl]
 	ret
 
-CheckCoordEventsEnabled:
-	ld hl, wEnabledPlayerEvents
+CheckCoordEventScriptFlag:
+	ld hl, wScriptFlags2
 	bit 1, [hl]
 	ret
 
-CheckStepCountEnabled:
-	ld hl, wEnabledPlayerEvents
+CheckStepCountScriptFlag:
+	ld hl, wScriptFlags2
 	bit 0, [hl]
 	ret
 
-CheckWildEncountersEnabled:
-	ld hl, wEnabledPlayerEvents
+CheckWildEncountersScriptFlag:
+	ld hl, wScriptFlags2
 	bit 4, [hl]
 	ret
 
@@ -138,9 +138,8 @@ UnusedWait30Frames: ; unreferenced
 	ret
 
 HandleMap:
-	call ResetOverworldDelay
 	call HandleMapTimeAndJoypad
-	farcall HandleCmdQueue ; no need to farcall
+  call HandleCmdQueue
 	call MapEvents
 
 ; Not immediately entering a connected map will cause problems.
@@ -152,42 +151,24 @@ HandleMap:
 	call NextOverworldFrame
 	call HandleMapBackground
 	call CheckPlayerState
+	xor a
 	ret
 
 MapEvents:
 	ld a, [wMapEventStatus]
-	ld hl, .Jumptable
-	rst JumpTable
-	ret
-
-.Jumptable:
-; entries correspond to MAPEVENTS_* constants
-	dw .events
-	dw .no_events
-
-.events:
+	and a
+	ret nz
 	call PlayerEvents
 	call DisableEvents
 	farcall ScriptEvents
 	ret
 
-.no_events:
-	ret
-
-MaxOverworldDelay:
-	db 2
-
-ResetOverworldDelay:
-	ld a, [MaxOverworldDelay]
-	ld [wOverworldDelay], a
-	ret
-
 NextOverworldFrame:
-	ld a, [wOverworldDelay]
-	and a
-	ret z
-	ld c, a
-	call DelayFrames
+	ld a, [hDelayFrameLY]
+	inc a
+	jp nz, DelayFrame
+	xor a
+	ld [hDelayFrameLY], a
 	ret
 
 HandleMapTimeAndJoypad:
@@ -245,9 +226,9 @@ PlayerEvents:
 	and a
 	ret nz
 
-	call Dummy_CheckEnabledMapEventsBit5 ; This is a waste of time
+	call Dummy_CheckScriptFlags2Bit5 ; This is a waste of time
 
-	call CheckTrainerEvent
+	call CheckTrainerBattle_GetPlayerEvent
 	jr c, .ok
 
 	call CheckTileEvent
@@ -284,11 +265,19 @@ PlayerEvents:
 	xor a
 	ld [wLandmarkSignTimer], a
 
+; Have player stand (resets running sprite to standing if event starts while running)
+	ld a, [wPlayerState]
+	cp PLAYER_RUN
+	jr nz, .ok2
+	ld a, PLAYER_NORMAL
+	ld [wPlayerState], a
+	farcall UpdatePlayerSprite
+
 .ok2
 	scf
 	ret
 
-CheckTrainerEvent:
+CheckTrainerBattle_GetPlayerEvent:
 	nop
 	nop
 	call CheckTrainerBattle
@@ -305,7 +294,7 @@ CheckTrainerEvent:
 CheckTileEvent:
 ; Check for warps, coord events, or wild battles.
 
-	call CheckWarpConnectionsEnabled
+	call CheckWarpConnxnScriptFlag
 	jr z, .connections_disabled
 
 	farcall CheckMovingOffEdgeOfMap
@@ -315,21 +304,21 @@ CheckTileEvent:
 	jr c, .warp_tile
 
 .connections_disabled
-	call CheckCoordEventsEnabled
+	call CheckCoordEventScriptFlag
 	jr z, .coord_events_disabled
 
 	call CheckCurrentMapCoordEvents
 	jr c, .coord_event
 
 .coord_events_disabled
-	call CheckStepCountEnabled
+	call CheckStepCountScriptFlag
 	jr z, .step_count_disabled
 
 	call CountStep
 	ret c
 
 .step_count_disabled
-	call CheckWildEncountersEnabled
+	call CheckWildEncountersScriptFlag
 	jr z, .ok
 
 	call RandomEncounter
@@ -392,7 +381,7 @@ SetMinTwoStepWildEncounterCooldown:
 	ld [wWildEncounterCooldown], a
 	ret
 
-Dummy_CheckEnabledMapEventsBit5:
+Dummy_CheckScriptFlags2Bit5:
 	call CheckEnabledMapEventsBit5
 	ret
 
@@ -475,8 +464,8 @@ CheckTimeEvents:
 	scf
 	ret
 
-.hatch ; unreferenced
-	ld a, PLAYEREVENT_HATCH
+.unused ; unreferenced
+	ld a, $8 ; ???
 	scf
 	ret
 
@@ -549,12 +538,13 @@ TryObjectEvent:
 	ld a, [hl]
 	and MAPOBJECT_TYPE_MASK
 
+; BUG: TryObjectEvent arbitrary code execution (see docs/bugs_and_glitches.md)
 	push bc
 	ld de, 3
 	ld hl, ObjectEventTypeArray
 	call IsInArray
-	pop bc
 	jr nc, .nope
+	pop bc
 
 	inc hl
 	ld a, [hli]
@@ -1022,7 +1012,7 @@ EdgeWarpScript:
 	reloadend MAPSETUP_CONNECTION
 
 ChangeDirectionScript:
-	deactivatefacing 3
+	callasm UnfreezeAllObjects
 	callasm EnableWildEncounters
 	end
 
@@ -1056,7 +1046,7 @@ RunMemScript::
 	pop af
 	ret
 
-LoadMemScript::
+LoadScriptBDE::
 ; If there's already a script here, don't overwrite.
 	ld hl, wMapReentryScriptQueueFlag
 	ld a, [hl]
@@ -1123,14 +1113,16 @@ TryTileCollisionEvent::
 
 .done
 	call PlayClickSFX
-	ld a, PLAYEREVENT_MAPSCRIPT
+	ld a, $ff
 	scf
 	ret
 
 RandomEncounter::
+; Random encounter
+
 	call CheckWildEncounterCooldown
 	jr c, .nope
-	call CanEncounterWildMon
+	call CanUseSweetScent
 	jr nc, .nope
 	ld hl, wStatusFlags2
 	bit STATUSFLAGS2_BUG_CONTEST_TIMER_F, [hl]
@@ -1170,7 +1162,7 @@ WildBattleScript:
 	reloadmapafterbattle
 	end
 
-CanEncounterWildMon::
+CanUseSweetScent::
 	ld hl, wStatusFlags
 	bit STATUSFLAGS_NO_WILD_ENCOUNTERS_F, [hl]
 	jr nz, .no
@@ -1210,7 +1202,7 @@ ChooseWildEncounter_BugContest::
 	srl a
 
 	ld hl, ContestMons
-	ld de, 5
+	ld de, 4
 .CheckMon:
 	sub [hl]
 	jr c, .GotMon
@@ -1222,12 +1214,6 @@ ChooseWildEncounter_BugContest::
 
 ; Species
 	ld a, [hli]
-	push hl
-	ld h, [hl]
-	ld l, a
-	call GetPokemonIDFromIndex
-	pop hl
-	inc hl
 	ld [wTempWildMonSpecies], a
 
 ; Min level

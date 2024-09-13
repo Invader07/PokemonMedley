@@ -1,19 +1,16 @@
 PrintMoveDescription:
 	push hl
-	ld a, [wCurSpecies]
-	call GetMoveIndexFromID
-	ld b, h
-	ld c, l
-	ld a, BANK(MoveDescriptions)
 	ld hl, MoveDescriptions
-	call LoadDoubleIndirectPointer
-	jr nz, .ok
-	ld a, BANK(InvalidMoveDescription)
-	ld hl, InvalidMoveDescription
-.ok
-	ld d, h
-	ld e, l
+	ld a, [wCurSpecies]
+	dec a
+	ld c, a
+	ld b, 0
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
 	pop hl
-	jp FarPlaceString
+	jp PlaceString
 
 INCLUDE "data/moves/descriptions.asm"

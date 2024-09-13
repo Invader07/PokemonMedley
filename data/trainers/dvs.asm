@@ -1,8 +1,8 @@
 TrainerClassDVs:
 ; entries correspond to trainer classes (see constants/trainer_constants.asm)
-	table_width 2, TrainerClassDVs
+	table_width 2, dn  9,  8,  8,  8 ;DVs
 	;  atk,def,spd,spc
-	dn  9, 10,  7,  7 ; FALKNER
+	dn  9, 10,  7,  7 ; BASTIAN
 	dn  8,  8,  8,  8 ; WHITNEY
 	dn  9,  8,  8,  8 ; BUGSY
 	dn  9,  8,  8,  8 ; MORTY
@@ -10,7 +10,7 @@ TrainerClassDVs:
 	dn  9,  8,  8,  8 ; JASMINE
 	dn  9,  8,  8,  8 ; CHUCK
 	dn  7, 12, 13, 13 ; CLAIR
-	dn 13, 13, 13, 13 ; RIVAL1
+	dn  1,  1,  1,  1 ; RIVAL
 	dn  9,  8,  8,  8 ; POKEMON_PROF
 	dn 13, 12, 13, 13 ; WILL
 	dn 13, 12, 13, 13 ; CAL
@@ -43,7 +43,6 @@ TrainerClassDVs:
 	dn  7,  8,  8,  8 ; SWIMMERF
 	dn  9,  8,  8,  8 ; SAILOR
 	dn  9,  8,  8,  8 ; SUPER_NERD
-; BUG: RIVAL2 has lower DVs than RIVAL1 (see docs/bugs_and_glitches.md)
 	dn  9,  8,  8,  8 ; RIVAL2
 	dn  9,  8,  8,  8 ; GUITARIST
 	dn 10,  8,  8,  8 ; HIKER
@@ -70,4 +69,27 @@ TrainerClassDVs:
 	dn  9,  8,  8,  8 ; OFFICER
 	dn  7, 14, 10,  8 ; GRUNTF
 	dn  9,  8,  8,  8 ; MYSTICALMAN
+	dn 13, 13, 13, 13 ; BLAIRE
+	dn 13, 13, 13, 13 ; PERCY
+	dn  9,  8,  8,  8 ; BREEDER
+	dn  9,  8,  8,  8 ; BUG_MANIAC
+	dn  9,  8,  8,  8 ; CLOWN
+	dn  9,  8,  8,  8 ; CYCLIST
+	dn  9,  8,  8,  8 ; NURSE
+	dn  9,  8,  8,  8 ; ENGINEER
+	dn  9,  8,  8,  8 ; HEX_MANIAC
+	dn  9,  8,  8,  8 ; MYSTERY_MAN
+	dn  9,  8,  8,  8 ; PAINTER
+	dn  9,  8,  8,  8 ; RANGER
+	dn  9,  8,  8,  8 ; RUIN_MANIAC
+	dn  9,  8,  8,  8 ; SCUBA_DIVER
+	dn  9,  8,  8,  8 ; SUPERTRAINER
+	dn  9,  8,  8,  8 ; SURFER
+	dn  9,  8,  8,  8 ; ROCKET_CAPT
+	dn  9,  8,  8,  8 ; ROCKET_SCI
+	dn  9,  8,  8,  8 ; TOURIST
+	dn  9,  8,  8,  8 ; SURVIVALIST
+	dn  9,  8,  8,  8 ; FARMER
+	dn  9,  8,  8,  8 ; GARDENER
+	dn  9,  8,  8,  8 ; DANCER
 	assert_table_length NUM_TRAINER_CLASSES

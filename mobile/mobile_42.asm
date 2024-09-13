@@ -95,10 +95,10 @@ RunMobileTradeAnim_Frontpics:
 	push af
 	xor a
 	ldh [hMapAnims], a
-	ld hl, wStateFlags
+	ld hl, wVramState
 	ld a, [hl]
 	push af
-	res SPRITE_UPDATES_DISABLED_F, [hl]
+	res 0, [hl]
 	ld hl, wOptions
 	ld a, [hl]
 	push af
@@ -110,7 +110,7 @@ RunMobileTradeAnim_Frontpics:
 	pop af
 	ld [wOptions], a
 	pop af
-	ld [wStateFlags], a
+	ld [wVramState], a
 	pop af
 	ldh [hMapAnims], a
 	ret
@@ -124,7 +124,7 @@ RunMobileTradeAnim_NoFrontpics:
 	push af
 	xor a
 	ldh [hMapAnims], a
-	ld hl, wStateFlags
+	ld hl, wVramState
 	ld a, [hl]
 	push af
 	res 0, [hl]
@@ -139,7 +139,7 @@ RunMobileTradeAnim_NoFrontpics:
 	pop af
 	ld [wOptions], a
 	pop af
-	ld [wStateFlags], a
+	ld [wVramState], a
 	pop af
 	ldh [hMapAnims], a
 	ret
@@ -1516,9 +1516,9 @@ MobileTradeAnim_AnimateSentPulse:
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
 	ld a, [hl]
-	cp -1 * TILE_WIDTH - 6
+	cp -1 * 8 - 6
 	jr z, .delete
-	sub 1 * TILE_WIDTH
+	sub 1 * 8
 	ld [hl], a
 	ret
 
@@ -1530,9 +1530,9 @@ MobileTradeAnim_AnimateOTPulse:
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
 	ld a, [hl]
-	cp 9 * TILE_WIDTH + 2
+	cp 9 * 8 + 2
 	ret z
-	add 1 * TILE_WIDTH
+	add 1 * 8
 	ld [hl], a
 	ret
 
@@ -1635,6 +1635,82 @@ Function108c80:
 	ld a, $0
 	ldh [rVBK], a
 	ret
+
+DebugMobileTrade: ; unreferenced
+; localization error: NAME_LENGTH (11) should be NAME_LENGTH_JAPANESE (6) here
+
+	ld hl, .DebugTradeData
+	ld a, [hli]
+	ld [wPlayerTrademonSpecies], a
+
+	ld de, wPlayerTrademonSenderName
+	ld c, NAME_LENGTH
+.your_name_loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .your_name_loop
+
+	ld de, wPlayerTrademonID
+	ld c, 2
+.your_id_loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .your_id_loop
+
+	ld de, wPlayerTrademonOTName
+	ld c, NAME_LENGTH
+.your_ot_loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .your_ot_loop
+
+	ld a, [hli]
+	ld [wOTTrademonSpecies], a
+
+	ld de, wOTTrademonSenderName
+	ld c, NAME_LENGTH
+.their_name_loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .their_name_loop
+
+	ld de, wOTTrademonID
+	ld c, 2
+.their_id_loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .their_id_loop
+
+	ld de, wOTTrademonOTName
+	ld c, NAME_LENGTH
+.their_ot_loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .their_ot_loop
+
+	ret
+
+.DebugTradeData:
+	db VENUSAUR
+	db "ゲーフり@@"
+	dw $0123
+	db "かびーん@@"
+	db CHARIZARD
+	db "クりーチャ@"
+	dw $0456
+	db "マツミヤ@@"
 
 LoadMobileAdapterPalette:
 	ld a, [wc74e]

@@ -65,37 +65,23 @@ _GetVarAction::
 	dwb wBlueCardBalance,               RETVAR_ADDR_DE
 	dwb wBuenasPassword,                RETVAR_ADDR_DE
 	dwb wKenjiBreakTimer,               RETVAR_STRBUF2
-	dwb .CountUncaughtMons,             RETVAR_EXECUTE
+	dwb NULL,                           RETVAR_STRBUF2
 
 .CountCaughtMons:
-; Caught mons. Saturate at 255.
+; Caught mons.
 	ld hl, wPokedexCaught
-.count_caught_or_seen_mons
-	ld bc, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits16
-	ld a, b
-.load_or_saturate
-	add a, -1
-	sbc a
-	or c
+	ld b, wEndPokedexCaught - wPokedexCaught
+	call CountSetBits
+	ld a, [wNumSetBits]
 	jp .loadstringbuffer2
 
 .CountSeenMons:
-; Seen mons. Saturate at 255.
+; Seen mons.
 	ld hl, wPokedexSeen
-	jr .count_caught_or_seen_mons
-
-.CountUncaughtMons:
-; Mons left to catch. Saturate at 255.
-	ld hl, wPokedexCaught
-	ld bc, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits16
-	ld a, LOW(NUM_POKEMON)
-	sub c
-	ld c, a
-	ld a, HIGH(NUM_POKEMON)
-	sbc b
-	jr .load_or_saturate
+	ld b, wEndPokedexSeen - wPokedexSeen
+	call CountSetBits
+	ld a, [wNumSetBits]
+	jp .loadstringbuffer2
 
 .CountBadges:
 ; Number of owned badges.
@@ -138,7 +124,7 @@ _GetVarAction::
 	ret
 
 .BoxFreeSpace:
-; Remaining database entries
+; Remaining slots in the current box.
 	newfarcall CheckFreeDatabaseEntries
 	jp .loadstringbuffer2
 

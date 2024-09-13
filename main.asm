@@ -56,19 +56,18 @@ INCLUDE "engine/menus/start_menu.asm"
 INCLUDE "engine/pokemon/mon_menu.asm"
 INCLUDE "engine/overworld/select_menu.asm"
 INCLUDE "engine/events/elevator.asm"
-INCLUDE "engine/events/bug_contest/contest.asm"
 INCLUDE "engine/events/repel.asm"
 INCLUDE "engine/events/hidden_item.asm"
 INCLUDE "engine/events/std_collision.asm"
-INCLUDE "engine/events/bug_contest/judging.asm"
 INCLUDE "engine/events/pokerus/apply_pokerus_tick.asm"
-INCLUDE "engine/events/bug_contest/contest_2.asm"
 INCLUDE "engine/pokemon/correct_party_errors.asm"
 INCLUDE "engine/math/get_square_root.asm"
 
 
 SECTION "bank5", ROMX
-
+INCLUDE "engine/events/bug_contest/contest.asm"
+INCLUDE "engine/events/bug_contest/judging.asm"
+INCLUDE "engine/events/bug_contest/contest_2.asm"
 INCLUDE "engine/rtc/rtc.asm"
 INCLUDE "engine/overworld/overworld.asm"
 INCLUDE "engine/overworld/tile_events.asm"
@@ -122,7 +121,8 @@ INCLUDE "engine/events/kurt_selectquantity_interpretjoypad.asm"
 
 SECTION "bankA", ROMX
 
-INCLUDE "engine/overworld/wildmons.asm"
+INCLUDE "engine/link/link.asm"
+INCLUDE "engine/battle/link_result.asm"
 
 
 SECTION "bankB", ROMX
@@ -160,35 +160,29 @@ INCLUDE "data/battle/effect_command_pointers.asm"
 
 SECTION "bank10", ROMX
 
-INCLUDE "engine/pokedex/pokedex.asm"
+
 INCLUDE "data/moves/moves.asm"
 INCLUDE "engine/pokemon/evolve.asm"
 
 
 SECTION "bank11", ROMX
-
+INCLUDE "engine/pokedex/pokedex.asm"
 INCLUDE "engine/events/fruit_trees.asm"
 INCLUDE "engine/battle/ai/move.asm"
 INCLUDE "engine/pokedex/pokedex_2.asm"
-INCLUDE "engine/pokemon/mail.asm"
+
 
 
 SECTION "Crystal Features 1", ROMX
 
-INCLUDE "engine/menus/init_gender.asm"
-INCLUDE "engine/items/pack_kris.asm"
-INCLUDE "engine/events/move_tutor.asm"
-INCLUDE "engine/gfx/crystal_layouts.asm"
-INCLUDE "engine/events/celebi.asm"
 INCLUDE "engine/menus/main_menu.asm"
 INCLUDE "mobile/mobile_menu.asm"
 INCLUDE "engine/pokemon/search_owned.asm"
 INCLUDE "mobile/mobile_12_2.asm"
-INCLUDE "engine/events/buena_menu.asm"
+
 
 
 SECTION "bank13", ROMX
-
 INCLUDE "engine/tilesets/map_palettes.asm"
 INCLUDE "gfx/tileset_palette_maps.asm"
 INCLUDE "data/collision/collision_permissions.asm"
@@ -198,6 +192,7 @@ INCLUDE "engine/events/checksave.asm"
 INCLUDE "data/maps/scenes.asm"
 INCLUDE "engine/overworld/load_map_part.asm"
 INCLUDE "engine/phone/phonering_copytilemapatonce.asm"
+INCLUDE "engine/events/buena_menu.asm"
 
 
 SECTION "bank13_2", ROMX
@@ -235,6 +230,7 @@ INCLUDE "engine/events/basement_key.asm"
 INCLUDE "engine/events/sacred_ash.asm"
 INCLUDE "engine/pokemon/tempmon.asm"
 INCLUDE "engine/pokemon/types.asm"
+INCLUDE "engine/battle/getgen1trainerclassname.asm"
 INCLUDE "engine/pokemon/mon_stats.asm"
 INCLUDE "engine/link/init_list.asm"
 INCLUDE "engine/pokemon/experience.asm"
@@ -242,6 +238,7 @@ INCLUDE "engine/pokemon/switchpartymons.asm"
 INCLUDE "engine/gfx/load_pics.asm"
 INCLUDE "data/pokemon/base_stats.asm"
 INCLUDE "data/pokemon/names.asm"
+INCLUDE "data/pokemon/unused_pic_banks.asm"
 
 
 SECTION "Crystal Phone Text", ROMX
@@ -268,6 +265,9 @@ INCLUDE "engine/overworld/player_movement.asm"
 INCLUDE "engine/events/engine_flags.asm"
 INCLUDE "engine/overworld/variables.asm"
 INCLUDE "data/text/battle.asm"
+INCLUDE "engine/debug/color_picker.asm"
+INCLUDE "engine/menus/init_gender.asm"
+INCLUDE "engine/items/pack_kris.asm"
 
 
 SECTION "bank21", ROMX
@@ -276,6 +276,9 @@ INCLUDE "engine/printer/printer_serial.asm"
 INCLUDE "engine/printer/printer.asm"
 INCLUDE "gfx/battle_anims.asm"
 INCLUDE "engine/events/halloffame.asm"
+INCLUDE "engine/events/move_tutor.asm"
+INCLUDE "engine/gfx/crystal_layouts.asm"
+INCLUDE "engine/events/celebi.asm"
 
 
 SECTION "Crystal Features 2", ROMX
@@ -308,7 +311,7 @@ INCLUDE "engine/rtc/timeset.asm"
 INCLUDE "engine/pokegear/pokegear.asm"
 INCLUDE "engine/events/fish.asm"
 INCLUDE "engine/games/slot_machine.asm"
-INCLUDE "data/pokemon/first_stages.asm"
+
 
 SECTION "Phone Scripts 1", ROMX
 
@@ -355,6 +358,8 @@ INCLUDE "engine/events/treemons.asm"
 INCLUDE "engine/events/fishing_gfx.asm"
 INCLUDE "engine/pokegear/radio.asm"
 INCLUDE "engine/pokemon/mail_2.asm"
+INCLUDE "engine/events/poisonstep_pals.asm"
+INCLUDE "engine/battle_anims/bg_effects.asm"
 
 
 SECTION "Phone Scripts 2", ROMX
@@ -397,14 +402,10 @@ INCLUDE "engine/events/trainer_scripts.asm"
 
 
 SECTION "bank32", ROMX
-
-INCLUDE "engine/battle_anims/bg_effects.asm"
 INCLUDE "data/moves/animations.asm"
-INCLUDE "engine/events/poisonstep_pals.asm"
 
 
 SECTION "Move Animations", ROMX
-
 INCLUDE "engine/events/bug_contest/display_stats.asm"
 INCLUDE "engine/battle_anims/anim_commands.asm"
 INCLUDE "engine/battle_anims/core.asm"
@@ -501,6 +502,7 @@ INCLUDE "mobile/mobile_42.asm"
 
 SECTION "Title", ROMX
 
+INCLUDE "engine/movie/unused_title.asm"
 INCLUDE "engine/movie/title.asm"
 
 
@@ -525,8 +527,6 @@ SECTION "bank5B", ROMX
 
 INCLUDE "mobile/mobile_5b.asm"
 INCLUDE "engine/link/link_trade.asm"
-INCLUDE "engine/link/link.asm"
-INCLUDE "engine/battle/link_result.asm"
 
 
 SECTION "mobile5C", ROMX
@@ -642,6 +642,9 @@ INCLUDE "engine/pokedex/pokedex_3.asm"
 INCLUDE "engine/events/catch_tutorial_input.asm"
 INCLUDE "engine/pokegear/townmap_convertlinebreakcharacters.asm"
 
+SECTION "Wildmon Data", ROMX
+
+INCLUDE "engine/overworld/wildmons.asm"
 
 SECTION "European Mail", ROMX
 
@@ -661,7 +664,7 @@ INCLUDE "data/battle_tower/trainer_text.asm"
 
 
 SECTION "Battle Tower Trainer Data", ROMX
-
+INCLUDE "engine/pokemon/mail.asm"
 INCLUDE "data/battle_tower/unknown.asm"
 
 
@@ -669,26 +672,20 @@ SECTION "Mobile News Data", ROMX
 
 INCLUDE "mobile/news/news.asm"
 
-
 SECTION "Crystal Events", ROMX
-
 INCLUDE "engine/events/battle_tower/load_trainer.asm"
 INCLUDE "engine/events/odd_egg.asm"
 
-
 SECTION "Newbox", ROMX
-
 INCLUDE "engine/pc/bills_pc.asm"
 INCLUDE "engine/pc/bills_pc_ui.asm"
 
 
 SECTION "Prism tilemap copy functions", ROMX
-
 INCLUDE "engine/gfx/copy_tilemap_at_once.asm"
 
 
 SECTION "VWF", ROMX
-
 INCLUDE "engine/gfx/vwf.asm"
 
 
@@ -703,6 +700,5 @@ SECTION "Stadium 2 Checksums", ROMX[$7DE0], BANK[$7F]
 SECTION "16-bit ID stuff", ROMX
 
 INCLUDE "engine/16/table_functions.asm"
-
 ; own section
 INCLUDE "data/trainers/parties.asm"

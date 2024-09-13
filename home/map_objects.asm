@@ -71,34 +71,34 @@ DoesSpriteHaveFacings::
 	pop de
 	ret
 
-GetPlayerTilePermission::
+GetPlayerTile::
 	ld a, [wPlayerTileCollision]
-	call GetTilePermission
+	call GetTileCollision
 	ld b, a
 	ret
 
 CheckOnWater::
 	ld a, [wPlayerTileCollision]
-	call GetTilePermission
+	call GetTileCollision
 	sub WATER_TILE
 	ret z
 	and a
 	ret
 
-GetTilePermission::
-; Get the permission of tile collision a.
+GetTileCollision::
+; Get the collision type of tile a.
 
 	push de
 	push hl
 
-	ld hl, CollisionPermissionTable
+	ld hl, TileCollisionTable
 	ld e, a
 	ld d, 0
 	add hl, de
 
 	ldh a, [hROMBank]
 	push af
-	ld a, BANK(CollisionPermissionTable)
+	ld a, BANK(TileCollisionTable)
 	rst Bankswitch
 	ld e, [hl]
 	pop af
@@ -115,14 +115,23 @@ CheckGrassTile::
 	ld d, a
 	and $f0
 	cp HI_NYBBLE_TALL_GRASS
-	jr z, .check
+	jr z, .grass
 	cp HI_NYBBLE_WATER
-	jr nz, .nope
-.check
+	jr z, .water
+	scf
+	ret
+
+.grass
 	ld a, d
 	and LO_NYBBLE_GRASS
 	ret z
-.nope
+	scf
+	ret
+; For some reason, the above code is duplicated down here.
+.water
+	ld a, d
+	and LO_NYBBLE_GRASS
+	ret z
 	scf
 	ret
 
@@ -253,6 +262,7 @@ CheckObjectTime::
 	db MORN
 	db DAY
 	db NITE
+	db EVE
 
 .check_hour
 	ld hl, MAPOBJECT_HOUR_1
@@ -264,20 +274,20 @@ CheckObjectTime::
 	ld hl, hHours
 	ld a, d
 	cp e
-	ret z
+	jr z, .yes
 	jr c, .check_timeofday
 	ld a, [hl]
 	cp d
-	ret nc
+	jr nc, .yes
 	cp e
-	ret z
-	ccf
-	ret
+	jr c, .yes
+	jr z, .yes
+	jr .no
 
 .check_timeofday
 	ld a, e
 	cp [hl]
-	ret c
+	jr c, .no
 	ld a, [hl]
 	cp d
 	jr nc, .yes
@@ -331,7 +341,8 @@ ApplyDeletionToMapObject::
 
 DeleteObjectStruct::
 	call ApplyDeletionToMapObject
-	jp MaskObject
+	call MaskObject
+	ret
 
 CopyPlayerObjectTemplate::
 	push hl
@@ -343,7 +354,8 @@ CopyPlayerObjectTemplate::
 	inc de
 	pop hl
 	ld bc, MAPOBJECT_LENGTH - 1
-	jp CopyBytes
+	call CopyBytes
+	ret
 
 LoadMovementDataPointer::
 ; Load the movement data pointer for object a.
@@ -366,8 +378,8 @@ LoadMovementDataPointer::
 	add hl, bc
 	ld [hl], STEP_TYPE_RESET
 
-	ld hl, wStateFlags
-	set SCRIPTED_MOVEMENT_STATE_F, [hl]
+	ld hl, wVramState
+	set 7, [hl]
 	and a
 	ret
 
@@ -529,8 +541,8 @@ _GetMovementIndex::
 	ret
 
 UpdateSprites::
-	ld a, [wStateFlags]
-	bit SPRITE_UPDATES_DISABLED_F, a
+	ld a, [wVramState]
+	bit 0, a
 	ret z
 
 	farcall UpdateAllObjectsFrozen

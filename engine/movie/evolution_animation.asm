@@ -6,13 +6,13 @@ EvolutionAnimation:
 	push af
 	ldh a, [rOBP0]
 	push af
-	ld a, [wBaseSpecies]
+	ld a, [wBaseDexNo]
 	push af
 
 	call .EvolutionAnimation
 
 	pop af
-	ld [wBaseSpecies], a
+	ld [wBaseDexNo], a
 	pop af
 	ldh [rOBP0], a
 	pop af

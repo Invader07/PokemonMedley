@@ -17,11 +17,11 @@
 	tilecoll WALL, WALL, FLOOR, FLOOR ; 10
 	tilecoll WALL, WALL, WALL, FLOOR ; 11
 	tilecoll WALL, WALL, WALL, WALL ; 12
-	tilecoll WALL, WALL, WALL, WALL ; 13
+	tilecoll FLOOR, FLOOR, FLOOR, FLOOR ; 13
 	tilecoll WALL, WALL, WALL, WALL ; 14
 	tilecoll WALL, WALL, FLOOR, FLOOR ; 15
-	tilecoll WALL, WALL, WALL, WALL ; 16
-	tilecoll WALL, WALL, WALL, WALL ; 17
+	tilecoll FLOOR, FLOOR, WARP_CARPET_DOWN, WARP_CARPET_DOWN ; 16
+	tilecoll WALL, WALL, FLOOR, FLOOR ; 17
 	tilecoll WALL, WALL, WALL, WALL ; 18
 	tilecoll WALL, WALL, WALL, WALL ; 19
 	tilecoll WALL, WALL, FLOOR, WALL ; 1a

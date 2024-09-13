@@ -8,6 +8,12 @@ HasNoItems:
 	ld a, [wNumBalls]
 	and a
 	ret nz
+	ld a, [wNumMedicine]
+	and a
+	ret nz
+	ld a, [wNumBerries]
+	and a
+	ret nz
 	ld hl, wTMsHMs
 	ld b, NUM_TMS + NUM_HMS
 .loop
@@ -131,16 +137,10 @@ PokemonActionSubmenu:
 	dbw MONMENUITEM_FLY,        MonMenu_Fly
 	dbw MONMENUITEM_SURF,       MonMenu_Surf
 	dbw MONMENUITEM_STRENGTH,   MonMenu_Strength
-	dbw MONMENUITEM_FLASH,      MonMenu_Flash
-	dbw MONMENUITEM_WHIRLPOOL,  MonMenu_Whirlpool
 	dbw MONMENUITEM_DIG,        MonMenu_Dig
-	dbw MONMENUITEM_TELEPORT,   MonMenu_Teleport
-	dbw MONMENUITEM_SOFTBOILED, MonMenu_Softboiled_MilkDrink
-	dbw MONMENUITEM_MILKDRINK,  MonMenu_Softboiled_MilkDrink
 	dbw MONMENUITEM_HEADBUTT,   MonMenu_Headbutt
 	dbw MONMENUITEM_WATERFALL,  MonMenu_Waterfall
 	dbw MONMENUITEM_ROCKSMASH,  MonMenu_RockSmash
-	dbw MONMENUITEM_SWEETSCENT, MonMenu_SweetScent
 	dbw MONMENUITEM_STATS,      OpenPartyStats
 	dbw MONMENUITEM_SWITCH,     SwitchPartyMons
 	dbw MONMENUITEM_ITEM,       GiveTakePartyMonItem
@@ -164,7 +164,7 @@ SwitchPartyMons:
 	ld a, PARTYMENUACTION_MOVE
 	ld [wPartyMenuActionText], a
 	farcall WritePartyMenuTilemap
-	farcall PlacePartyMenuText
+	farcall PrintPartyMenuText
 
 	hlcoord 0, 1
 	ld bc, SCREEN_WIDTH * 2
@@ -250,6 +250,7 @@ GetItemToGive:
 	farcall DepositSellInitPackBuffers
 	; fallthrough
 _GetItemToGive:
+
 .loop
 	farcall DepositSellPack
 
@@ -649,6 +650,8 @@ TakeMail:
 	text_end
 
 OpenPartyStats:
+	call LoadStandardMenuHeader
+	call ClearSprites
 ; PartyMon
 	xor a
 	ld [wMonType], a
@@ -869,7 +872,7 @@ ChooseMoveToDelete:
 	ld a, [hl]
 	push af
 	set NO_TEXT_SCROLL, [hl]
-	call LoadFontsBattleExtra
+	farcall LoadPartyMenuGFX
 	call .ChooseMoveToDelete
 	pop bc
 	ld a, b
@@ -1263,9 +1266,12 @@ PlaceMoveData:
 	hlcoord 2, 12
 	predef PrintMoveType
 	ld a, [wCurSpecies]
-	ld l, a
-	ld a, MOVE_POWER
-	call GetMoveAttribute
+	dec a
+	ld hl, Moves + MOVE_POWER
+	ld bc, MOVE_LENGTH
+	call AddNTimes
+	ld a, BANK(Moves)
+	call GetFarByte
 	hlcoord 16, 12
 	cp 2
 	jr c, .no_power
@@ -1313,7 +1319,9 @@ PlaceMoveScreenLeftArrow:
 	ld a, [hl]
 	and a
 	jr z, .prev
-	cp MON_TABLE_ENTRIES + 1
+	cp EGG
+	jr z, .prev
+	cp NUM_POKEMON + 1
 	jr c, .legal
 
 .prev
@@ -1344,7 +1352,9 @@ PlaceMoveScreenRightArrow:
 	ret z
 	and a
 	jr z, .next
-	cp MON_TABLE_ENTRIES + 1
+	cp EGG
+	jr z, .next
+	cp NUM_POKEMON + 1
 	jr c, .legal
 
 .next

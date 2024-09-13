@@ -6,7 +6,6 @@ sScratch:: ds $60 tiles
 NEXTU
 sEnemyFrontPicTileCount:: db
 sPaddedEnemyFrontPic:: ds 7 * 7 tiles
-
 ENDU
 
 SECTION "SRAM Bank 0", SRAM
@@ -70,7 +69,6 @@ SECTION "Backup Save", SRAM
 sBackupOptions:: ds wOptionsEnd - wOptions
 
 sBackupCheckValue1:: db ; loaded with SAVE_CHECK_VALUE_1, used to check save corruption
-
 sBackupSaveData::
 
 sBackupGameData::
@@ -107,7 +105,6 @@ SECTION "Save", SRAM
 sOptions:: ds wOptionsEnd - wOptions
 
 sCheckValue1:: db ; loaded with SAVE_CHECK_VALUE_1, used to check save corruption
-
 sSaveData::
 
 sGameData::
@@ -173,11 +170,11 @@ sHallOfFameEnd::
 
 SECTION "SRAM Crystal Data", SRAM
 
-sGSBallFlag:: db
+sMobileEventIndex:: db
 
 sCrystalData:: ds wCrystalDataEnd - wCrystalData
 
-sGSBallFlagBackup:: db
+sMobileEventIndexBackup:: db
 
 
 SECTION "SRAM Battle Tower", SRAM
@@ -247,12 +244,12 @@ sMobileBattleTimer:: ds 3
 
 	ds $7fd
 
-sMobileAdapterStatus:: db
+s4_b000:: db
 
 
 SECTION "SRAM Mobile 2", SRAM
 
-sGSBallFlagJP:: db ; unused
+	ds 1 ; JP: location of sMobileEventIndex
 
 sTrainerRankings::
 sTrainerRankingGameTimeHOF:: ds 4
@@ -300,7 +297,7 @@ sTrainerRankingBugContestScore:: ds 2
 sTrainerRankingsChecksum:: ds 2
 sTrainerRankingsEnd::
 
-sGSBallFlagBackupJP:: db ; unused
+	ds 1 ; JP: location of sMobileEventIndexBackup
 
 sTrainerRankingsBackup:: ds sTrainerRankingsEnd - sTrainerRankings
 
@@ -414,11 +411,9 @@ s6_a006:: ds $1000
 
 SECTION "SRAM Mobile 4", SRAM
 
-sMobileStadiumFlag:: db
+s7_a000:: db
 s7_a001:: db
 
 	ds $7fe
 
-sMobileAdapterStatus2:: db
-
-ENDSECTION
+s7_a800:: db

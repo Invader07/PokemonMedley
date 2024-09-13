@@ -30,10 +30,10 @@ Pokedex:
 	ld a, [hl]
 	push af
 	set NO_TEXT_SCROLL, [hl]
-	ld a, [wStateFlags]
+	ld a, [wVramState]
 	push af
 	xor a
-	ld [wStateFlags], a
+	ld [wVramState], a
 	ldh a, [hInMenu]
 	push af
 	ld a, $1
@@ -60,12 +60,11 @@ Pokedex:
 	call ClearSprites
 	ld a, [wCurDexMode]
 	ld [wLastDexMode], a
-	call Pokedex_ClearLockedIDs
 
 	pop af
 	ldh [hInMenu], a
 	pop af
-	ld [wStateFlags], a
+	ld [wVramState], a
 	pop af
 	ld [wOptions], a
 	pop af
@@ -104,12 +103,7 @@ InitPokedex:
 	call Pokedex_GetLandmark
 	farcall DrawDexEntryScreenRightEdge
 	call Pokedex_ResetBGMapMode
-	; fallthrough
-
-Pokedex_ClearLockedIDs:
-	xor a
-	ld l, LOCKED_MON_ID_DEX_SELECTED
-	jp LockPokemonID
+	ret
 
 Pokedex_CheckUnlockedUnownMode:
 	ld a, [wStatusFlags]
@@ -126,105 +120,45 @@ Pokedex_CheckUnlockedUnownMode:
 	ret
 
 Pokedex_InitCursorPosition:
-	xor a
-	ld [wDexListingScrollOffset], a
-	ld [wDexListingScrollOffset + 1], a
-	ld [wDexListingCursor], a
-	ld hl, wPrevDexEntry + 1
-	ld a, [hld]
-	ld c, [hl]
-	ld b, a
-	if NUM_POKEMON <= $FF
-		and a
-		ret nz
-	else
-		cp HIGH(NUM_POKEMON)
-		jr c, .check_zero
-		ret nz
-		if LOW(NUM_POKEMON) < $FF
-			ld a, c
-			cp LOW(NUM_POKEMON) + 1
-			ret nc
-		endc
-		jr .go
-	endc
-.check_zero
-	or c
-	ret z
-
-.go
-	; ensure we have a list terminator
-	ld hl, wDexListingEnd
-	ld a, [hli]
-	ld d, [hl]
-	ld e, a
-	push de
-	sla e
-	rl d
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wPokedexOrder)
-	ldh [rSVBK], a
 	ld hl, wPokedexOrder
-	push hl
-	add hl, de
-	ld a, -1
-	ld [hli], a
-	ld [hl], a
-
-	; and look for the entry in the list
-	ld de, 2
-	pop hl
-	call IsInWordArray ;returns carry and pointer in hl if found
-	pop de
-	ld a, d
-	ldh [rSVBK], a
-	pop de
-	ret nc
-	ld bc, $10000 - wPokedexOrder ;ld bc, -wPokedexOrder -- see https://github.com/rednex/rgbds/issues/279
-	add hl, bc
-	srl h
-	rr l
-
-	; hl contains the index of wPrevDexEntry into wPokedexOrder, and de contains wDexListingEnd (therefore hl < de)
-	; if de <= 7, then we only have one page; wDexListingScrollOffset must be zero and wDexListingCursor = hl (= l)
-	ld a, d
+	ld a, [wPrevDexEntry]
 	and a
-	jr nz, .can_scroll
-	ld a, e
-	cp 8
-	jr nc, .can_scroll
-	ld a, l
-	ld [wDexListingCursor], a
-	ret
+	jr z, .done
+	cp NUM_POKEMON + 1
+	jr nc, .done
 
-.can_scroll
-	; otherwise, if hl <= (de - 7), then wDexListingScrollOffset = hl, wDexListingCursor = 0 (default)
-	; else, wDexListingScrollOffset = de - 7, wDexListingCursor = hl - wDexListingScrollOffset
-	ld a, e
-	sub 7
-	ld e, a
-	ld [wDexListingScrollOffset], a
-	jr nc, .no_carry
-	dec d
-.no_carry
-	ld a, l
-	sub e
+	ld b, a
+	ld a, [wDexListingEnd]
+	cp $8
+	jr c, .only_one_page
+
+	sub $7
 	ld c, a
-	ld a, h
-	sbc d
-	jr c, .not_last_page
-	ld a, d
-	ld [wDexListingScrollOffset + 1], a
-	ld a, c
-	ld [wDexListingCursor], a
-	ret
-
-.not_last_page
-	ld a, l
+.loop1
+	ld a, b
+	cp [hl]
+	jr z, .done
+	inc hl
+	ld a, [wDexListingScrollOffset]
+	inc a
 	ld [wDexListingScrollOffset], a
-	ld a, h
-	ld [wDexListingScrollOffset + 1], a
+	dec c
+	jr nz, .loop1
+
+.only_one_page
+	ld c, $7
+.loop2
+	ld a, b
+	cp [hl]
+	jr z, .done
+	inc hl
+	ld a, [wDexListingCursor]
+	inc a
+	ld [wDexListingCursor], a
+	dec c
+	jr nz, .loop2
+
+.done
 	ret
 
 Pokedex_GetLandmark:
@@ -400,10 +334,7 @@ Pokedex_InitDexEntryScreen:
 	call Pokedex_DrawDexEntryScreenBG
 	call Pokedex_InitArrowCursor
 	call Pokedex_GetSelectedMon
-	ld a, l
 	ld [wPrevDexEntry], a
-	ld a, h
-	ld [wPrevDexEntry + 1], a
 	farcall DisplayDexEntry
 	call Pokedex_DrawFootprint
 	call WaitBGMap
@@ -458,10 +389,7 @@ Pokedex_Page:
 	xor 1 ; toggle page
 	ld [wPokedexStatus], a
 	call Pokedex_GetSelectedMon
-	ld a, l
 	ld [wPrevDexEntry], a
-	ld a, h
-	ld [wPrevDexEntry + 1], a
 	farcall DisplayDexEntry
 	call WaitBGMap
 	ret
@@ -477,10 +405,7 @@ Pokedex_ReinitDexEntryScreen:
 	call Pokedex_InitArrowCursor
 	call Pokedex_LoadCurrentFootprint
 	call Pokedex_GetSelectedMon
-	ld a, l
 	ld [wPrevDexEntry], a
-	ld a, h
-	ld [wPrevDexEntry + 1], a
 	farcall DisplayDexEntry
 	call Pokedex_DrawFootprint
 	call Pokedex_LoadSelectedMonTiles
@@ -553,11 +478,8 @@ DexEntryScreen_MenuActionJumptable:
 	call Pokedex_ApplyPrintPals
 	xor a
 	ldh [hSCX], a
-	ld hl, wPrevDexEntryBackup
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	push hl
+	ld a, [wPrevDexEntryBackup]
+	push af
 	ld a, [wPrevDexEntryJumptableIndex]
 	push af
 	ld a, [wJumptableIndex]
@@ -567,11 +489,8 @@ DexEntryScreen_MenuActionJumptable:
 	ld [wJumptableIndex], a
 	pop af
 	ld [wPrevDexEntryJumptableIndex], a
-	pop hl
-	ld a, l
+	pop af
 	ld [wPrevDexEntryBackup], a
-	ld a, h
-	ld [wPrevDexEntryBackup + 1], a
 	call ClearBGPalettes
 	call DisableLCD
 	call Pokedex_LoadInvertedFont
@@ -677,6 +596,9 @@ Pokedex_UpdateOptionScreen:
 	ld [wCurDexMode], a
 	call Pokedex_OrderMonsByMode
 	call Pokedex_DisplayChangingModesMessage
+	xor a
+	ld [wDexListingScrollOffset], a
+	ld [wDexListingCursor], a
 	call Pokedex_InitCursorPosition
 
 .skip_changing_mode
@@ -758,9 +680,8 @@ Pokedex_UpdateSearchScreen:
 .MenuAction_BeginSearch:
 	call Pokedex_SearchForMons
 	farcall AnimateDexSearchSlowpoke
-	ld hl, wDexSearchResultCount
-	ld a, [hli]
-	or [hl]
+	ld a, [wDexSearchResultCount]
+	and a
 	jr nz, .show_search_results
 
 ; No mon with matching types was found.
@@ -775,23 +696,15 @@ Pokedex_UpdateSearchScreen:
 	ret
 
 .show_search_results
-	ld a, [wDexSearchResultCount]
 	ld [wDexListingEnd], a
-	ld a, [wDexSearchResultCount + 1]
-	ld [wDexListingEnd + 1], a
 	ld a, [wDexListingScrollOffset]
 	ld [wDexListingScrollOffsetBackup], a
-	ld a, [wDexListingScrollOffset + 1]
-	ld [wDexListingScrollOffsetBackup + 1], a
 	ld a, [wDexListingCursor]
 	ld [wDexListingCursorBackup], a
 	ld a, [wPrevDexEntry]
 	ld [wPrevDexEntryBackup], a
-	ld a, [wPrevDexEntry + 1]
-	ld [wPrevDexEntryBackup + 1], a
 	xor a
 	ld [wDexListingScrollOffset], a
-	ld [wDexListingScrollOffset + 1], a
 	ld [wDexListingCursor], a
 	call Pokedex_BlackOutBG
 	ld a, DEXSTATE_SEARCH_RESULTS_SCR
@@ -870,14 +783,10 @@ Pokedex_UpdateSearchResultsScreen:
 .return_to_search_screen
 	ld a, [wDexListingScrollOffsetBackup]
 	ld [wDexListingScrollOffset], a
-	ld a, [wDexListingScrollOffsetBackup + 1]
-	ld [wDexListingScrollOffset + 1], a
 	ld a, [wDexListingCursorBackup]
 	ld [wDexListingCursor], a
 	ld a, [wPrevDexEntryBackup]
 	ld [wPrevDexEntry], a
-	ld a, [wPrevDexEntryBackup + 1]
-	ld [wPrevDexEntry + 1], a
 	call Pokedex_BlackOutBG
 	call ClearSprites
 	call Pokedex_OrderMonsByMode
@@ -996,103 +905,80 @@ endr
 	ld [hl], c
 	ret
 
-Pokedex_LoadListingScrollParams:
-	; d = min(wDexListingEnd, wDexListingHeight); e = remaining scroll distance (cap at $FF)
-	ld hl, wDexListingScrollOffset
-	ld a, [hli]
-	cpl
-	ld e, a
-	ld a, [hli]
-	cpl
-	ld d, a
-	inc hl
-	; hl = wDexListingEnd
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	add hl, de
-	inc hl
-	ld a, [wDexListingHeight]
-	ld d, a
-	ld a, l
-	sub d
-	ld e, a
-	ld a, h
-	jr nc, .check_overflow
-	sub 1
-	jr c, .underflow
-.check_overflow
-	and a
-	ret z
-	ld e, $FF
-	ret
-
-.underflow
-	ld e, h ; h = 0 here
-	ld a, [wDexListingEnd]
-	ld d, a
-	ret
-
 Pokedex_NextOrPreviousDexEntry:
 	ld a, [wDexListingCursor]
 	ld [wBackupDexListingCursor], a
 	ld a, [wDexListingScrollOffset]
 	ld [wBackupDexListingPage], a
-	ld a, [wDexListingScrollOffset + 1]
-	ld [wBackupDexListingPage + 1], a
 	ld hl, hJoyLast
 	ld a, [hl]
 	and D_UP
 	jr nz, .up
 	ld a, [hl]
 	and D_DOWN
-	ret z
+	jr nz, .down
+	and a
+	ret
 
-; down
-.next
-	call Pokedex_LoadListingScrollParams
+.up
+	ld a, [wDexListingHeight]
+	ld d, a
+	ld a, [wDexListingEnd]
+	ld e, a
+	call Pokedex_ListingMoveCursorUp
+	jr nc, .nope
+	call Pokedex_GetSelectedMon
+	call Pokedex_CheckSeen
+	jr nz, .yep
+	jr .up
+
+.down
+	ld a, [wDexListingHeight]
+	ld d, a
+	ld a, [wDexListingEnd]
+	ld e, a
 	call Pokedex_ListingMoveCursorDown
 	jr nc, .nope
 	call Pokedex_GetSelectedMon
 	call Pokedex_CheckSeen
-	jr z, .next
+	jr nz, .yep
+	jr .down
+
+.yep
 	scf
 	ret
 
-.check
-	call Pokedex_GetSelectedMon
-	call Pokedex_CheckSeen
-	scf
-	ret nz
-.up
-	call Pokedex_ListingMoveCursorUp
-	jr c, .check
 .nope
 	ld a, [wBackupDexListingCursor]
 	ld [wDexListingCursor], a
 	ld a, [wBackupDexListingPage]
 	ld [wDexListingScrollOffset], a
-	ld a, [wBackupDexListingPage + 1]
-	ld [wDexListingScrollOffset + 1], a
 	and a
 	ret
 
 Pokedex_ListingHandleDPadInput:
 ; Handles D-pad input for a list of Pokémon.
-	call Pokedex_LoadListingScrollParams
-	ld hl, hJoyLast
-	bit D_UP_F, [hl]
-	jr nz, Pokedex_ListingMoveCursorUp
-	bit D_DOWN_F, [hl]
-	jr nz, Pokedex_ListingMoveCursorDown
 	ld a, [wDexListingHeight]
-	xor d ; compares for equality (if zero) and clears carry
-	ret nz
-	bit D_LEFT_F, [hl]
+	ld d, a
+	ld a, [wDexListingEnd]
+	ld e, a
+	ld hl, hJoyLast
+	ld a, [hl]
+	and D_UP
+	jr nz, Pokedex_ListingMoveCursorUp
+	ld a, [hl]
+	and D_DOWN
+	jr nz, Pokedex_ListingMoveCursorDown
+	ld a, d
+	cp e
+	jr nc, Pokedex_ListingPosStayedSame
+	ld a, [hl]
+	and D_LEFT
 	jr nz, Pokedex_ListingMoveUpOnePage
-	bit D_RIGHT_F, [hl]
+	ld a, [hl]
+	and D_RIGHT
 	jr nz, Pokedex_ListingMoveDownOnePage
-	ret
+	jr Pokedex_ListingPosStayedSame
 
 Pokedex_ListingMoveCursorUp:
 	ld hl, wDexListingCursor
@@ -1100,78 +986,74 @@ Pokedex_ListingMoveCursorUp:
 	and a
 	jr z, .try_scrolling
 	dec [hl]
-.done
-	scf
-	ret
-
+	jr Pokedex_ListingPosChanged
 .try_scrolling
-	ld hl, wDexListingScrollOffset + 1
-	ld a, [hld]
-	and a
+	ld hl, wDexListingScrollOffset
 	ld a, [hl]
-	jr nz, .go
 	and a
-	ret z
-.go
-	sub 1
-	ld [hli], a
-	jr nc, .done
+	jr z, Pokedex_ListingPosStayedSame
 	dec [hl]
-	ret
+	jr Pokedex_ListingPosChanged
 
 Pokedex_ListingMoveCursorDown:
 	ld hl, wDexListingCursor
-	inc [hl]
 	ld a, [hl]
+	inc a
+	cp e
+	jr nc, Pokedex_ListingPosStayedSame
 	cp d
-	ret c
-	dec [hl]
-	ld a, e
-	and a
-	ret z
+	jr nc, .try_scrolling
+	inc [hl]
+	jr Pokedex_ListingPosChanged
+.try_scrolling
 	ld hl, wDexListingScrollOffset
+	add [hl]
+	cp e
+	jr nc, Pokedex_ListingPosStayedSame
 	inc [hl]
-	jr nz, .done
-	inc hl
-	inc [hl]
-.done
-	scf
-	ret
+	jr Pokedex_ListingPosChanged
 
 Pokedex_ListingMoveUpOnePage:
-	ld hl, wDexListingScrollOffset + 1
-	ld a, [hld]
-	or [hl]
-	ret z
+	ld hl, wDexListingScrollOffset
 	ld a, [hl]
-	sub d
-	ld [hli], a
-	jr nc, .done
-	ld a, [hl]
-	dec [hl]
 	and a
-	jr nz, .done
-	; a = 0 here
-	ld [hld], a
+	jr z, Pokedex_ListingPosStayedSame
+	cp d
+	jr nc, .not_near_top
+; If we're already less than page away from the top, go to the top.
+	xor a
 	ld [hl], a
-.done
-	scf
-	ret
+	jr Pokedex_ListingPosChanged
+.not_near_top
+	sub d
+	ld [hl], a
+	jr Pokedex_ListingPosChanged
 
 Pokedex_ListingMoveDownOnePage:
-	ld a, e
-	and a
-	ret z
-	cp d
-	jr c, .got_scroll
-	ld a, d
-.got_scroll
+; When moving down a page, the return value always report a change in position.
 	ld hl, wDexListingScrollOffset
-	add a, [hl]
-	ld [hli], a
-	jr nc, .done
-	inc [hl]
-.done
+	ld a, d
+	add a
+	add [hl]
+	jr c, .near_bottom
+	cp e
+	jr c, .not_near_bottom
+.near_bottom
+	ld a, e
+	sub d
+	ld [hl], a
+	jr Pokedex_ListingPosChanged
+.not_near_bottom
+	ld a, [hl]
+	add d
+	ld [hl], a
+	jr Pokedex_ListingPosChanged
+
+Pokedex_ListingPosStayedSame:
+	and a
+	ret
+
+Pokedex_ListingPosChanged:
 	scf
 	ret
 
@@ -1187,17 +1069,6 @@ Pokedex_FillColumn:
 	jr nz, .loop
 	pop de
 	ret
-
-Pokedex_PrintLittleEndian:
-	; in: hl, de as per PrintNum - bc will be set internally
-	ld a, [de]
-	ld [wPokedexDisplayNumber + 1], a
-	inc de
-	ld a, [de]
-	ld de, wPokedexDisplayNumber
-	ld [de], a
-	lb bc, 2, 3
-	jp PrintNum
 
 Pokedex_DrawMainScreenBG:
 ; Draws the left sidebar and the bottom bar on the main screen.
@@ -1218,31 +1089,21 @@ Pokedex_DrawMainScreenBG:
 	ld de, String_SEEN
 	call Pokedex_PlaceString
 	ld hl, wPokedexSeen
-	ld bc, wEndPokedexSeen - wPokedexSeen
-	call CountSetBits16
-	ld a, c
-	ld de, wPokedexDisplayNumber + 1
-	ld [de], a
-	dec de
-	ld a, b
-	ld [de], a
+	ld b, wEndPokedexSeen - wPokedexSeen
+	call CountSetBits
+	ld de, wNumSetBits
 	hlcoord 5, 12
-	lb bc, 2, 3
+	lb bc, 1, 3
 	call PrintNum
 	hlcoord 1, 14
 	ld de, String_OWN
 	call Pokedex_PlaceString
 	ld hl, wPokedexCaught
-	ld bc, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits16
-	ld a, c
-	ld de, wPokedexDisplayNumber + 1
-	ld [de], a
-	dec de
-	ld a, b
-	ld [de], a
+	ld b, wEndPokedexCaught - wPokedexCaught
+	call CountSetBits
+	ld de, wNumSetBits
 	hlcoord 5, 15
-	lb bc, 2, 3
+	lb bc, 1, 3
 	call PrintNum
 	hlcoord 1, 17
 	ld de, String_SELECT_OPTION
@@ -1402,7 +1263,8 @@ Pokedex_DrawSearchResultsScreenBG:
 	call PlaceString
 	ld de, wDexSearchResultCount
 	hlcoord 1, 16
-	call Pokedex_PrintLittleEndian
+	lb bc, 1, 3
+	call PrintNum
 	hlcoord 8, 0
 	ld [hl], $59
 	hlcoord 8, 1
@@ -1423,6 +1285,7 @@ Pokedex_DrawSearchResultsScreenBG:
 	next "  TYPE"
 	next "    FOUND!"
 	db   "@"
+
 Pokedex_PlaceSearchResultsTypeStrings:
 	ld a, [wDexSearchMonType1]
 	hlcoord 0, 14
@@ -1599,7 +1462,17 @@ Pokedex_PlaceBorder:
 Pokedex_PrintListing:
 ; Prints the list of Pokémon on the main Pokédex screen.
 
+; This check is completely useless.
+	ld a, [wCurDexMode]
+	cp DEXMODE_OLD
+	jr z, .okay
 	ld c, 11
+	jr .resume
+.okay
+	ld c, 11
+; End useless check
+
+.resume
 ; Clear (2 * [wDexListingHeight] + 1) by 11 box starting at 0,1
 	hlcoord 0, 1
 	ld a, [wDexListingHeight]
@@ -1609,103 +1482,67 @@ Pokedex_PrintListing:
 	ld a, " "
 	call Pokedex_FillBox
 
-; Load de with a pointer to the first mon on the list
-	ld hl, wDexListingScrollOffset
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	add hl, hl
-	ld de, wPokedexOrder
+; Load de with wPokedexOrder + [wDexListingScrollOffset]
+	ld a, [wDexListingScrollOffset]
+	ld e, a
+	ld d, 0
+	ld hl, wPokedexOrder
 	add hl, de
 	ld e, l
 	ld d, h
 	hlcoord 0, 2
-	ldh a, [rSVBK]
-	push af
 	ld a, [wDexListingHeight]
 .loop
 	push af
-	ld a, BANK(wPokedexOrder)
-	ldh [rSVBK], a
 	ld a, [de]
-	ld c, a
-	inc de
-	ld a, [de]
-	inc de
+	ld [wTempSpecies], a ; also sets wNamedObjectIndex
+	assert wTempSpecies == wNamedObjectIndex
 	push de
-	ld d, a
-	ld e, c
-	or e
 	push hl
-	call nz, .PrintEntry
+	call .PrintEntry
 	pop hl
 	ld de, 2 * SCREEN_WIDTH
 	add hl, de
 	pop de
+	inc de
 	pop af
 	dec a
 	jr nz, .loop
-	pop af
-	ldh [rSVBK], a
-	jp Pokedex_LoadSelectedMonTiles
+	call Pokedex_LoadSelectedMonTiles
+	ret
 
 .PrintEntry:
-	ld a, d
-	and e
-	inc a
+; Prints one entry in the list of Pokémon on the main Pokédex screen.
+	and a
 	ret z
-	ld a, BANK(wPokedexSeen)
-	ldh [rSVBK], a
 	call Pokedex_PrintNumberIfOldMode
 	call Pokedex_PlaceDefaultStringIfNotSeen
 	ret c
 	call Pokedex_PlaceCaughtSymbolIfCaught
 	push hl
-	; hl = de * 10 (length of a Pokémon name)
-	ld h, d
-	ld l, e
-	add hl, hl
-	add hl, hl
-	add hl, de
-	add hl, hl
-	ld de, PokemonNames - (MON_NAME_LENGTH - 1) ;correct for the one-based indexing
-	add hl, de
-	ld a, BANK(PokemonNames)
-	ld bc, MON_NAME_LENGTH - 1
-	ld de, wPokedexNameBuffer
-	push de
-	call FarCopyBytes
-	ld a, "@"
-	ld [wPokedexNameBuffer + MON_NAME_LENGTH - 1], a
-	pop de
+	call GetPokemonName
 	pop hl
-	jp PlaceString
+	call PlaceString
+	ret
 
 Pokedex_PrintNumberIfOldMode:
 	ld a, [wCurDexMode]
 	cp DEXMODE_OLD
-	ret nz
+	jr z, .printnum
+	ret
+
+.printnum
 	push hl
-	push de
-	ld bc, -SCREEN_WIDTH
-	add hl, bc
-	ld a, e
-	ld [wPokedexDisplayNumber + 1], a
-	ld a, d
-	ld de, wPokedexDisplayNumber
-	ld [de], a
-	lb bc, PRINTNUM_LEADINGZEROS | 2, 3
+	ld de, -SCREEN_WIDTH
+	add hl, de
+	ld de, wTempSpecies
+	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
 	call PrintNum
-	pop de
 	pop hl
 	ret
 
 Pokedex_PlaceCaughtSymbolIfCaught:
-	push hl
-	push de
-	call CheckCaughtMonIndex
-	pop de
-	pop hl
+	call Pokedex_CheckCaught
 	jr nz, .place_caught_symbol
 	inc hl
 	ret
@@ -1716,11 +1553,7 @@ Pokedex_PlaceCaughtSymbolIfCaught:
 	ret
 
 Pokedex_PlaceDefaultStringIfNotSeen:
-	push hl
-	push de
-	call CheckSeenMonIndex
-	pop de
-	pop hl
+	call Pokedex_CheckSeen
 	ret nz
 	inc hl
 	ld de, .NameNotSeen
@@ -1748,38 +1581,32 @@ Pokedex_GetSelectedMon:
 ; Gets the species of the currently selected Pokémon. This corresponds to the
 ; position of the cursor in the main listing, but this function can be used
 ; on all Pokédex screens.
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wPokedexOrder)
-	ldh [rSVBK], a
-	ld hl, wDexListingScrollOffset
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
 	ld a, [wDexListingCursor]
+	ld hl, wDexListingScrollOffset
+	add [hl]
 	ld e, a
 	ld d, 0
+	ld hl, wPokedexOrder
 	add hl, de
-	ld de, wPokedexOrder
-	add hl, hl
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	pop af
-	ldh [rSVBK], a
-	push hl
-	call GetPokemonIDFromIndex
-	ld l, LOCKED_MON_ID_DEX_SELECTED
-	call LockPokemonID
-	pop hl
+	ld a, [hl]
 	ld [wTempSpecies], a
+	ret
+
+Pokedex_CheckCaught:
+	push de
+	push hl
+	ld a, [wTempSpecies]
+	dec a
+	call CheckCaughtMon
+	pop hl
+	pop de
 	ret
 
 Pokedex_CheckSeen:
 	push de
 	push hl
 	ld a, [wTempSpecies]
+	dec a
 	call CheckSeenMon
 	pop hl
 	pop de
@@ -1901,55 +1728,39 @@ Pokedex_OrderMonsByMode:
 	ret
 
 Pokedex_ABCMode:
-	; called in the WRAM bank of wPokedexOrder; the function doesn't preserve it
-	ld hl, wDexTempCounter
-	ld a, LOW(-NUM_POKEMON)
-	ld [hli], a
-	ld [hl], HIGH(-NUM_POKEMON)
-	ld bc, AlphabeticalPokedexOrder
-	ld de, wPokedexOrder
-	ld a, BANK(wPokedexSeen)
-	ldh [rSVBK], a
-.loop
-	push de
-	ld a, [bc]
-	ld e, a
-	inc bc
-	ld a, [bc]
-	ld d, a
-	push bc
-	call CheckSeenMonIndex
-	pop bc
-	pop de
-	jr z, .skip
-	ld a, BANK(wPokedexOrder)
-	ldh [rSVBK], a
-	dec bc
-	ld a, [bc]
-	ld [de], a
-	inc de
-	inc bc
-	ld a, [bc]
-	ld [de], a
-	inc de
-	ld a, BANK(wPokedexSeen)
-	ldh [rSVBK], a
-.skip
-	inc bc
-	ld hl, wDexTempCounter
-	inc [hl]
-	jr nz, .loop
-	inc hl
-	inc [hl]
-	jr nz, .loop
-	ld hl, $10000 - wPokedexOrder ;ld hl, -wPokedexOrder -- see https://github.com/rednex/rgbds/issues/279
-	add hl, de
-	srl h
-	rr l
-	ld a, l
+	xor a
 	ld [wDexListingEnd], a
-	ld a, h
-	ld [wDexListingEnd + 1], a
+	ld hl, wPokedexOrder
+	ld de, AlphabeticalPokedexOrder
+	ld c, NUM_POKEMON
+.loop1abc
+	push bc
+	ld a, [de]
+	ld [wTempSpecies], a
+	call Pokedex_CheckSeen
+	jr z, .skipabc
+	ld a, [wTempSpecies]
+	ld [hli], a
+	ld a, [wDexListingEnd]
+	inc a
+	ld [wDexListingEnd], a
+
+.skipabc
+	inc de
+	pop bc
+	dec c
+	jr nz, .loop1abc
+	ld a, [wDexListingEnd]
+	ld c, 0
+.loop2abc
+	cp NUM_POKEMON
+	jr z, .doneabc
+	ld [hl], c
+	inc hl
+	inc a
+	jr .loop2abc
+
+.doneabc
 	ret
 
 INCLUDE "data/pokemon/dex_order_alpha.asm"
@@ -2123,120 +1934,78 @@ endr
 INCLUDE "data/types/search_strings.asm"
 
 Pokedex_SearchForMons:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wPokedexOrder)
-	ldh [rSVBK], a
 	ld a, [wDexSearchMonType2]
 	and a
 	call nz, .Search
 	ld a, [wDexSearchMonType1]
 	and a
 	call nz, .Search
-	pop af
-	ldh [rSVBK], a
 	ret
 
 .Search:
+	dec a
 	ld e, a
-	xor a
-	ld hl, wDexSearchResultCount
-	ld [hli], a
-	ld [hl], a
-	ld d, a
-	ld hl, PokedexTypeSearchConversionTable - 1
+	ld d, 0
+	ld hl, PokedexTypeSearchConversionTable
 	add hl, de
 	ld a, [hl]
 	ld [wDexConvertedMonType], a
-	ld hl, wDexListingEnd
-	ld a, [hli]
-	ld c, a
-	ld b, [hl]
 	ld hl, wPokedexOrder
-	ld d, h
-	ld e, l
-
+	ld de, wPokedexOrder
+	ld c, NUM_POKEMON
+	xor a
+	ld [wDexSearchResultCount], a
 .loop
 	push bc
-	ld a, [hli]
-	ld c, a
-	ld a, [hli]
+	ld a, [hl]
+	and a
+	jr z, .next_mon
+	ld [wTempSpecies], a
+	ld [wCurSpecies], a
+	call Pokedex_CheckCaught
+	jr z, .next_mon
 	push hl
-	ld b, a
-	or c
-	jr z, .next_mon
-	ld a, b
-	and c
-	inc a
-	jr z, .next_mon
-	push bc
 	push de
-	ld d, b
-	ld e, c
-	ld a, BANK(wPokedexSeen)
-	ldh [rSVBK], a
-	call CheckSeenMonIndex
-	ld a, BANK(wPokedexOrder)
-	ldh [rSVBK], a
+	call GetBaseData
 	pop de
-	pop bc
-	jr z, .next_mon
-	; instead of going through an index conversion and GetBaseData (which would end up GC'ing the
-	; index table several times!), just load the base data pointer directly and do a far read
-	ld a, BANK(BaseData)
-	ld hl, BaseData
-	push bc
-	call LoadIndirectPointer
-	ld bc, BASE_TYPES
-	add hl, bc
-	pop bc
-	jr z, .next_mon
-	call GetFarWord ;load both types in hl
+	pop hl
 	ld a, [wDexConvertedMonType]
-	cp h
+	ld b, a
+	ld a, [wBaseType1]
+	cp b
 	jr z, .match_found
-	cp l
+	ld a, [wBaseType2]
+	cp b
 	jr nz, .next_mon
 
 .match_found
-	ld a, c
+	ld a, [wTempSpecies]
 	ld [de], a
 	inc de
-	ld a, b
-	ld [de], a
-	inc de
-	ld hl, wDexSearchResultCount
-	inc [hl]
-	jr nz, .next_mon
-	inc hl
-	inc [hl]
+	ld a, [wDexSearchResultCount]
+	inc a
+	ld [wDexSearchResultCount], a
 
 .next_mon
-	pop hl
+	inc hl
 	pop bc
-	dec bc
-	ld a, b
-	or c
+	dec c
 	jr nz, .loop
 
-	ld hl, wDexSearchResultCount
-	ld bc, -(NUM_POKEMON + 1)
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	add hl, bc ;hl = minus the number of entries to clear
-	ld c, l
-	ld b, h
 	ld l, e
 	ld h, d
-	ld a, -1
-.clear_remaining_mons
-	ld [hli], a
-	ld [hli], a
-	inc c
-	jr nz, .clear_remaining_mons
-	inc b
-	jr nz, .clear_remaining_mons
+	ld a, [wDexSearchResultCount]
+	ld c, 0
+
+.zero_remaining_mons
+	cp NUM_POKEMON
+	jr z, .done
+	ld [hl], c
+	inc hl
+	inc a
+	jr .zero_remaining_mons
+
+.done
 	ret
 
 INCLUDE "data/types/search_types.asm"
@@ -2422,86 +2191,39 @@ Pokedex_LoadCursorOAM:
 	jr .loop
 
 Pokedex_PutScrollbarOAM:
+; Writes the OAM data for the scrollbar in the new mode and ABC mode.
 	push de
-	ld hl, wDexListingEnd
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	ld a, [wDexListingHeight]
-	cpl
-	ld c, a
-	ld b, $FF
-	; subtract wDexListingHeight + 1 so it will also overflow on wDexListingEnd = wDexListingHeight
-	add hl, bc
-	inc b ;b = 0
-	jr nc, .done
-	inc hl ;compensate for the +1
-	push hl
-	ld hl, wDexListingScrollOffset
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	; multiply by 121 (scrollbar size) - first by 15...
-	; (assume that the dex has less than $1000 entries - it won't fit in any RAM otherwise)
-	ld b, h
-	ld c, l
-	rept 4
-		add hl, hl
-	endr
-	ld a, l
-	sub c
-	ld l, a
-	ld a, h
-	sbc b
-	ld h, a
-	; ...then by 8 (15 * 8 = 120), storing overflows in a...
-	xor a
-	rept 3
-		add hl, hl
-		adc a
-	endr
-	; ...and add the original value, for a full result of ahl = wDexListingScrollOffset * 121
-	add hl, bc
-	adc 0
-	; finally, double the value (for rounding after dividing) and transfer it to chl
-	add hl, hl
-	adc a
-	ld c, a
-	; load the scroll height (pushed before) back into de, and multiply by -16...
-	pop de
-	push de
-	swap d
-	swap e
-	ld a, e
-	and $f
-	or d
-	cpl
-	ld d, a
-	ld a, e
-	and $f0
-	cpl
+	ld a, [wDexListingEnd]
+	dec a
 	ld e, a
-	inc de
-	; ...and use it to calculate the upper nibble of the quotient by subtraction
-	inc c
+	ld a, [wDexListingCursor]
+	ld hl, wDexListingScrollOffset
+	add [hl]
+	cp e
+	jr z, .max
+	ld hl, 0
+	ld bc, 121 ; max y - min y
+	call AddNTimes
+	ld e, l
+	ld d, h
 	ld b, 0
-.upper_loop
+	ld a, d
+	or e
+	jr z, .done
+	ld a, [wDexListingEnd]
+	ld c, a
+.loop
+	ld a, e
+	sub c
+	ld e, a
+	ld a, d
+	sbc 0
+	ld d, a
+	jr c, .done
 	inc b
-	add hl, de
-	jr c, .upper_loop
-	dec c
-	jr nz, .upper_loop
-	res 4, b ;ensure overflow doesn't leave garbage behind
-	swap b
-	; now there's a negative value in hl and an overly large result in b - adjust until the right value is found
-	pop de
-.lower_loop
-	dec b
-	add hl, de
-	jr nc, .lower_loop
-	; the result is in b - which is twice the true quotient, so increment and halve to round to nearest
-	inc b
-	srl b
+	jr .loop
+.max
+	ld b, 121 ; max y - min y
 .done
 	ld a, 20 ; min y
 	add b
@@ -2718,21 +2440,43 @@ Pokedex_LoadCurrentFootprint:
 
 Pokedex_LoadAnyFootprint:
 	ld a, [wTempSpecies]
-	call GetPokemonIndexFromID
-	dec hl
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	add hl, hl
-	add hl, hl
+	dec a
+	and %11111000
+	srl a
+	srl a
+	srl a
+	ld e, 0
+	ld d, a
+	ld a, [wTempSpecies]
+	dec a
+	and %111
+	swap a ; * $10
+	ld l, a
+	ld h, 0
+	add hl, de
 	ld de, Footprints
+	add hl, de
+
+	push hl
+	ld e, l
+	ld d, h
+	ld hl, vTiles2 tile $62
+	lb bc, BANK(Footprints), 2
+	call Request1bpp
+	pop hl
+
+	; Whoever was editing footprints forgot to fix their
+	; tile editor. Now each bottom half is 8 tiles off.
+	ld de, 8 tiles
 	add hl, de
 
 	ld e, l
 	ld d, h
-	ld hl, vTiles2 tile $62
-	lb bc, BANK(Footprints), 4
-	jp Request1bpp
+	ld hl, vTiles2 tile $64
+	lb bc, BANK(Footprints), 2
+	call Request1bpp
+
+	ret
 
 Pokedex_LoadGFX:
 	call DisableLCD
@@ -2823,11 +2567,8 @@ Pokedex_LoadUnownFrontpicTiles:
 	add hl, de
 	ld a, [hl]
 	ld [wUnownLetter], a
-	ld hl, UNOWN
-	call GetPokemonIDFromIndex
+	ld a, UNOWN
 	ld [wCurPartySpecies], a
-	ld l, LOCKED_MON_ID_DEX_SELECTED
-	call LockPokemonID
 	call GetBaseData
 	ld de, vTiles2 tile $00
 	predef GetMonFrontpic

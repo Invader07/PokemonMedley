@@ -3,26 +3,7 @@ BeastsCheck:
 ; They must exist in either party or PC, and have the player's OT and ID.
 ; Return the result in wScriptVar.
 
-	ld hl, RAIKOU
-	call GetPokemonIDFromIndex
-	ld [wScriptVar], a
-	call CheckOwnMonAnywhere
-	jr nc, .notexist
-
-	ld hl, ENTEI
-	call GetPokemonIDFromIndex
-	ld [wScriptVar], a
-	call CheckOwnMonAnywhere
-	jr nc, .notexist
-
-	ld hl, SUICUNE
-	call GetPokemonIDFromIndex
-	ld [wScriptVar], a
-	call CheckOwnMonAnywhere
-	jr nc, .notexist
-
-	; they exist
-	ld a, 1
+	xor a
 	ld [wScriptVar], a
 	ret
 
@@ -62,10 +43,8 @@ CheckOwnMonAnywhere:
 .loop
 	newfarcall GetStorageBoxMon
 	jr z, .next
-
 	; Check if the species is correct
-	ld hl, wBufferMonAltSpecies ; TODO : fix species
-	ld a, [wScriptVar]
+	ld hl, wBufferMonAltSpecies
 	cp [hl]
 	jr nz, .next
 
@@ -103,6 +82,7 @@ CheckOwnMonAnywhere:
 	; Failed to find a matching mon
 	xor a
 	ret
+
 
 UpdateOTPointer:
 	push hl

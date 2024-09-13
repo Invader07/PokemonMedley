@@ -4,7 +4,7 @@ IsAPokemon::
 	jr z, .NotAPokemon
 	cp EGG
 	jr z, .Pokemon
-	cp MON_TABLE_ENTRIES + 1
+	cp NUM_POKEMON + 1
 	jr c, .Pokemon
 
 .NotAPokemon:
@@ -109,7 +109,8 @@ PlayStereoCry::
 	ld [wStereoPanningMask], a
 	pop af
 	call _PlayMonCry
-	jp WaitSFX
+	call WaitSFX
+	ret
 
 PlayStereoCry2::
 ; Don't wait for the cry to end.
@@ -122,7 +123,8 @@ PlayStereoCry2::
 
 PlayMonCry::
 	call PlayMonCry2
-	jp WaitSFX
+	call WaitSFX
+	ret
 
 PlayMonCry2::
 ; Don't wait for the cry to end.
@@ -131,6 +133,8 @@ PlayMonCry2::
 	ld [wStereoPanningMask], a
 	ld [wCryTracks], a
 	pop af
+	call _PlayMonCry
+	ret
 
 _PlayMonCry::
 	push hl
@@ -151,6 +155,8 @@ _PlayMonCry::
 	ret
 
 LoadCry::
+; Load cry bc.
+
 	call GetCryIndex
 	ret c
 
@@ -186,15 +192,12 @@ endr
 GetCryIndex::
 	and a
 	jr z, .no
-	cp MON_TABLE_ENTRIES + 1
+	cp NUM_POKEMON + 1
 	jr nc, .no
 
-	push hl
-	call GetPokemonIndexFromID
-	dec hl
-	ld b, h
-	ld c, l
-	pop hl
+	dec a
+	ld c, a
+	ld b, 0
 	and a
 	ret
 
@@ -238,6 +241,8 @@ GetBaseData::
 	push hl
 	ldh a, [hROMBank]
 	push af
+	ld a, BANK(BaseData)
+	rst Bankswitch
 
 ; Egg doesn't have BaseData
 	ld a, [wCurSpecies]
@@ -245,14 +250,10 @@ GetBaseData::
 	jr z, .egg
 
 ; Get BaseData
-	call GetPokemonIndexFromID
-	ld b, h
-	ld c, l
-	ld a, BANK(BaseData)
+	dec a
+	ld bc, BASE_DATA_SIZE
 	ld hl, BaseData
-	call LoadIndirectPointer
-	; jr z, <some error handler>
-	rst Bankswitch
+	call AddNTimes
 	ld de, wCurBaseData
 	ld bc, BASE_DATA_SIZE
 	call CopyBytes
@@ -276,11 +277,12 @@ GetBaseData::
 	ld [hl], e
 	inc hl
 	ld [hl], d
+	jr .end ; useless
 
 .end
 ; Replace Pokedex # with species
 	ld a, [wCurSpecies]
-	ld [wBaseSpecies], a
+	ld [wBaseDexNo], a
 
 	pop af
 	rst Bankswitch

@@ -16,6 +16,8 @@ _ReceiveItem::
 	dw .KeyItem
 	dw .Ball
 	dw .TMHM
+	dw .Medicine
+	dw .Berries
 
 .Item:
 	ld h, d
@@ -29,6 +31,14 @@ _ReceiveItem::
 
 .Ball:
 	ld hl, wNumBalls
+	jp PutItemInPocket
+
+.Medicine:
+	ld hl, wNumMedicine
+	jp PutItemInPocket
+
+.Berries:
+	ld hl, wNumBerries
 	jp PutItemInPocket
 
 .TMHM:
@@ -57,9 +67,19 @@ _TossItem::
 	dw .KeyItem
 	dw .Ball
 	dw .TMHM
+	dw .Medicine
+	dw .Berries
 
 .Ball:
 	ld hl, wNumBalls
+	jp RemoveItemFromPocket
+
+.Medicine:
+	ld hl, wNumMedicine
+	jp RemoveItemFromPocket
+
+.Berries:
+	ld hl, wNumBerries
 	jp RemoveItemFromPocket
 
 .TMHM:
@@ -100,9 +120,19 @@ _CheckItem::
 	dw .KeyItem
 	dw .Ball
 	dw .TMHM
+	dw .Medicine
+	dw .Berries
 
 .Ball:
 	ld hl, wNumBalls
+	jp CheckTheItem
+
+.Medicine:
+	ld hl, wNumMedicine
+	jp CheckTheItem
+
+.Berries:
+	ld hl, wNumBerries
 	jp CheckTheItem
 
 .TMHM:
@@ -152,6 +182,24 @@ GetPocketCapacity:
 	ret z
 
 .not_pc
+	ld c, MAX_MEDICINE
+	ld a, e
+	cp LOW(wNumMedicine)
+	jr nz, .not_medicine
+	ld a, d
+	cp HIGH(wNumMedicine)
+	ret z
+
+.not_medicine
+	ld c, MAX_BERRIES
+	ld a, e
+	cp LOW(wNumBerries)
+	jr nz, .not_berries
+	ld a, d
+	cp HIGH(wNumBerries)
+	ret z
+
+.not_berries
 	ld c, MAX_BALLS
 	ret
 
@@ -459,14 +507,16 @@ CheckTMHM:
 GetTMHMNumber::
 ; Return the number of a TM/HM by item id c.
 	ld a, c
-	sub TM01 - 1
+	sub TM01
+	inc a
 	ld c, a
 	ret
 
 GetNumberedTMHM:
 ; Return the item id of a TM/HM by number c.
 	ld a, c
-	add a, TM01 - 1
+	add TM01
+	dec a
 	ld c, a
 	ret
 

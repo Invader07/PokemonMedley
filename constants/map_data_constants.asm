@@ -29,14 +29,17 @@ DEF MAP_LENGTH EQU _RS
 	const DUNGEON
 DEF NUM_ENVIRONMENTS EQU const_value - 1
 
-; map palettes (wMapTimeOfDay)
+; map palettes (wEnvironment)
 	const_def
 	const PALETTE_AUTO
 	const PALETTE_DAY
 	const PALETTE_NITE
 	const PALETTE_MORN
-	const PALETTE_DARK
+	const PALETTE_EVE
 DEF NUM_MAP_PALETTES EQU const_value
+
+DEF IN_DARKNESS_F EQU 3
+DEF IN_DARKNESS EQU 1 << IN_DARKNESS_F ; masked with a PALETTE_* constant
 
 ; FishGroups indexes (see data/wild/fish.asm)
 	const_def
@@ -73,35 +76,16 @@ DEF NUM_FISHGROUPS EQU const_value - 1
 ; SpawnPoints indexes (see data/maps/spawn_points.asm)
 	const_def
 	const SPAWN_HOME
-	const SPAWN_DEBUG
 ; kanto
-	const SPAWN_PALLET
-	const SPAWN_VIRIDIAN
-	const SPAWN_PEWTER
-	const SPAWN_CERULEAN
-	const SPAWN_ROCK_TUNNEL
-	const SPAWN_VERMILION
-	const SPAWN_LAVENDER
-	const SPAWN_SAFFRON
-	const SPAWN_CELADON
-	const SPAWN_FUCHSIA
-	const SPAWN_CINNABAR
 	const SPAWN_INDIGO
 ; johto
 	const SPAWN_NEW_BARK
-	const SPAWN_CHERRYGROVE
-	const SPAWN_VIOLET
-	const SPAWN_UNION_CAVE
-	const SPAWN_AZALEA
-	const SPAWN_CIANWOOD
-	const SPAWN_GOLDENROD
-	const SPAWN_OLIVINE
-	const SPAWN_ECRUTEAK
-	const SPAWN_MAHOGANY
-	const SPAWN_LAKE_OF_RAGE
-	const SPAWN_BLACKTHORN
-	const SPAWN_MT_SILVER
-	const SPAWN_FAST_SHIP
+	const SPAWN_BATTLE_TOWER
+	const SPAWN_HERALD_COVE
+	const SPAWN_CRAGGY_COAST
+	const SPAWN_RUGGED_CLIFF
+	const SPAWN_NONE
+
 DEF NUM_SPAWNS EQU const_value
 
 DEF SPAWN_N_A EQU -1
@@ -110,32 +94,10 @@ DEF SPAWN_N_A EQU -1
 	const_def
 ; johto
 DEF JOHTO_FLYPOINT EQU const_value
-	const FLY_NEW_BARK
-	const FLY_CHERRYGROVE
-	const FLY_VIOLET
-	const FLY_AZALEA
-	const FLY_GOLDENROD
-	const FLY_ECRUTEAK
-	const FLY_OLIVINE
-	const FLY_CIANWOOD
-	const FLY_MAHOGANY
-	const FLY_LAKE_OF_RAGE
-	const FLY_BLACKTHORN
-	const FLY_MT_SILVER
+	const FLY_HERALD_COVE
+	const FLY_CRAGGY_COAST
+	const FLY_RUGGED_CLIFF
 ; kanto
 DEF KANTO_FLYPOINT EQU const_value
-	const FLY_PALLET
-	const FLY_VIRIDIAN
-	const FLY_PEWTER
-	const FLY_CERULEAN
-	const FLY_VERMILION
-	const FLY_ROCK_TUNNEL
-	const FLY_LAVENDER
-	const FLY_CELADON
-	const FLY_SAFFRON
-	const FLY_FUCHSIA
-	const FLY_CINNABAR
 	const FLY_INDIGO
 DEF NUM_FLYPOINTS EQU const_value
-
-DEF MAX_OUTDOOR_SPRITES EQU 23 ; see engine/overworld/overworld.asm

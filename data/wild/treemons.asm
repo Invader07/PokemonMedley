@@ -19,53 +19,53 @@ TreeMons:
 TreeMonSet_City:
 TreeMonSet_Canyon:
 ; common
-	dbbw 50, 10, SPEAROW
-	dbbw 15, 10, SPEAROW
-	dbbw 15, 10, SPEAROW
-	dbbw 10, 10, AIPOM
-	dbbw  5, 10, AIPOM
-	dbbw  5, 10, AIPOM
+	dbbw 50, 10, EKANS
+	dbbw 15, 10, EKANS
+	dbbw 15, 10, EKANS
+	dbbw 10, 10, EKANS
+	dbbw  5, 10, EKANS
+	dbbw  5, 10, EKANS
 	db -1
 ; rare
-	dbbw 50, 10, SPEAROW
+	dbbw 50, 10, EKANS
 	dbbw 15, 10, HERACROSS
 	dbbw 15, 10, HERACROSS
-	dbbw 10, 10, AIPOM
-	dbbw  5, 10, AIPOM
-	dbbw  5, 10, AIPOM
+	dbbw 10, 10, EKANS
+	dbbw  5, 10, EKANS
+	dbbw  5, 10, EKANS
 	db -1
 
 TreeMonSet_Town:
 ; common
-	dbbw 50, 10, SPEAROW
+	dbbw 50, 10, EKANS
 	dbbw 15, 10, EKANS
-	dbbw 15, 10, SPEAROW
-	dbbw 10, 10, AIPOM
-	dbbw  5, 10, AIPOM
-	dbbw  5, 10, AIPOM
+	dbbw 15, 10, EKANS
+	dbbw 10, 10, EKANS
+	dbbw  5, 10, EKANS
+	dbbw  5, 10, EKANS
 	db -1
 ; rare
-	dbbw 50, 10, SPEAROW
+	dbbw 50, 10, EKANS
 	dbbw 15, 10, HERACROSS
 	dbbw 15, 10, HERACROSS
-	dbbw 10, 10, AIPOM
-	dbbw  5, 10, AIPOM
-	dbbw  5, 10, AIPOM
+	dbbw 10, 10, EKANS
+	dbbw  5, 10, EKANS
+	dbbw  5, 10, EKANS
 	db -1
 
 TreeMonSet_Route:
 ; common
-	dbbw 50, 10, HOOTHOOT
-	dbbw 15, 10, SPINARAK
-	dbbw 15, 10, LEDYBA
+	dbbw 50, 10, EKANS
+	dbbw 15, 10, EKANS
+	dbbw 15, 10, EKANS
 	dbbw 10, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	db -1
 ; rare
-	dbbw 50, 10, HOOTHOOT
-	dbbw 15, 10, PINECO
-	dbbw 15, 10, PINECO
+	dbbw 50, 10, EKANS
+	dbbw 15, 10, EKANS
+	dbbw 15, 10, EKANS
 	dbbw 10, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
@@ -73,17 +73,17 @@ TreeMonSet_Route:
 
 TreeMonSet_Kanto:
 ; common
-	dbbw 50, 10, HOOTHOOT
+	dbbw 50, 10, EKANS
 	dbbw 15, 10, EKANS
-	dbbw 15, 10, HOOTHOOT
+	dbbw 15, 10, EKANS
 	dbbw 10, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	db -1
 ; rare
-	dbbw 50, 10, HOOTHOOT
-	dbbw 15, 10, PINECO
-	dbbw 15, 10, PINECO
+	dbbw 50, 10, EKANS
+	dbbw 15, 10, EKANS
+	dbbw 15, 10, EKANS
 	dbbw 10, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
@@ -91,17 +91,17 @@ TreeMonSet_Kanto:
 
 TreeMonSet_Lake:
 ; common
-	dbbw 50, 10, HOOTHOOT
+	dbbw 50, 10, EKANS
 	dbbw 15, 10, VENONAT
-	dbbw 15, 10, HOOTHOOT
+	dbbw 15, 10, EKANS
 	dbbw 10, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	db -1
 ; rare
-	dbbw 50, 10, HOOTHOOT
-	dbbw 15, 10, PINECO
-	dbbw 15, 10, PINECO
+	dbbw 50, 10, EKANS
+	dbbw 15, 10, EKANS
+	dbbw 15, 10, EKANS
 	dbbw 10, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
 	dbbw  5, 10, EXEGGCUTE
@@ -109,23 +109,23 @@ TreeMonSet_Lake:
 
 TreeMonSet_Forest:
 ; common
-	dbbw 50, 10, HOOTHOOT
-	dbbw 15, 10, PINECO
-	dbbw 15, 10, PINECO
-	dbbw 10, 10, NOCTOWL
+	dbbw 50, 10, EKANS
+	dbbw 15, 10, EKANS
+	dbbw 15, 10, EKANS
+	dbbw 10, 10, EKANS
 	dbbw  5, 10, BUTTERFREE
-	dbbw  5, 10, BEEDRILL
+	dbbw  5, 10, EKANS
 	db -1
 ; rare
-	dbbw 50, 10, HOOTHOOT
+	dbbw 50, 10, EKANS
 	dbbw 15, 10, CATERPIE
-	dbbw 15, 10, WEEDLE
-	dbbw 10, 10, HOOTHOOT
+	dbbw 15, 10, EKANS
+	dbbw 10, 10, EKANS
 	dbbw  5, 10, METAPOD
-	dbbw  5, 10, KAKUNA
+	dbbw  5, 10, EKANS
 	db -1
 
 TreeMonSet_Rock:
 	dbbw 90, 15, KRABBY
-	dbbw 10, 15, SHUCKLE
+	dbbw 10, 15, EKANS
 	db -1

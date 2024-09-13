@@ -44,8 +44,8 @@ WaitScript:
 WaitScriptMovement:
 	call StopScript
 
-	ld hl, wStateFlags
-	bit SCRIPTED_MOVEMENT_STATE_F, [hl]
+	ld hl, wVramState
+	bit 7, [hl]
 	ret nz
 
 	farcall UnfreezeAllObjects
@@ -136,7 +136,7 @@ ScriptCommandTable:
 	dw Script_itemnotify                 ; 45
 	dw Script_pocketisfull               ; 46
 	dw Script_opentext                   ; 47
-	dw Script_reanchormap                ; 48
+	dw Script_refreshscreen              ; 48
 	dw Script_closetext                  ; 49
 	dw Script_writeunusedbyte            ; 4a
 	dw Script_farwritetext               ; 4b
@@ -188,7 +188,7 @@ ScriptCommandTable:
 	dw Script_changemapblocks            ; 79
 	dw Script_changeblock                ; 7a
 	dw Script_reloadmap                  ; 7b
-	dw Script_refreshmap                 ; 7c
+	dw Script_reloadmappart              ; 7c
 	dw Script_writecmdqueue              ; 7d
 	dw Script_delcmdqueue                ; 7e
 	dw Script_playmusic                  ; 7f
@@ -411,7 +411,11 @@ Script_closewindow:
 	ret
 
 Script_pokepic:
-	call LoadScriptPokemonID
+	call GetScriptByte
+	and a
+	jr nz, .ok
+	ld a, [wScriptVar]
+.ok
 	ld [wCurPartySpecies], a
 	farcall Pokepic
 	ret
@@ -780,7 +784,14 @@ Script_warpsound:
 	ret
 
 Script_cry:
-	call LoadScriptPokemonID
+	call GetScriptByte
+	push af
+	call GetScriptByte
+	pop af
+	and a
+	jr nz, .ok
+	ld a, [wScriptVar]
+.ok
 	call PlayMonCry
 	ret
 
@@ -916,8 +927,8 @@ ApplyObjectFacing:
 	pop de
 	ld a, e
 	call SetSpriteDirection
-	ld hl, wStateFlags
-	bit TEXT_STATE_F, [hl]
+	ld hl, wVramState
+	bit 6, [hl]
 	jr nz, .text_state
 	call .DisableTextTiles
 .text_state
@@ -930,7 +941,7 @@ ApplyObjectFacing:
 	ret
 
 .DisableTextTiles:
-	call LoadOverworldTilemap
+	call LoadMapPart
 	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 .loop
@@ -1109,8 +1120,7 @@ EarthquakeMovement:
 .End
 
 Script_loadpikachudata:
-	ld hl, PIKACHU
-	call GetPokemonIDFromIndex
+	ld a, PIKACHU
 	ld [wTempWildMonSpecies], a
 	ld a, 5
 	ld [wCurPartyLevel], a
@@ -1133,7 +1143,7 @@ Script_loadtemptrainer:
 Script_loadwildmon:
 	ld a, (1 << 7)
 	ld [wBattleScriptFlags], a
-	call LoadScriptPokemonID
+	call GetScriptByte
 	ld [wTempWildMonSpecies], a
 	call GetScriptByte
 	ld [wCurPartyLevel], a
@@ -1187,7 +1197,7 @@ Script_reloadmapafterbattle:
 	jr z, .done
 	ld b, BANK(Script_SpecialBillCall)
 	ld de, Script_SpecialBillCall
-	farcall LoadMemScript
+	farcall LoadScriptBDE
 .done
 	jp Script_reloadmap
 
@@ -1563,7 +1573,11 @@ Script_checkver:
 	db GS_VERSION
 
 Script_getmonname:
-	call LoadScriptPokemonID
+	call GetScriptByte
+	and a
+	jr nz, .gotit
+	ld a, [wScriptVar]
+.gotit
 	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld de, wStringBuffer1
@@ -1845,7 +1859,7 @@ Script_checktime:
 Script_checkpoke:
 	xor a
 	ld [wScriptVar], a
-	call LoadScriptPokemonID
+	call GetScriptByte
 	ld hl, wPartySpecies
 	ld de, 1
 	call IsInArray
@@ -1908,7 +1922,7 @@ Script_checkphonecall:
 	ret
 
 Script_givepoke:
-	call LoadScriptPokemonID
+	call GetScriptByte
 	ld [wCurPartySpecies], a
 	call GetScriptByte
 	ld [wCurPartyLevel], a
@@ -1938,7 +1952,7 @@ Script_giveegg:
 	xor a ; PARTYMON
 	ld [wScriptVar], a
 	ld [wMonType], a
-	call LoadScriptPokemonID
+	call GetScriptByte
 	ld [wCurPartySpecies], a
 	call GetScriptByte
 	ld [wCurPartyLevel], a
@@ -2057,7 +2071,7 @@ Script_warp:
 	ld [wXCoord], a
 	call GetScriptByte
 	ld [wYCoord], a
-	ld a, SPAWN_N_A
+	ld a, SPAWN_HERALD_COVE
 	ld [wDefaultSpawnpoint], a
 	ld a, MAPSETUP_WARP
 	ldh [hMapEntryMethod], a
@@ -2070,7 +2084,7 @@ Script_warp:
 	call GetScriptByte
 	call GetScriptByte
 	call GetScriptByte
-	ld a, SPAWN_N_A
+	ld a, SPAWN_HERALD_COVE
 	ld [wDefaultSpawnpoint], a
 	ld a, MAPSETUP_BADWARP
 	ldh [hMapEntryMethod], a
@@ -2145,22 +2159,18 @@ Script_changeblock:
 	call BufferScreen
 	ret
 
-Script_refreshmap::
+Script_reloadmappart::
 	xor a
 	ldh [hBGMapMode], a
-	call LoadOverworldTilemapAndAttrmapPals
+	call OverworldTextModeSwitch
 	call GetMovementPermissions
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	call UpdateSprites
 	ret
 
 Script_warpcheck:
 	call WarpCheck
 	ret nc
-	farcall EnableEvents
-	ret
-
-Script_enableevents: ; unreferenced
 	farcall EnableEvents
 	ret
 
@@ -2180,8 +2190,8 @@ Script_opentext:
 	call OpenText
 	ret
 
-Script_reanchormap:
-	call ReanchorMap
+Script_refreshscreen:
+	call RefreshScreen
 	call GetScriptByte
 	ret
 
@@ -2190,11 +2200,8 @@ Script_writeunusedbyte:
 	ld [wUnusedScriptByte], a
 	ret
 
-UnusedClosetextScript: ; unreferenced
-	closetext
-
 Script_closetext:
-	call HDMATransferTilemapAndAttrmap_Menu
+	call HDMATransferTilemapAndAttrmap
 	call CloseText
 	ret
 

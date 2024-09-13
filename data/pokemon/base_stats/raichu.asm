@@ -1,9 +1,9 @@
 	db 0 ; species ID placeholder
 
-	db  60,  90,  55, 100,  90,  80
+	db  60,  85,  50, 110,  95,  85
 	;   hp  atk  def  spd  sat  sdf
 
-	db ELECTRIC, ELECTRIC ; type
+	db ELECTRIC, PSYCHIC_TYPE ; type
 	db 75 ; catch rate
 	db 122 ; base exp
 	db NO_ITEM, BERRY ; items
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_FAIRY ; egg groups
 
 	; tm/hm learnset
-	tmhm DYNAMICPUNCH, HEADBUTT, CURSE, ROLLOUT, TOXIC, ZAP_CANNON, HIDDEN_POWER, SNORE, HYPER_BEAM, PROTECT, RAIN_DANCE, ENDURE, FRUSTRATION, IRON_TAIL, THUNDER, RETURN, MUD_SLAP, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, SWIFT, DEFENSE_CURL, THUNDERPUNCH, DETECT, REST, ATTRACT, THIEF, STRENGTH, FLASH, THUNDERBOLT
-	; end
+	tmhm CURSE
+		; end

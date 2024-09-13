@@ -3,7 +3,6 @@ StopRTC: ; unreferenced
 	ld [MBC3SRamEnable], a
 	call LatchClock
 	ld a, RTC_DH
-	ldh [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	ld a, [MBC3RTC]
 	set 6, a ; halt
@@ -16,7 +15,6 @@ StartRTC:
 	ld [MBC3SRamEnable], a
 	call LatchClock
 	ld a, RTC_DH
-	ldh [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	ld a, [MBC3RTC]
 	res 6, a ; halt
@@ -49,17 +47,12 @@ GetTimeOfDay::
 
 TimesOfDay:
 ; hours for the time of day
-; 0400-0959 morn | 1000-1759 day | 1800-0359 nite
+; 0500-0959 morn | 1000-1659 day | 1700-2059 eve | 2100-0459 nite
 	db MORN_HOUR, NITE_F
 	db DAY_HOUR,  MORN_F
-	db NITE_HOUR, DAY_F
+	db EVE_HOUR,  DAY_F
+	db NITE_HOUR, EVE_F
 	db MAX_HOUR,  NITE_F
-	db -1, MORN_F
-
-BetaTimesOfDay: ; unreferenced
-	db 20, NITE_F
-	db 40, MORN_F
-	db 60, DAY_F
 	db -1, MORN_F
 
 StageRTCTimeForSave:
@@ -81,11 +74,9 @@ SaveRTC:
 	call LatchClock
 	ld hl, MBC3RTC
 	ld a, RTC_DH
-	ldh [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	res 7, [hl]
 	ld a, BANK(sRTCStatusFlags)
-	ldh [hSRAMBank], a
 	ld [MBC3SRamBank], a
 	xor a
 	ld [sRTCStatusFlags], a

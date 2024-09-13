@@ -38,7 +38,7 @@ PokemonTableGarbageCollection:
 	___conversion_bitmap_check_structs wRoamMon1, wRoamMon2 - wRoamMon1, 3, .set_bit
 	___conversion_bitmap_check_structs wBugContestFirstPlaceMon, wBugContestSecondPlaceMon - wBugContestFirstPlaceMon, 3, .set_bit
 	___conversion_bitmap_check_values .set_bit, wBufferMonSpecies, wTempMonSpecies, wContestMonSpecies, \
-	                                            wBattleMonSpecies, wEnemyMonSpecies, wOddEggSpecies, wBaseSpecies
+	                                            wBattleMonSpecies, wEnemyMonSpecies, wOddEggSpecies, wBaseDexNo
 	pop af
 	ldh [rSVBK], a
 	___conversion_bitmap_free_unused wPokemonIndexTable, MON_TABLE

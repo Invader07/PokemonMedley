@@ -488,7 +488,7 @@ MailboxPC:
 	farcall InitPartyMenuWithCancel
 	farcall InitPartyMenuGFX
 	farcall WritePartyMenuTilemap
-	farcall PlacePartyMenuText
+	farcall PrintPartyMenuText
 	call WaitBGMap
 	call SetDefaultBGPAndOBP
 	call DelayFrame

@@ -32,6 +32,8 @@ CheckRegisteredItem:
 	dw .CheckBall
 	dw .CheckKeyItem
 	dw .CheckTMHM
+	dw .CheckMedicine
+	dw .CheckBerries
 
 .CheckItem:
 	ld hl, wNumItems
@@ -60,6 +62,7 @@ CheckRegisteredItem:
 
 .CheckBall:
 	ld hl, wNumBalls
+.StandardCheck
 	call .CheckRegisteredNo
 	jr nc, .NoRegisteredItem
 	inc hl
@@ -70,6 +73,14 @@ CheckRegisteredItem:
 	call .IsSameItem
 	jr c, .NoRegisteredItem
 	ret
+
+.CheckMedicine
+	ld hl, wNumMedicine
+	jr .StandardCheck
+
+.CheckBerries
+	ld hl, wNumBerries
+	jr .StandardCheck
 
 .CheckTMHM:
 	jr .NoRegisteredItem
@@ -139,7 +150,7 @@ UseRegisteredItem:
 	ret
 
 .Party:
-	call ReanchorMap
+	call RefreshScreen
 	call FadeToMenu
 	call DoItemEffect
 	call CloseSubmenu
@@ -148,7 +159,7 @@ UseRegisteredItem:
 	ret
 
 .Overworld:
-	call ReanchorMap
+	call RefreshScreen
 	ld a, 1
 	ld [wUsingItemWithSelect], a
 	call DoItemEffect
@@ -163,7 +174,7 @@ UseRegisteredItem:
 	ret
 
 .CantUse:
-	call ReanchorMap
+	call RefreshScreen
 
 ._cantuse
 	call CantUseItem

@@ -1,5 +1,3 @@
-DEF HALLOFFAME_COLON EQU $63
-
 HallOfFame::
 	call HallOfFame_FadeOutMusic
 	ld a, [wStatusFlags]
@@ -41,9 +39,9 @@ RedCredits::
 	ld [wMusicFadeID + 1], a
 	ld a, 10
 	ld [wMusicFade], a
-	farcall FadeOutToWhite
+	farcall FadeOutPalettes
 	xor a
-	ld [wStateFlags], a
+	ld [wVramState], a
 	ldh [hMapAnims], a
 	farcall InitDisplayForRedCredits
 	ld c, 8
@@ -63,9 +61,9 @@ HallOfFame_FadeOutMusic:
 	ld [wMusicFadeID + 1], a
 	ld a, 10
 	ld [wMusicFade], a
-	farcall FadeOutToWhite
+	farcall FadeOutPalettes
 	xor a
-	ld [wStateFlags], a
+	ld [wVramState], a
 	ldh [hMapAnims], a
 	farcall InitDisplayForHallOfFame
 	ret
@@ -92,12 +90,11 @@ AnimateHallOfFame:
 	ld a, [wHallOfFameMonCounter]
 	cp PARTY_LENGTH
 	jr nc, .done
-	ld hl, wHallOfFameTempMon1 + 1
+	ld hl, wHallOfFameTempMon1
 	ld bc, wHallOfFameTempMon1End - wHallOfFameTempMon1
 	call AddNTimes
-	ld a, [hld]
-	and [hl]
-	inc a
+	ld a, [hl]
+	cp -1
 	jr z, .done
 	push hl
 	call AnimateHOFMonEntrance
@@ -136,7 +133,7 @@ AnimateHallOfFame:
 
 GetHallOfFameParty:
 	ld hl, wHallOfFamePokemonList
-	ld bc, HOF_LENGTH
+	ld bc, wHallOfFamePokemonListEnd - wHallOfFamePokemonList + 1
 	xor a
 	call ByteFill
 	ld a, [wHallOfFameCount]
@@ -169,15 +166,10 @@ GetHallOfFameParty:
 	ld hl, MON_SPECIES
 	add hl, bc
 	ld a, [hl]
-	call GetPokemonIndexFromID
-	ld a, l
-	ld [de], a
-	inc de
-	ld a, h
 	ld [de], a
 	inc de
 
-	ld hl, MON_OT_ID
+	ld hl, MON_ID
 	add hl, bc
 	ld a, [hli]
 	ld [de], a
@@ -223,8 +215,6 @@ GetHallOfFameParty:
 .done
 	ld a, -1
 	ld [de], a
-	inc de
-	ld [de], a
 	ret
 
 AnimateHOFMonEntrance:
@@ -233,12 +223,6 @@ AnimateHOFMonEntrance:
 	farcall ResetDisplayBetweenHallOfFameMons
 	pop hl
 	ld a, [hli]
-	push hl
-	ld h, [hl]
-	ld l, a
-	call GetPokemonIDFromIndex
-	pop hl
-	inc hl
 	ld [wTempMonSpecies], a
 	ld [wCurPartySpecies], a
 	inc hl
@@ -360,12 +344,11 @@ _HallOfFamePC:
 	ld a, [wHallOfFameMonCounter]
 	cp PARTY_LENGTH
 	jr nc, .fail
-	ld hl, wHallOfFameTempMon1 + 1
+	ld hl, wHallOfFameTempMon1
 	ld bc, wHallOfFameTempMon1End - wHallOfFameTempMon1
 	call AddNTimes
-	ld a, [hld]
-	and [hl]
-	inc a
+	ld a, [hl]
+	cp -1
 	jr nz, .okay
 
 .fail
@@ -424,7 +407,7 @@ LoadHOFTeam:
 	cp NUM_HOF_TEAMS
 	jr nc, .invalid
 	ld hl, sHallOfFame
-	ld bc, HOF_LENGTH
+	ld bc, wHallOfFameTempEnd - wHallOfFameTemp + 1
 	call AddNTimes
 	ld a, BANK(sHallOfFame)
 	call OpenSRAM
@@ -432,7 +415,7 @@ LoadHOFTeam:
 	and a
 	jr z, .absent
 	ld de, wHallOfFameTemp
-	ld bc, HOF_LENGTH
+	ld bc, wHallOfFameTempEnd - wHallOfFameTemp + 1
 	call CopyBytes
 	call CloseSRAM
 	and a
@@ -449,12 +432,6 @@ DisplayHOFMon:
 	xor a
 	ldh [hBGMapMode], a
 	ld a, [hli]
-	push hl
-	ld h, [hl]
-	ld l, a
-	call GetPokemonIDFromIndex
-	pop hl
-	inc hl
 	ld [wTempMonSpecies], a
 	ld a, [hli]
 	ld [wTempMonID], a
@@ -483,6 +460,7 @@ DisplayHOFMon:
 	call Textbox
 	ld a, [wTempMonSpecies]
 	ld [wCurPartySpecies], a
+	ld [wTextDecimalByte], a
 	ld hl, wTempMonDVs
 	predef GetUnownLetter
 	xor a
@@ -496,21 +474,10 @@ DisplayHOFMon:
 	ld a, "№"
 	ld [hli], a
 	ld [hl], "<DOT>"
-	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	ld a, l
-	ld l, h
-	ld h, a
-	push hl
-	ld hl, sp + 0
-	ld d, h
-	ld e, l
 	hlcoord 3, 13
-	lb bc, PRINTNUM_LEADINGZEROS | 2, 3
+	ld de, wTextDecimalByte
+	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
 	call PrintNum
-	pop hl
-	ld a, [wCurPartySpecies]
-	ld [wNamedObjectIndex], a
 	call GetBasePokemonName
 	hlcoord 7, 13
 	call PlaceString
@@ -549,10 +516,6 @@ DisplayHOFMon:
 
 HOF_AnimatePlayerPic:
 	call ClearBGPalettes
-	ld hl, vTiles2 tile HALLOFFAME_COLON
-	ld de, FontExtra + 13 tiles ; "<COLON>"
-	lb bc, BANK(FontExtra), 1
-	call Request2bpp
 	hlcoord 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	ld a, " "
@@ -622,7 +585,7 @@ HOF_AnimatePlayerPic:
 	ld de, wGameTimeHours
 	lb bc, 2, 3
 	call PrintNum
-	ld [hl], HALLOFFAME_COLON
+	ld [hl], "<COLON>"
 	inc hl
 	ld de, wGameTimeMinutes
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 2

@@ -156,15 +156,15 @@ LinkTextbox:
 	call _LinkTextbox
 	ret
 
-PlaceWaitingTextAndSyncAndExchangeNybble:
+PrintWaitingTextAndSyncAndExchangeNybble:
 	call LoadStandardMenuHeader
-	call .PlaceWaitingText
+	call .PrintWaitingText
 	farcall WaitLinkTransfer
 	call ExitMenu
 	call WaitBGMap2
 	ret
 
-.PlaceWaitingText:
+.PrintWaitingText:
 	hlcoord 4, 10
 	ld b, 1
 	ld c, 10

@@ -1,5 +1,5 @@
 BetaLoadPlayerTrainerClass: ; unreferenced
-	ld c, CAL
+	ld c, HARRISON
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .got_class
@@ -83,13 +83,13 @@ GetPlayerNameArray: ; unreferenced
 	ret
 
 GetPlayerIcon:
-	ld de, ChrisSpriteGFX
-	ld b, BANK(ChrisSpriteGFX)
+	ld de, MainBoySpriteGFX
+	ld b, BANK(MainBoySpriteGFX)
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .got_gfx
-	ld de, KrisSpriteGFX
-	ld b, BANK(KrisSpriteGFX)
+	ld de, MainGirlSpriteGFX
+	ld b, BANK(MainGirlSpriteGFX)
 .got_gfx
 	ret
 

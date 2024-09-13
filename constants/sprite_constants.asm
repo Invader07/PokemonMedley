@@ -99,11 +99,27 @@
 	const SPRITE_SILVER_TROPHY ; 5f
 	const SPRITE_KRIS ; 60
 	const SPRITE_KRIS_BIKE ; 61
-	const SPRITE_KURT_OUTSIDE ; 62
 	const SPRITE_SUICUNE ; 63
 	const SPRITE_ENTEI ; 64
 	const SPRITE_RAIKOU ; 65
-	const SPRITE_STANDING_YOUNGSTER ; 66
+	const SPRITE_GOOD_RIVAL ; 66
+	const SPRITE_BAD_RIVAL ; 67
+	const SPRITE_CELIO ; 68
+	const SPRITE_MAIN_GIRL ; 69
+	const SPRITE_MAIN_BOY ; 6a
+	const SPRITE_MAIN_GIRL_RUN ; 6b
+	const SPRITE_MAIN_BOY_RUN ; 6c
+	const SPRITE_GIOVANNI_HAT ; 6d
+	const SPRITE_EDWARD ; 6e
+	const SPRITE_HARRISON ; 6f
+	const SPRITE_COTTONEE
+	const SPRITE_SHINX
+	const SPRITE_MURKROW
+	const SPRITE_EKANS
+	const SPRITE_HOUNDOUR
+	const SPRITE_BALTOY
+	const SPRITE_KENJI
+
 DEF NUM_OVERWORLD_SPRITES EQU const_value - 1
 
 ; SpriteMons indexes (see data/sprites/sprite_mons.asm)
@@ -131,7 +147,7 @@ DEF SPRITE_POKEMON EQU const_value
 	const SPRITE_BULBASAUR ; 93
 	const SPRITE_JIGGLYPUFF ; 94
 	const SPRITE_GRIMER ; 95
-	const SPRITE_EKANS ; 96
+	const SPRITE_EKANS_2 ; 96
 	const SPRITE_PARAS ; 97
 	const SPRITE_TENTACOOL ; 98
 	const SPRITE_TAUROS ; 99
@@ -144,6 +160,7 @@ DEF SPRITE_POKEMON EQU const_value
 	const SPRITE_GYARADOS ; a0
 	const SPRITE_LUGIA ; a1
 	const SPRITE_HO_OH ; a2
+
 DEF NUM_POKEMON_SPRITES EQU const_value - SPRITE_POKEMON
 
 ; special GetMonSprite values (see engine/overworld/overworld.asm)
@@ -158,9 +175,6 @@ DEF SPRITE_VARS EQU const_value
 	const SPRITE_DOLL_1 ; f1
 	const SPRITE_DOLL_2 ; f2
 	const SPRITE_BIG_DOLL ; f3
-	const SPRITE_WEIRD_TREE ; f4
-	const SPRITE_OLIVINE_RIVAL ; f5
-	const SPRITE_AZALEA_ROCKET ; f6
 	const SPRITE_FUCHSIA_GYM_1 ; f7
 	const SPRITE_FUCHSIA_GYM_2 ; f8
 	const SPRITE_FUCHSIA_GYM_3 ; f9

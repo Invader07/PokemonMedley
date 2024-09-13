@@ -8,7 +8,7 @@ InitClock:
 	ld a, $1
 	ldh [hInMenu], a
 
-	ld a, FALSE
+	ld a, $0
 	ld [wSpriteUpdatesEnabled], a
 	ld a, $10
 	ld [wMusicFade], a
@@ -506,7 +506,7 @@ SetDayOfWeek:
 	ret
 
 .WeekdayStrings:
-; entries correspond to wCurDay constants (see constants/ram_constants.asm)
+; entries correspond to wCurDay constants (see constants/wram_constants.asm)
 	dw .Sunday
 	dw .Monday
 	dw .Tuesday
@@ -694,8 +694,10 @@ GetTimeOfDayString:
 	jr c, .nite
 	cp DAY_HOUR
 	jr c, .morn
-	cp NITE_HOUR
+	cp EVE_HOUR
 	jr c, .day
+	cp NITE_HOUR
+	jr c, .eve
 .nite
 	ld de, .nite_string
 	ret
@@ -705,10 +707,14 @@ GetTimeOfDayString:
 .day
 	ld de, .day_string
 	ret
+.eve
+	ld de, .eve_string
+	ret
 
 .nite_string: db "NITE@"
-.morn_string: db "MORN@"
+.morn_string: db "DAWN@"
 .day_string:  db "DAY@"
+.eve_string:  db "DUSK@"
 
 AdjustHourForAMorPM:
 ; Convert the hour stored in c (0-23) to a 1-12 value

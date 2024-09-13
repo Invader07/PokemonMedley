@@ -63,11 +63,11 @@ NewGame:
 	ld [wDebugFlags], a
 	call ResetWRAM
 	call NewGame_ClearTilemapEtc
-	call PlayerProfileSetup
+	call AreYouABoyOrAreYouAGirl
 	call OakSpeech
 	call InitializeWorld
 
-	ld a, LANDMARK_NEW_BARK_TOWN
+	ld a, LANDMARK_HERALD_COVE
 	ld [wPrevLandmark], a
 
 	ld a, SPAWN_HOME
@@ -77,14 +77,15 @@ NewGame:
 	ldh [hMapEntryMethod], a
 	jp FinishContinueFunction
 
-PlayerProfileSetup:
-	farcall CheckMobileAdapterStatus
+AreYouABoyOrAreYouAGirl:
+	farcall Mobile_AlwaysReturnNotCarry ; mobile
 	jr c, .ok
 	farcall InitGender
 	ret
+
 .ok
 	ld c, 0
-	farcall InitMobileProfile
+	farcall InitMobileProfile ; mobile
 	ret
 
 if DEF(_DEBUG)
@@ -118,8 +119,8 @@ _ResetWRAM:
 	xor a
 	call ByteFill
 
-	ld hl, STARTOF(WRAMX)
-	ld bc, wGameData - STARTOF(WRAMX)
+	ld hl, WRAM1_Begin
+	ld bc, wGameData - WRAM1_Begin
 	xor a
 	call ByteFill
 
@@ -162,6 +163,12 @@ _ResetWRAM:
 	call .InitList
 
 	ld hl, wNumBalls
+	call .InitList
+
+	ld hl, wNumMedicine
+	call .InitList
+
+	ld hl, wNumBerries
 	call .InitList
 
 	ld hl, wNumPCItems
@@ -226,7 +233,7 @@ endc
 
 	farcall DeletePartyMonMail
 
-	farcall ClearGSBallFlag
+	farcall DeleteMobileEventIndex
 
 	call ResetGameTime
 	ret
@@ -253,9 +260,6 @@ InitializeMagikarpHouse:
 	db "RALPH@"
 
 InitializeNPCNames:
-	ld hl, .Rival
-	ld de, wRivalName
-	call .Copy
 
 	ld hl, .Mom
 	ld de, wMomsName
@@ -265,21 +269,15 @@ InitializeNPCNames:
 	ld de, wRedsName
 	call .Copy
 
-	ld hl, .Green
-	ld de, wGreensName
-
 .Copy:
 	ld bc, NAME_LENGTH
 	call CopyBytes
 	ret
 
-.Rival:  db "???@"
 .Red:    db "RED@"
-.Green:  db "GREEN@"
 .Mom:    db "MOM@"
 
 InitializeWorld:
-	call ShrinkPlayer
 	farcall SpawnPlayer
 	farcall _InitializeStartDay
 	ret
@@ -348,7 +346,7 @@ Continue:
 	farcall CopyMysteryGiftReceivedDecorationsToPC
 	farcall ClockContinue
 	ld a, [wSpawnAfterChampion]
-	cp SPAWN_LANCE
+	cp SPAWN_HERALD_COVE
 	jr z, .SpawnAfterE4
 	ld a, MAPSETUP_CONTINUE
 	ldh [hMapEntryMethod], a
@@ -358,13 +356,13 @@ Continue:
 	ret
 
 .SpawnAfterE4:
-	ld a, SPAWN_NEW_BARK
+	ld a, SPAWN_HERALD_COVE
 	ld [wDefaultSpawnpoint], a
 	call PostCreditsSpawn
 	jp FinishContinueFunction
 
 SpawnAfterRed:
-	ld a, SPAWN_MT_SILVER
+	ld a, SPAWN_HERALD_COVE
 	ld [wDefaultSpawnpoint], a
 
 PostCreditsSpawn:
@@ -374,9 +372,12 @@ PostCreditsSpawn:
 	ldh [hMapEntryMethod], a
 	ret
 
-Continue_MobileAdapterMenu: ; unused
-	farcall CheckMobileAdapterStatus
+Continue_MobileAdapterMenu:
+	farcall Mobile_AlwaysReturnNotCarry ; mobile check
 	ret nc
+
+; the rest of this stuff is never reached because
+; the previous function returns with carry not set
 	ld hl, wd479
 	bit 1, [hl]
 	ret nz
@@ -443,7 +444,7 @@ FinishContinueFunction:
 	set 1, [hl]
 	farcall OverworldLoop
 	ld a, [wSpawnAfterChampion]
-	cp SPAWN_RED
+	cp SPAWN_HERALD_COVE
 	jr z, .AfterRed
 	jp Reset
 
@@ -582,22 +583,16 @@ Continue_DisplayPokedexNumCaught:
 	ret z
 	push hl
 	ld hl, wPokedexCaught
-	ld bc, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits16
+if NUM_POKEMON % 8
+	ld b, NUM_POKEMON / 8 + 1
+else
+	ld b, NUM_POKEMON / 8
+endc
+	call CountSetBits
 	pop hl
-	ld a, b
-	ld b, c
-	ld c, a
-	push bc
-	push hl
-	ld hl, sp + 2
-	ld d, h
-	ld e, l
-	lb bc, 2, 3
-	pop hl
-	call PrintNum
-	pop bc
-	ret
+	ld de, wNumSetBits
+	lb bc, 1, 3
+	jp PrintNum
 
 Continue_DisplayGameTime:
 	ld de, wGameTimeHours
@@ -610,15 +605,9 @@ Continue_DisplayGameTime:
 	jp PrintNum
 
 OakSpeech:
-	farcall InitClock
-	call RotateFourPalettesLeft
 	call ClearTilemap
-
 	ld de, MUSIC_ROUTE_30
 	call PlayMusic
-
-	call RotateFourPalettesRight
-	call RotateThreePalettesRight
 	xor a
 	ld [wCurPartySpecies], a
 	ld a, POKEMON_PROF
@@ -634,8 +623,7 @@ OakSpeech:
 	call RotateThreePalettesRight
 	call ClearTilemap
 
-	ld hl, WOOPER
-	call GetPokemonIDFromIndex
+	ld a, WHIMSICOTT
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
 	call GetBaseData
@@ -686,6 +674,10 @@ OakSpeech:
 	call NamePlayer
 	ld hl, OakText7
 	call PrintText
+
+	farcall InitClock
+	call RotateFourPalettesLeft
+	call ClearTilemap
 	ret
 
 OakText1:
@@ -695,8 +687,7 @@ OakText1:
 OakText2:
 	text_far _OakText2
 	text_asm
-	ld hl, WOOPER
-	call GetPokemonIDFromIndex
+	ld a, WHIMSICOTT
 	call PlayMonCry
 	call WaitSFX
 	ld hl, OakText3
@@ -763,9 +754,9 @@ NamePlayer:
 	ret
 
 .Chris:
-	db "CHRIS@@@@@@"
+	db "WALKER@@@@@"
 .Kris:
-	db "KRIS@@@@@@@"
+	db "FAYE@@@@@@@"
 
 GSShowPlayerNamingChoices: ; unreferenced
 	call LoadMenuHeader
@@ -918,11 +909,11 @@ Intro_PlacePlayerSprite:
 	inc de
 	ld [hli], a ; tile id
 
-	ld b, PAL_OW_RED
+	ld b, PAL_OW_BLUE
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
 	jr z, .male
-	ld b, PAL_OW_BLUE
+	ld b, PAL_OW_RED
 .male
 	ld a, b
 
@@ -934,10 +925,10 @@ Intro_PlacePlayerSprite:
 .sprites
 	db 4
 	; y pxl, x pxl, tile offset
-	db  9 * TILE_WIDTH + 4,  9 * TILE_WIDTH, 0
-	db  9 * TILE_WIDTH + 4, 10 * TILE_WIDTH, 1
-	db 10 * TILE_WIDTH + 4,  9 * TILE_WIDTH, 2
-	db 10 * TILE_WIDTH + 4, 10 * TILE_WIDTH, 3
+	db  9 * 8 + 4,  9 * 8, 0
+	db  9 * 8 + 4, 10 * 8, 1
+	db 10 * 8 + 4,  9 * 8, 2
+	db 10 * 8 + 4, 10 * 8, 3
 
 
 	const_def

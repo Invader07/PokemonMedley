@@ -33,25 +33,21 @@ ProfOaksPCRating:
 
 Rate:
 ; calculate Seen/Owned
-	ld hl, wPokedexCaught
-	ld bc, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits16
-	push bc
 	ld hl, wPokedexSeen
-	ld bc, wEndPokedexSeen - wPokedexSeen
-	call CountSetBits16
+	ld b, wEndPokedexSeen - wPokedexSeen
+	call CountSetBits
+	ld [wTempPokedexSeenCount], a
+	ld hl, wPokedexCaught
+	ld b, wEndPokedexCaught - wPokedexCaught
+	call CountSetBits
+	ld [wTempPokedexCaughtCount], a
 
 ; print appropriate rating
-	ld hl, wStringBuffer3
-	call .UpdateRatingBuffer
-	pop bc
-	push bc
-	ld hl, wStringBuffer4
-	call .UpdateRatingBuffer
+	call .UpdateRatingBuffers
 	ld hl, OakPCText3
 	call PrintText
 	call JoyWaitAorB
-	pop bc
+	ld a, [wTempPokedexCaughtCount]
 	ld hl, OakRatings
 	call FindOakRating
 	push de
@@ -59,41 +55,38 @@ Rate:
 	pop de
 	ret
 
+.UpdateRatingBuffers:
+	ld hl, wStringBuffer3
+	ld de, wTempPokedexSeenCount
+	call .UpdateRatingBuffer
+	ld hl, wStringBuffer4
+	ld de, wTempPokedexCaughtCount
+	call .UpdateRatingBuffer
+	ret
+
 .UpdateRatingBuffer:
-	ld a, b
-	ld b, c
-	ld c, a
-	push bc
 	push hl
 	ld a, "@"
 	ld bc, ITEM_NAME_LENGTH
 	call ByteFill
-	ld hl, sp + 2
-	ld d, h
-	ld e, l
 	pop hl
-	lb bc, PRINTNUM_LEFTALIGN | 2, 4
+	lb bc, PRINTNUM_LEFTALIGN | 1, 3
 	call PrintNum
-	pop bc
 	ret
 
 FindOakRating:
 ; return sound effect in de
 ; return text pointer in hl
+	nop
+	ld c, a
+.loop
 	ld a, [hli]
-	ld d, a
-	ld a, [hli]
-	cp b
-	jr c, .next
-	jr nz, .match
-	ld a, d
 	cp c
 	jr nc, .match
-.next
-	rept 4
-		inc hl
-	endr
-	jr FindOakRating
+rept 4
+	inc hl
+endr
+	jr .loop
 
 .match
 	ld a, [hli]

@@ -35,6 +35,12 @@ Marts:
 	dw MartMtMoon
 	dw MartIndigoPlateau
 	dw MartUnderground
+	dw MartHeraldCove
+	dw MartHeraldBerries
+	dw MartCraggyCoast1
+	dw MartCraggyCoast2
+	dw MartCraggyCoast3
+	dw MartCraggyCoast4
 	assert_table_length NUM_MARTS
 
 MartCherrygrove:
@@ -55,7 +61,7 @@ MartCherrygroveDex:
 	db -1 ; end
 
 MartViolet:
-	db 10 ; # items
+	db 9 ; # items
 	db POKE_BALL
 	db POTION
 	db ESCAPE_ROPE
@@ -65,11 +71,10 @@ MartViolet:
 	db X_DEFEND
 	db X_ATTACK
 	db X_SPEED
-	db FLOWER_MAIL
 	db -1 ; end
 
 MartAzalea:
-	db 9 ; # items
+	db 8 ; # items
 	db CHARCOAL
 	db POKE_BALL
 	db POTION
@@ -78,7 +83,6 @@ MartAzalea:
 	db REPEL
 	db ANTIDOTE
 	db PARLYZ_HEAL
-	db FLOWER_MAIL
 	db -1 ; end
 
 MartCianwood:
@@ -102,7 +106,7 @@ MartGoldenrod2F1:
 	db -1 ; end
 
 MartGoldenrod2F2:
-	db 8 ; # items
+	db 7 ; # items
 	db POKE_BALL
 	db GREAT_BALL
 	db ESCAPE_ROPE
@@ -110,7 +114,6 @@ MartGoldenrod2F2:
 	db REVIVE
 	db FULL_HEAL
 	db POKE_DOLL
-	db FLOWER_MAIL
 	db -1 ; end
 
 MartGoldenrod3F:
@@ -145,7 +148,6 @@ MartGoldenrod5F2:
 	db TM_THUNDERPUNCH
 	db TM_FIRE_PUNCH
 	db TM_ICE_PUNCH
-	db TM_HEADBUTT
 	db -1 ; end
 
 MartGoldenrod5F3:
@@ -161,12 +163,11 @@ MartGoldenrod5F4:
 	db TM_THUNDERPUNCH
 	db TM_FIRE_PUNCH
 	db TM_ICE_PUNCH
-	db TM_HEADBUTT
 	db TM_ROCK_SMASH
 	db -1 ; end
 
 MartOlivine:
-	db 9 ; # items
+	db 8 ; # items
 	db GREAT_BALL
 	db SUPER_POTION
 	db HYPER_POTION
@@ -175,7 +176,6 @@ MartOlivine:
 	db AWAKENING
 	db ICE_HEAL
 	db SUPER_REPEL
-	db SURF_MAIL
 	db -1 ; end
 
 MartEcruteak:
@@ -201,8 +201,7 @@ MartMahogany1:
 	db -1 ; end
 
 MartMahogany2:
-	db 9 ; # items
-	db RAGECANDYBAR
+	db 7 ; # items
 	db GREAT_BALL
 	db SUPER_POTION
 	db HYPER_POTION
@@ -210,7 +209,6 @@ MartMahogany2:
 	db PARLYZ_HEAL
 	db SUPER_REPEL
 	db REVIVE
-	db FLOWER_MAIL
 	db -1 ; end
 
 MartBlackthorn:
@@ -227,7 +225,7 @@ MartBlackthorn:
 	db -1 ; end
 
 MartViridian:
-	db 9 ; # items
+	db 8 ; # items
 	db ULTRA_BALL
 	db HYPER_POTION
 	db FULL_HEAL
@@ -236,7 +234,6 @@ MartViridian:
 	db PARLYZ_HEAL
 	db AWAKENING
 	db BURN_HEAL
-	db FLOWER_MAIL
 	db -1 ; end
 
 MartPewter:
@@ -251,7 +248,7 @@ MartPewter:
 	db -1 ; end
 
 MartCerulean:
-	db 9 ; # items
+	db 8 ; # items
 	db GREAT_BALL
 	db ULTRA_BALL
 	db SUPER_POTION
@@ -260,7 +257,6 @@ MartCerulean:
 	db X_DEFEND
 	db X_ATTACK
 	db DIRE_HIT
-	db SURF_MAIL
 	db -1 ; end
 
 MartLavender:
@@ -276,7 +272,7 @@ MartLavender:
 	db -1 ; end
 
 MartVermilion:
-	db 8 ; # items
+	db 7 ; # items
 	db ULTRA_BALL
 	db SUPER_POTION
 	db HYPER_POTION
@@ -284,7 +280,6 @@ MartVermilion:
 	db PARLYZ_HEAL
 	db AWAKENING
 	db BURN_HEAL
-	db LITEBLUEMAIL
 	db -1 ; end
 
 MartCeladon2F1:
@@ -322,10 +317,8 @@ MartCeladon3F:
 	db -1 ; end
 
 MartCeladon4F:
-	db 3 ; # items
+	db 1 ; # items
 	db POKE_DOLL
-	db LOVELY_MAIL
-	db SURF_MAIL
 	db -1 ; end
 
 MartCeladon5F1:
@@ -349,18 +342,17 @@ MartCeladon5F2:
 	db -1 ; end
 
 MartFuchsia:
-	db 7 ; # items
+	db 6 ; # items
 	db GREAT_BALL
 	db ULTRA_BALL
 	db SUPER_POTION
 	db HYPER_POTION
 	db FULL_HEAL
 	db MAX_REPEL
-	db FLOWER_MAIL
 	db -1 ; end
 
 MartSaffron:
-	db 8 ; # items
+	db 7 ; # items
 	db GREAT_BALL
 	db ULTRA_BALL
 	db HYPER_POTION
@@ -368,17 +360,15 @@ MartSaffron:
 	db FULL_HEAL
 	db X_ATTACK
 	db X_DEFEND
-	db FLOWER_MAIL
 	db -1 ; end
 
 MartMtMoon:
-	db 6 ; # items
+	db 5 ; # items
 	db POKE_DOLL
 	db FRESH_WATER
 	db SODA_POP
 	db LEMONADE
 	db REPEL
-	db PORTRAITMAIL
 	db -1 ; end
 
 MartIndigoPlateau:
@@ -398,6 +388,57 @@ MartUnderground:
 	db ENERGY_ROOT
 	db HEAL_POWDER
 	db REVIVAL_HERB
+	db -1 ; end
+
+MartHeraldCove:
+	db 2 ; # items
+	db POKE_BALL
+	db POTION
+	db -1 ; end
+
+MartHeraldBerries:
+	db 3 ; # items
+	db BERRY
+	db PRZCUREBERRY
+	db PSNCUREBERRY
+	db -1 ; end
+
+MartCraggyCoast1:
+	db 4 ; # items
+	db POKE_BALL
+	db X_ATTACK
+	db X_DEFEND
+	db X_ACCURACY
+	db -1 ; end
+
+MartCraggyCoast2:
+	db 5 ; # items
+	db BERRY
+	db PSNCUREBERRY
+	db PRZCUREBERRY
+	db MINT_BERRY
+	db DREAM_BERRY
+	db -1 ; end
+
+MartCraggyCoast3:
+	db 5 ; # items
+	db POTION
+	db SUPER_POTION
+	db ANTIDOTE
+	db PARLYZ_HEAL
+	db REPEL
+	db -1 ; end
+
+MartCraggyCoast4:
+	db 8 ; # items
+	db RESCUE_BALL
+	db DUSK_BALL
+	db DAWN_BALL
+	db TIMER_BALL
+	db SPEED_BALL
+	db SHINY_BALL
+	db VIRAL_BALL
+	db FORTUNE_BALL
 	db -1 ; end
 
 DefaultMart:

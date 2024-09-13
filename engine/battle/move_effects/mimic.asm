@@ -16,12 +16,9 @@ BattleCommand_Mimic:
 	call GetBattleVar
 	and a
 	jr z, .fail
-	ld b, a
-	push bc
-	ld bc, STRUGGLE
-	call CompareMove
-	pop bc
+	cp STRUGGLE
 	jr z, .fail
+	ld b, a
 	ld c, NUM_MOVES
 .check_already_knows_move
 	ld a, [hli]
@@ -29,14 +26,12 @@ BattleCommand_Mimic:
 	jr z, .fail
 	dec c
 	jr nz, .check_already_knows_move
-	push hl
-	ld hl, MIMIC
-	call GetMoveIDFromIndex
-	pop hl
-.find_mimic
 	dec hl
-	cp [hl]
+.find_mimic
+	ld a, [hld]
+	cp MIMIC
 	jr nz, .find_mimic
+	inc hl
 	ld a, BATTLE_VARS_LAST_COUNTER_MOVE_OPP
 	call GetBattleVar
 	ld [hl], a

@@ -20,9 +20,9 @@ BattleCommand_Conversion:
 	jr z, .okay
 	push hl
 	push bc
-	ld l, a
-	ld a, MOVE_TYPE
-	call GetMoveAttribute
+	dec a
+	ld hl, Moves + MOVE_TYPE
+	call GetMoveAttr
 	ld [de], a
 	inc de
 	pop bc

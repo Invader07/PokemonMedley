@@ -9,10 +9,10 @@
 	const TRAINERCARDSTATE_QUIT          ; 6
 
 TrainerCard:
-	ld a, [wStateFlags]
+	ld a, [wVramState]
 	push af
 	xor a
-	ld [wStateFlags], a
+	ld [wVramState], a
 	ld hl, wOptions
 	ld a, [hl]
 	push af
@@ -35,7 +35,7 @@ TrainerCard:
 	pop af
 	ld [wOptions], a
 	pop af
-	ld [wStateFlags], a
+	ld [wVramState], a
 	ret
 
 .InitRAM:
@@ -274,19 +274,12 @@ TrainerCard_Page1_PrintDexCaught_GameTime:
 	ld de, .Badges
 	call PlaceString
 	ld hl, wPokedexCaught
-	ld bc, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits16
-	ld a, c
-	ld c, b
-	ld b, a
-	push bc
-	ld hl, sp + 0
-	ld d, h
-	ld e, l
+	ld b, wEndPokedexCaught - wPokedexCaught
+	call CountSetBits
+	ld de, wNumSetBits
 	hlcoord 15, 10
-	lb bc, 2, 3
+	lb bc, 1, 3
 	call PrintNum
-	pop bc
 	call TrainerCard_Page1_PrintGameTime
 	hlcoord 2, 8
 	ld de, .StatusTilemap

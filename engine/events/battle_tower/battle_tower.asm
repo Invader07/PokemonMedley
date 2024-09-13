@@ -182,20 +182,6 @@ BattleTowerBattle:
 	xor a ; FALSE
 	ld [wBattleTowerBattleEnded], a
 	call _BattleTowerBattle
-	xor a
-	ld l, LOCKED_MON_ID_BATTLE_TOWER_1
-	call LockPokemonID
-	ld l, LOCKED_MON_ID_BATTLE_TOWER_2
-	call LockPokemonID
-	ld l, LOCKED_MON_ID_BATTLE_TOWER_3
-	call LockPokemonID
-	lb bc, NUM_MOVES * 3, LOCKED_MOVE_ID_BATTLE_TOWER_MON1_MOVE1
-.loop
-	ld l, c
-	call LockMoveID
-	inc c
-	dec b
-	jr nz, .loop
 	ret
 
 UnusedBattleTowerDummySpecial1:
@@ -399,16 +385,15 @@ ValidateBTParty: ; unreferenced
 	ld b, h
 	ld c, l
 	ld a, [hl]
-	cp EGG
+	and a
+for x, $ff, NUM_POKEMON, -1
 	jr z, .invalid
-	call IsAPokemon
-	jr nc, .valid
+	cp x
+endr
+	jr nz, .valid
 
 .invalid
-	push hl
-	ld hl, SMEARGLE
-	call GetPokemonIDFromIndex
-	pop hl
+	ld a, SMEARGLE
 	ld [hl], a
 
 .valid
@@ -440,16 +425,10 @@ ValidateBTParty: ; unreferenced
 	ld d, NUM_MOVES - 1
 	ld a, [hli]
 	and a
-	jr z, .not_move
-	cp MOVE_TABLE_ENTRIES + 1
-	jr c, .valid_move
+	jr nz, .valid_move
 
-.not_move
 	dec hl
-	push hl
-	ld hl, POUND
-	call GetMoveIDFromIndex
-	pop hl
+	ld a, POUND
 	ld [hli], a
 	xor a
 	ld [hli], a
@@ -458,13 +437,7 @@ ValidateBTParty: ; unreferenced
 	jr .done_moves
 
 .valid_move
-	ld a, [hl]
-	cp MOVE_TABLE_ENTRIES + 1
-	jr c, .next
-	ld [hl], $0
-
-.next
-	inc hl
+	ld a, [hli]
 	dec d
 	jr nz, .valid_move
 
@@ -625,7 +598,7 @@ Function1704e1:
 	bit 7, a
 	jr nz, .done
 	call .DoJumptable
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	jr .loop
 
 .done
@@ -881,7 +854,7 @@ BattleTowerAction:
 	dw LoadBattleTowerLevelGroup
 	dw BattleTower_CheckSaveFileExistsAndIsYours
 	dw BattleTowerAction_0A
-	dw BattleTowerAction_GSBall
+	dw CheckMobileEventIndex
 	dw BattleTowerAction_0C
 	dw BattleTowerAction_0D
 	dw BattleTowerAction_EggTicket
@@ -980,7 +953,7 @@ BattleTower_RandomlyChooseReward:
 	sub 6
 .okay
 	add HP_UP
-	cp LUCKY_PUNCH
+	cp SHINY_BALL
 	jr z, .loop
 	push af
 	ld a, BANK(sBattleTowerReward)
@@ -1191,10 +1164,10 @@ BattleTowerAction_0A:
 	call MaxVolume
 	ret
 
-BattleTowerAction_GSBall:
-	ld a, BANK(sGSBallFlag)
+CheckMobileEventIndex: ; something to do with GS Ball
+	ld a, BANK(sMobileEventIndex)
 	call OpenSRAM
-	ld a, [sGSBallFlag]
+	ld a, [sMobileEventIndex]
 	ld [wScriptVar], a
 	call CloseSRAM
 	ret

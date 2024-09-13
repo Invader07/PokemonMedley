@@ -77,7 +77,7 @@ Function17c000:
 	ldh [rVBK], a
 
 	call EnableLCD
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ret
 
 HaveWantGFX:
@@ -389,23 +389,12 @@ CheckStringContainsLessThanBNextCharacters:
 
 Function17d1f1:
 	ld a, [wCurPartySpecies]
+	dec a
 	call SetSeenAndCaughtMon
 
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	sub LOW(UNOWN)
-	if HIGH(UNOWN) == 0
-		or h
-	else
-		ret nz
-		if HIGH(UNOWN) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(UNOWN)
-		endc
-	endc
-	ret nz
+	cp UNOWN
+	jr nz, .asm_17d223
 
 	ld hl, wPartyMon1DVs
 	ld a, [wPartyCount]
@@ -416,10 +405,12 @@ Function17d1f1:
 	callfar UpdateUnownDex
 	ld a, [wFirstUnownSeen]
 	and a
-	ret nz
+	jr nz, .asm_17d223
 
 	ld a, [wUnownLetter]
 	ld [wFirstUnownSeen], a
+
+.asm_17d223
 	ret
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -485,8 +476,8 @@ MenuHeader_17d26a:
 MenuData_17d272:
 	db STATICMENU_CURSOR | STATICMENU_WRAP ; flags
 	db 4
-	db "ニュース<WO>よみこむ@"
-	db "ニュース<WO>みる@"
+	db "ニュース¯よみこむ@"
+	db "ニュース¯みる@"
 	db "せつめい@"
 	db "やめる@"
 
@@ -613,7 +604,7 @@ Function17d370:
 	call ClearBGPalettes
 	call ClearSprites
 	call ClearScreen
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	call DisableLCD
 	ld hl, vTiles0 tile $ee
 	ld de, wc608
@@ -658,7 +649,7 @@ Function17d3f6:
 	call ClearBGPalettes
 	call ClearSprites
 	call ClearScreen
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 
 Function17d405:
 	call DisableLCD
@@ -703,7 +694,7 @@ Function17d45a:
 	bit 7, a
 	jr nz, .asm_17d46f
 	call Function17d474
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	jr .asm_17d45a
 
 .asm_17d46f
@@ -902,7 +893,7 @@ Function17d48d:
 	call Function17e451
 	call Function17e55b
 	call Function17e5af
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	jp Function17e438
 
 Function17d5be:
@@ -1221,12 +1212,10 @@ Function17d7c2:
 Function17d7d3:
 	call IncCrashCheckPointer
 	ld a, [hli]
-	push bc
-	call GetCryIndex
-	ld d, b
-	ld e, c
-	pop bc
-	call nc, PlayCry
+	dec a
+	ld e, a
+	ld d, 0
+	call PlayCry
 	call WaitSFX
 	call HlToCrashCheckPointer
 	ret
@@ -2842,7 +2831,7 @@ IncCrashCheckPointer_SaveChecksum:
 	inc_crash_check_pointer_farcall SaveChecksum
 
 IncCrashCheckPointer_SaveTrainerRankingsChecksum:
-	inc_crash_check_pointer_farcall UpdateTrainerRankingsChecksum2, BackupGSBallFlag
+	inc_crash_check_pointer_farcall UpdateTrainerRankingsChecksum2, BackupMobileEventIndex
 
 Function17e3e0:
 	call IncCrashCheckPointer

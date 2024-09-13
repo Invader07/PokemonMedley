@@ -183,7 +183,7 @@ Function17a78f:
 	ret
 
 .asm_17a79f
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ret
 
 Function17a7a6: ; unreferenced

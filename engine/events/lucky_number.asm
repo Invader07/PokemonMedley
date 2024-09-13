@@ -21,7 +21,7 @@ CheckForLuckyNumberWinners:
 	farcall GetStorageBoxMon
 	jr z, .next
 
-	ld hl, wBufferMonAltSpecies ; TODO : fix species
+	ld hl, wBufferMonAltSpecies
 	ld a, [hl]
 	cp EGG
 	jr z, .next

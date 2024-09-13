@@ -31,7 +31,7 @@ InitPartyMenuLayout:
 	call InitPartyMenuWithCancel
 	call InitPartyMenuGFX
 	call WritePartyMenuTilemap
-	call PlacePartyMenuText
+	call PrintPartyMenuText
 	ret
 
 LoadPartyMenuGFX:
@@ -364,21 +364,13 @@ PlacePartyMonEvoStoneCompatibility:
 	ld hl, wPartyMon1Species
 	call AddNTimes
 	ld a, [hl]
-	call GetPokemonIndexFromID
-	ld b, h
-	ld c, l
+	dec a
+	ld e, a
+	ld d, 0
 	ld hl, EvosAttacksPointers
-	ld a, BANK(EvosAttacksPointers)
-	call LoadDoubleIndirectPointer
-	ld d, h
-	ld e, l
-	farcall DetermineEvolutionItemResults
-	ld a, d
-	or e
-	ld de, .string_not_able
-	jr z, .got_string
-	ld de, .string_able
-.got_string
+	add hl, de
+	add hl, de
+	call .DetermineCompatibility
 	pop hl
 	call PlaceString
 
@@ -390,6 +382,44 @@ PlacePartyMonEvoStoneCompatibility:
 	inc b
 	dec c
 	jr nz, .loop
+	ret
+
+.DetermineCompatibility:
+; BUG: Only the first three evolution entries can have Stone compatibility reported correctly (see docs/bugs_and_glitches.md)
+	ld de, wStringBuffer1
+	ld a, BANK(EvosAttacksPointers)
+	ld bc, 2
+	call FarCopyBytes
+	ld hl, wStringBuffer1
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, wStringBuffer1
+	ld a, BANK("Evolutions and Attacks 1")
+	ld bc, 10
+	call FarCopyBytes
+	ld hl, wStringBuffer1
+.loop2
+; BUG: EVOLVE_STAT can break Stone compatibility reporting (see docs/bugs_and_glitches.md)
+	ld a, [hli]
+	and a
+	jr z, .nope
+	inc hl
+	inc hl
+	cp EVOLVE_ITEM
+	jr nz, .loop2
+	dec hl
+	dec hl
+	ld a, [wCurItem]
+	cp [hl]
+	inc hl
+	inc hl
+	jr nz, .loop2
+	ld de, .string_able
+	ret
+
+.nope
+	ld de, .string_not_able
 	ret
 
 .string_able
@@ -673,7 +703,7 @@ PartyMenuSelect:
 	scf
 	ret
 
-PlacePartyMenuText:
+PrintPartyMenuText:
 	hlcoord 0, 14
 	lb bc, 2, 18
 	call Textbox

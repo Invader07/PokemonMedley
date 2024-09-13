@@ -1,9 +1,9 @@
 	db 0 ; species ID placeholder
 
-	db  60,  45,  50,  70,  80,  80
+	db  60,  65,  50,  75,  90,  75
 	;   hp  atk  def  spd  sat  sdf
 
-	db BUG, FLYING ; type
+	db BUG, PSYCHIC_TYPE ; type
 	db 45 ; catch rate
 	db 160 ; base exp
 	db NO_ITEM, SILVERPOWDER ; items
@@ -17,5 +17,5 @@
 	dn EGG_BUG, EGG_BUG ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE, TOXIC, HIDDEN_POWER, SUNNY_DAY, SWEET_SCENT, SNORE, HYPER_BEAM, PROTECT, GIGA_DRAIN, ENDURE, FRUSTRATION, SOLARBEAM, RETURN, PSYCHIC_M, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, SWIFT, REST, ATTRACT, NIGHTMARE, FLASH
-	; end
+	tmhm CURSE
+		; end

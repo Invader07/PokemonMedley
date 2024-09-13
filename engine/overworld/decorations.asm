@@ -303,7 +303,7 @@ FindOwnedOrnaments:
 	db DECO_SQUIRTLE_DOLL ; 24
 	db DECO_POLIWAG_DOLL ; 25
 	db DECO_DIGLETT_DOLL ; 26
-	db DECO_STARYU_DOLL ; 27
+	db DECO_STARMIE_DOLL ; 27
 	db DECO_MAGIKARP_DOLL ; 28
 	db DECO_ODDISH_DOLL ; 29
 	db DECO_GENGAR_DOLL ; 2a
@@ -569,15 +569,6 @@ GetDecoName:
 
 .getpokename:
 	push bc
-	ld c, a
-	ld b, 0
-	ld hl, DecorationAttributePokemonNames
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	call GetPokemonIDFromIndex
 	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	pop bc

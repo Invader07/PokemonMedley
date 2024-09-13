@@ -27,8 +27,7 @@ endr
 
 	call Random
 	cp [hl]
-	ld de, 0
-	ret nc
+	jr nc, .no_bite
 
 	; Get encounter data by rod:
 	; 0: Old
@@ -36,6 +35,7 @@ endr
 	; 2: Super
 	inc hl
 	ld e, b
+	ld d, 0
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -51,36 +51,43 @@ endr
 	inc hl
 	inc hl
 	inc hl
-	inc hl
 	jr .loop
 .ok
 	inc hl
 
-.load
+	; Species 0 reads from a time-based encounter table.
 	ld a, [hli]
-	ld e, a
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	call GetPokemonIDFromIndex
 	ld d, a
 	and a
-	ret nz
+	call z, .TimeEncounter
 
-	; Species 0 reads from a time-based encounter table.
+	ld e, [hl]
+	ret
+
+.no_bite
+	ld de, 0
+	ret
+
+.TimeEncounter:
 	; The level byte is repurposed as the index for the new table.
+	ld e, [hl]
+	ld d, 0
 	ld hl, TimeFishGroups
-rept 6
+rept 4
 	add hl, de
 endr
 
 	ld a, [wTimeOfDay]
 	maskbits NUM_DAYTIMES
 	cp NITE_F
-	jr c, .load
+	jr c, .time_species
 	inc hl
 	inc hl
-	jr .ok
+
+.time_species
+	ld d, [hl]
+	inc hl
+	ret
 
 GetFishGroupIndex:
 ; Return the index of fishgroup d in de.

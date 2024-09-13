@@ -53,7 +53,7 @@ RockMonEncounter:
 	xor a
 	ret
 
-	db 5 ; unused
+	db $05 ; ????
 
 GetTreeMonSet:
 ; Return carry and treemon set in a
@@ -157,15 +157,12 @@ GetTreeMon:
 	cp 8
 	jr nc, NoTreeMon
 	jr .skip
-.loop
-	inc hl
-	inc hl
-	inc hl
 .skip
 	ld a, [hli]
-	inc a
-	jr nz, .loop
-	; fallthrough
+	cp -1
+	jr nz, .skip
+	call SelectTreeMon
+	ret
 
 SelectTreeMon:
 ; Read a TreeMons table and pick one monster at random.
@@ -178,7 +175,6 @@ SelectTreeMon:
 	inc hl
 	inc hl
 	inc hl
-	inc hl
 	jr .loop
 
 .ok
@@ -187,12 +183,9 @@ SelectTreeMon:
 	jr z, NoTreeMon
 
 	ld a, [hli]
-	ld [wCurPartyLevel], a
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	call GetPokemonIDFromIndex
 	ld [wTempWildMonSpecies], a
+	ld a, [hl]
+	ld [wCurPartyLevel], a
 	scf
 	ret
 

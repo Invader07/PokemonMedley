@@ -177,6 +177,9 @@ endr
 	pop hl
 	ret
 
+	WaitPlaySFX::
+		call WaitSFX
+
 PlaySFX::
 ; Play sound effect de.
 ; Sound effects are ordered by priority (highest to lowest)
@@ -217,16 +220,14 @@ PlaySFX::
 	pop hl
 	ret
 
-WaitPlaySFX::
-	call WaitSFX
-	jp PlaySFX
-
 WaitSFX::
 ; infinite loop until sfx is done playing
 
 	push hl
-
+	jr .handleLoop
 .wait
+	call DelayFrame
+.handleLoop
 	ld hl, wChannel5Flags1
 	bit 0, [hl]
 	jr nz, .wait
@@ -283,6 +284,11 @@ LowVolume::
 MinVolume::
 	xor a
 	ld [wVolume], a
+	ret
+
+FadeOutToMusic:: ; unreferenced
+	ld a, 4
+	ld [wMusicFade], a
 	ret
 
 FadeInToMusic::
@@ -430,19 +436,25 @@ SpecialMapMusic::
 	and a
 	ret
 
+.bike ; unreferenced
+	ld de, MUSIC_BICYCLE
+	scf
+	ret
+
 .surf
 	ld de, MUSIC_SURF
 	scf
 	ret
 
 .contest
+; TODO: Uncomment this if you restore the Bug-Catching Contest.
 	ld a, [wMapGroup]
-	cp GROUP_ROUTE_35_NATIONAL_PARK_GATE
+	cp GROUP_NONE ; GROUP_ROUTE_35_NATIONAL_PARK_GATE
 	jr nz, .no
 	ld a, [wMapNumber]
-	cp MAP_ROUTE_35_NATIONAL_PARK_GATE
+	cp MAP_NONE ; MAP_ROUTE_35_NATIONAL_PARK_GATE
 	jr z, .ranking
-	cp MAP_ROUTE_36_NATIONAL_PARK_GATE
+	cp MAP_NONE ; MAP_ROUTE_36_NATIONAL_PARK_GATE
 	jr nz, .no
 
 .ranking
@@ -453,7 +465,8 @@ SpecialMapMusic::
 GetMapMusic_MaybeSpecial::
 	call SpecialMapMusic
 	ret c
-	jp GetMapMusic
+	call GetMapMusic
+	ret
 
 CheckSFX::
 ; Return carry if any SFX channels are active.

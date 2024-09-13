@@ -106,6 +106,7 @@ GetMonMenuString:
 	ld [wNamedObjectIndex], a
 	jp GetMoveName
 
+
 .NotMove:
 	ld a, [hli]
 	ld d, [hl]

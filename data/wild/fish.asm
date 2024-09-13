@@ -14,20 +14,20 @@ FishGroups:
 	fishgroup 50 percent + 1, .Lake_Old,             .Lake_Good,             .Lake_Super
 	fishgroup 50 percent + 1, .Pond_Old,             .Pond_Good,             .Pond_Super
 	fishgroup 50 percent + 1, .Dratini_Old,          .Dratini_Good,          .Dratini_Super
-	fishgroup 50 percent + 1, .Qwilfish_Swarm_Old,   .Qwilfish_Swarm_Good,   .Qwilfish_Swarm_Super
-	fishgroup 50 percent + 1, .Remoraid_Swarm_Old,   .Remoraid_Swarm_Good,   .Remoraid_Swarm_Super
+	fishgroup 50 percent + 1, .Ocean_Old,            .Ocean_Good,            .Ocean_Super
+	fishgroup 50 percent + 1, .Ocean_Old,            .Ocean_Good,            .Ocean_Super
 	fishgroup 50 percent + 1, .Gyarados_Old,         .Gyarados_Good,         .Gyarados_Super
 	fishgroup 50 percent + 1, .Dratini_2_Old,        .Dratini_2_Good,        .Dratini_2_Super
 	fishgroup 50 percent + 1, .WhirlIslands_Old,     .WhirlIslands_Good,     .WhirlIslands_Super
-	fishgroup 50 percent + 1, .Qwilfish_Old,         .Qwilfish_Good,         .Qwilfish_Super
-	fishgroup 50 percent + 1, .Remoraid_Old,         .Remoraid_Good,         .Remoraid_Super
-	fishgroup 50 percent + 1, .Qwilfish_NoSwarm_Old, .Qwilfish_NoSwarm_Good, .Qwilfish_NoSwarm_Super
+	fishgroup 50 percent + 1, .Ocean_Old,            .Ocean_Good,            .Ocean_Super
+	fishgroup 50 percent + 1, .Ocean_Old,            .Ocean_Good,            .Ocean_Super
+	fishgroup 50 percent + 1, .Ocean_Old,            .Ocean_Good,            .Ocean_Super
 	assert_table_length NUM_FISHGROUPS
 
 .Shore_Old:
-	dbbw  70 percent + 1, 10, MAGIKARP
-	dbbw  85 percent + 1, 10, MAGIKARP
-	dbbw 100 percent,     10, KRABBY
+	dbbw  40 percent + 1, 10, MAGIKARP
+	dbbw  85 percent + 1, 10, KRABBY
+	dbbw 100 percent,     10, CORPHISH
 .Shore_Good:
 	dbbw  35 percent,     20, MAGIKARP
 	dbbw  70 percent,     20, KRABBY
@@ -40,49 +40,49 @@ FishGroups:
 	dbbw 100 percent,     40, KINGLER
 
 .Ocean_Old:
-	dbbw  70 percent + 1, 10, MAGIKARP
-	dbbw  85 percent + 1, 10, MAGIKARP
-	dbbw 100 percent,     10, TENTACOOL
+	dbbw  40 percent + 1, 10, MAGIKARP
+	dbbw  85 percent + 1, 10, KRABBY
+	dbbw 100 percent,     10, CORPHISH
 .Ocean_Good:
 	dbbw  35 percent,     20, MAGIKARP
-	dbbw  70 percent,     20, TENTACOOL
+	dbbw  70 percent,     20, WOOPER
 	dbbw  90 percent + 1, 20, CHINCHOU
 	dbbw 100 percent,     2, TIME_GROUP
 .Ocean_Super:
 	dbbw  40 percent,     40, CHINCHOU
 	dbbw  70 percent,     3, TIME_GROUP
-	dbbw  90 percent + 1, 40, TENTACRUEL
+	dbbw  90 percent + 1, 40, WOOPER
 	dbbw 100 percent,     40, LANTURN
 
 .Lake_Old:
 	dbbw  70 percent + 1, 10, MAGIKARP
 	dbbw  85 percent + 1, 10, MAGIKARP
-	dbbw 100 percent,     10, GOLDEEN
+	dbbw 100 percent,     10, WOOPER
 .Lake_Good:
 	dbbw  35 percent,     20, MAGIKARP
-	dbbw  70 percent,     20, GOLDEEN
-	dbbw  90 percent + 1, 20, GOLDEEN
+	dbbw  70 percent,     20, WOOPER
+	dbbw  90 percent + 1, 20, WOOPER
 	dbbw 100 percent,     4, TIME_GROUP
 .Lake_Super:
-	dbbw  40 percent,     40, GOLDEEN
+	dbbw  40 percent,     40, WOOPER
 	dbbw  70 percent,     5, TIME_GROUP
 	dbbw  90 percent + 1, 40, MAGIKARP
-	dbbw 100 percent,     40, SEAKING
+	dbbw 100 percent,     40, WOOPER
 
 .Pond_Old:
 	dbbw  70 percent + 1, 10, MAGIKARP
 	dbbw  85 percent + 1, 10, MAGIKARP
-	dbbw 100 percent,     10, POLIWAG
+	dbbw 100 percent,     10, WOOPER
 .Pond_Good:
 	dbbw  35 percent,     20, MAGIKARP
-	dbbw  70 percent,     20, POLIWAG
-	dbbw  90 percent + 1, 20, POLIWAG
+	dbbw  70 percent,     20, WOOPER
+	dbbw  90 percent + 1, 20, WOOPER
 	dbbw 100 percent,     6, TIME_GROUP
 .Pond_Super:
-	dbbw  40 percent,     40, POLIWAG
+	dbbw  40 percent,     40, WOOPER
 	dbbw  70 percent,     7, TIME_GROUP
 	dbbw  90 percent + 1, 40, MAGIKARP
-	dbbw 100 percent,     40, POLIWAG
+	dbbw 100 percent,     40, WOOPER
 
 .Dratini_Old:
 	dbbw  70 percent + 1, 10, MAGIKARP
@@ -98,36 +98,6 @@ FishGroups:
 	dbbw  70 percent,     9, TIME_GROUP
 	dbbw  90 percent + 1, 40, MAGIKARP
 	dbbw 100 percent,     40, DRAGONAIR
-
-.Qwilfish_Swarm_Old:
-	dbbw  70 percent + 1, 5, MAGIKARP
-	dbbw  85 percent + 1, 5, MAGIKARP
-	dbbw 100 percent,     5, QWILFISH
-.Qwilfish_Swarm_Good:
-	dbbw  35 percent,     20, MAGIKARP
-	dbbw  70 percent,     20, QWILFISH
-	dbbw  90 percent + 1, 20, QWILFISH
-	dbbw 100 percent,     10, TIME_GROUP
-.Qwilfish_Swarm_Super:
-	dbbw  40 percent,     40, QWILFISH
-	dbbw  70 percent,     11, TIME_GROUP
-	dbbw  90 percent + 1, 40, QWILFISH
-	dbbw 100 percent,     40, QWILFISH
-
-.Remoraid_Swarm_Old:
-	dbbw  70 percent + 1, 10, MAGIKARP
-	dbbw  85 percent + 1, 10, MAGIKARP
-	dbbw 100 percent,     10, REMORAID
-.Remoraid_Swarm_Good:
-	dbbw  35 percent,     20, MAGIKARP
-	dbbw  70 percent,     20, REMORAID
-	dbbw  90 percent + 1, 20, REMORAID
-	dbbw 100 percent,     12, TIME_GROUP
-.Remoraid_Swarm_Super:
-	dbbw  40 percent,     40, REMORAID
-	dbbw  70 percent,     13, TIME_GROUP
-	dbbw  90 percent + 1, 40, REMORAID
-	dbbw 100 percent,     40, REMORAID
 
 .Gyarados_Old:
 	dbbw  70 percent + 1, 10, MAGIKARP
@@ -174,60 +144,27 @@ FishGroups:
 	dbbw  90 percent + 1, 40, KINGLER
 	dbbw 100 percent,     40, SEADRA
 
-.Qwilfish_NoSwarm_Old:
-.Qwilfish_Old:
-	dbbw  70 percent + 1, 10, MAGIKARP
-	dbbw  85 percent + 1, 10, MAGIKARP
-	dbbw 100 percent,     10, TENTACOOL
-.Qwilfish_NoSwarm_Good:
-.Qwilfish_Good:
-	dbbw  35 percent,     20, MAGIKARP
-	dbbw  70 percent,     20, TENTACOOL
-	dbbw  90 percent + 1, 20, TENTACOOL
-	dbbw 100 percent,     20, TIME_GROUP
-.Qwilfish_NoSwarm_Super:
-.Qwilfish_Super:
-	dbbw  40 percent,     40, TENTACOOL
-	dbbw  70 percent,     21, TIME_GROUP
-	dbbw  90 percent + 1, 40, MAGIKARP
-	dbbw 100 percent,     40, QWILFISH
-
-.Remoraid_Old:
-	dbbw  70 percent + 1, 10, MAGIKARP
-	dbbw  85 percent + 1, 10, MAGIKARP
-	dbbw 100 percent,     10, POLIWAG
-.Remoraid_Good:
-	dbbw  35 percent,     20, MAGIKARP
-	dbbw  70 percent,     20, POLIWAG
-	dbbw  90 percent + 1, 20, POLIWAG
-	dbbw 100 percent,     6, TIME_GROUP
-.Remoraid_Super:
-	dbbw  40 percent,     40, POLIWAG
-	dbbw  70 percent,     7, TIME_GROUP
-	dbbw  90 percent + 1, 40, MAGIKARP
-	dbbw 100 percent,     40, REMORAID
-
 TimeFishGroups:
 	;     day             nite
 	dbwbw 20, CORSOLA,    20, STARYU     ; 0
 	dbwbw 40, CORSOLA,    40, STARYU     ; 1
-	dbwbw 20, SHELLDER,   20, SHELLDER   ; 2
-	dbwbw 40, SHELLDER,   40, SHELLDER   ; 3
-	dbwbw 20, GOLDEEN,    20, GOLDEEN    ; 4
-	dbwbw 40, GOLDEEN,    40, GOLDEEN    ; 5
-	dbwbw 20, POLIWAG,    20, POLIWAG    ; 6
-	dbwbw 40, POLIWAG,    40, POLIWAG    ; 7
+	dbwbw 20, WOOPER,   20, WOOPER   ; 2
+	dbwbw 40, WOOPER,   40, WOOPER   ; 3
+	dbwbw 20, WOOPER,    20, WOOPER    ; 4
+	dbwbw 40, WOOPER,    40, WOOPER    ; 5
+	dbwbw 20, WOOPER,    20, WOOPER    ; 6
+	dbwbw 40, WOOPER,    40, WOOPER    ; 7
 	dbwbw 20, DRATINI,    20, DRATINI    ; 8
 	dbwbw 40, DRATINI,    40, DRATINI    ; 9
-	dbwbw 20, QWILFISH,   20, QWILFISH   ; 10
-	dbwbw 40, QWILFISH,   40, QWILFISH   ; 11
-	dbwbw 20, REMORAID,   20, REMORAID   ; 12
-	dbwbw 40, REMORAID,   40, REMORAID   ; 13
+	dbwbw 20, WOOPER,   20, WOOPER   ; 10
+	dbwbw 40, WOOPER,   40, WOOPER   ; 11
+	dbwbw 20, WOOPER,   20, WOOPER   ; 12
+	dbwbw 40, WOOPER,   40, WOOPER   ; 13
 	dbwbw 20, GYARADOS,   20, GYARADOS   ; 14
 	dbwbw 40, GYARADOS,   40, GYARADOS   ; 15
 	dbwbw 10, DRATINI,    10, DRATINI    ; 16
 	dbwbw 10, DRATINI,    10, DRATINI    ; 17
 	dbwbw 20, HORSEA,     20, HORSEA     ; 18
 	dbwbw 40, HORSEA,     40, HORSEA     ; 19
-	dbwbw 20, TENTACOOL,  20, TENTACOOL  ; 20
-	dbwbw 40, TENTACOOL,  40, TENTACOOL  ; 21
+	dbwbw 20, WOOPER,  20, WOOPER  ; 20
+	dbwbw 40, WOOPER,  40, WOOPER  ; 21

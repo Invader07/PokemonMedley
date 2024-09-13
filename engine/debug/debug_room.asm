@@ -602,7 +602,7 @@ DebugRoom_EditPagedValues:
 	call WaitBGMap
 	ld b, SCGB_DIPLOMA
 	call GetSGBLayout
-	call SetDefaultBGPAndOBP
+	call SetPalettes
 .resume
 	call DelayFrame
 	call JoyTextDelay
@@ -1120,7 +1120,7 @@ DebugRoomMenu_PokemonGet:
 	dw DebugRoomMenu_PokemonGet_Page4Values
 
 DebugRoom_SavePokemon:
-	; IF YOU NEED THIS WORKING, ADAPT IT FOR NEWBOX!
+; IF YOU NEED THIS WORKING, ADAPT IT FOR NEWBOX!
 	ret
 
 ; Used to reference old box data, now dummied out.

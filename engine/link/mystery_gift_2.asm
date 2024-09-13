@@ -20,14 +20,11 @@ StageDataForMysteryGift:
 	call CopyBytes
 	push de ; wMysteryGiftStaging+14
 	ld hl, sPokemonData + wPokedexCaught - wPokemonData
-	ld bc, wEndPokedexCaught - wPokedexCaught
-	call CountSetBits16
-	ld a, b
-	add a, -1
-	sbc a
-	or c
+	ld b, wEndPokedexCaught - wPokedexCaught
+	call CountSetBits
 	pop de
 	pop bc
+	ld a, [wNumSetBits]
 	ld [de], a
 	inc de ; wMysteryGiftStaging+15
 	call CloseSRAM
@@ -145,7 +142,7 @@ MysteryGiftGetDecoration:
 	ret
 
 MysteryGiftFallbackItem:
-	ld c, DECOFLAG_RED_CARPET ; GREAT_BALL
+	ld c, DECO_POLKADOT_BED ; GREAT_BALL
 	ret
 
 INCLUDE "data/items/mystery_gift_items.asm"

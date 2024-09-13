@@ -25,9 +25,9 @@ DecorationAttributes:
 	decoration DECO_PLANT,   JUMBOPLANT,      SET_UP_PLANT,      EVENT_DECO_PLANT_3,                 $22
 	decoration DECO_PLANT,   PUT_IT_AWAY,     PUT_AWAY_POSTER,   EVENT_TEMPORARY_UNTIL_MAP_RELOAD_1, 0
 	decoration DECO_PLANT,   TOWN_MAP_POSTER, SET_UP_POSTER,     EVENT_DECO_POSTER_1,                $1f
-	decoration DECO_POSTER,  4,               SET_UP_POSTER,     EVENT_DECO_POSTER_2,                $23
-	decoration DECO_POSTER,  5,               SET_UP_POSTER,     EVENT_DECO_POSTER_3,                $24
-	decoration DECO_POSTER,  6,               SET_UP_POSTER,     EVENT_DECO_POSTER_4,                $25
+	decoration DECO_POSTER,  PIKACHU,         SET_UP_POSTER,     EVENT_DECO_POSTER_2,                $23
+	decoration DECO_POSTER,  CHARMANDER,        SET_UP_POSTER,     EVENT_DECO_POSTER_3,                $24
+	decoration DECO_POSTER,  CHARMANDER,      SET_UP_POSTER,     EVENT_DECO_POSTER_4,                $25
 	decoration DECO_PLANT,   PUT_IT_AWAY,     PUT_AWAY_CONSOLE,  EVENT_TEMPORARY_UNTIL_MAP_RELOAD_1, 0
 	decoration DECO_PLANT,   FAMICOM,         SET_UP_CONSOLE,    EVENT_DECO_FAMICOM,                 SPRITE_FAMICOM
 	decoration DECO_PLANT,   SUPER_NES,       SET_UP_CONSOLE,    EVENT_DECO_SNES,                    SPRITE_SNES
@@ -40,25 +40,25 @@ DecorationAttributes:
 	decoration DECO_PLANT,   PUT_IT_AWAY,     PUT_AWAY_DOLL,     EVENT_TEMPORARY_UNTIL_MAP_RELOAD_1, 0
 	decoration DECO_DOLL,    4,               SET_UP_DOLL,       EVENT_DECO_PIKACHU_DOLL,            SPRITE_PIKACHU
 	decoration DECO_PLANT,   SURF_PIKA_DOLL,  SET_UP_DOLL,       EVENT_DECO_SURFING_PIKACHU_DOLL,    SPRITE_SURFING_PIKACHU
-	decoration DECO_DOLL,    5,               SET_UP_DOLL,       EVENT_DECO_CLEFAIRY_DOLL,           SPRITE_CLEFAIRY
-	decoration DECO_DOLL,    6,               SET_UP_DOLL,       EVENT_DECO_JIGGLYPUFF_DOLL,         SPRITE_JIGGLYPUFF
-	decoration DECO_DOLL,    0,               SET_UP_DOLL,       EVENT_DECO_BULBASAUR_DOLL,          SPRITE_BULBASAUR
-	decoration DECO_DOLL,    1,               SET_UP_DOLL,       EVENT_DECO_CHARMANDER_DOLL,         SPRITE_CHARMANDER
-	decoration DECO_DOLL,    2,               SET_UP_DOLL,       EVENT_DECO_SQUIRTLE_DOLL,           SPRITE_SQUIRTLE
-	decoration DECO_DOLL,    9,               SET_UP_DOLL,       EVENT_DECO_POLIWAG_DOLL,            SPRITE_POLIWAG
-	decoration DECO_DOLL,    8,               SET_UP_DOLL,       EVENT_DECO_DIGLETT_DOLL,            SPRITE_DIGLETT
-	decoration DECO_DOLL,    18,              SET_UP_DOLL,       EVENT_DECO_STARYU_DOLL,             SPRITE_STARMIE
-	decoration DECO_DOLL,    19,              SET_UP_DOLL,       EVENT_DECO_MAGIKARP_DOLL,           SPRITE_MAGIKARP
-	decoration DECO_DOLL,    7,               SET_UP_DOLL,       EVENT_DECO_ODDISH_DOLL,             SPRITE_ODDISH
-	decoration DECO_DOLL,    15,              SET_UP_DOLL,       EVENT_DECO_GENGAR_DOLL,             SPRITE_GENGAR
-	decoration DECO_DOLL,    14,              SET_UP_DOLL,       EVENT_DECO_SHELLDER_DOLL,           SPRITE_SHELLDER
-	decoration DECO_DOLL,    13,              SET_UP_DOLL,       EVENT_DECO_GRIMER_DOLL,             SPRITE_GRIMER
-	decoration DECO_DOLL,    17,              SET_UP_DOLL,       EVENT_DECO_VOLTORB_DOLL,            SPRITE_VOLTORB
-	decoration DECO_DOLL,    3,               SET_UP_DOLL,       EVENT_DECO_WEEDLE_DOLL,             SPRITE_WEEDLE
-	decoration DECO_DOLL,    22,              SET_UP_DOLL,       EVENT_DECO_UNOWN_DOLL,              SPRITE_UNOWN
-	decoration DECO_DOLL,    12,              SET_UP_DOLL,       EVENT_DECO_GEODUDE_DOLL,            SPRITE_GEODUDE
-	decoration DECO_DOLL,    10,              SET_UP_DOLL,       EVENT_DECO_MACHOP_DOLL,             SPRITE_MACHOP
-	decoration DECO_DOLL,    11,              SET_UP_DOLL,       EVENT_DECO_TENTACOOL_DOLL,          SPRITE_TENTACOOL
+	decoration DECO_DOLL,    CHARMANDER,        SET_UP_DOLL,       EVENT_DECO_CLEFAIRY_DOLL,           SPRITE_CLEFAIRY
+	decoration DECO_DOLL,    CHARMANDER,      SET_UP_DOLL,       EVENT_DECO_JIGGLYPUFF_DOLL,         SPRITE_JIGGLYPUFF
+	decoration DECO_DOLL,    BULBASAUR,       SET_UP_DOLL,       EVENT_DECO_BULBASAUR_DOLL,          SPRITE_BULBASAUR
+	decoration DECO_DOLL,    CHARMANDER,      SET_UP_DOLL,       EVENT_DECO_CHARMANDER_DOLL,         SPRITE_CHARMANDER
+	decoration DECO_DOLL,    SQUIRTLE,        SET_UP_DOLL,       EVENT_DECO_SQUIRTLE_DOLL,           SPRITE_SQUIRTLE
+	decoration DECO_DOLL,    CHARMANDER,         SET_UP_DOLL,       EVENT_DECO_POLIWAG_DOLL,            SPRITE_POLIWAG
+	decoration DECO_DOLL,    CHARMANDER,         SET_UP_DOLL,       EVENT_DECO_DIGLETT_DOLL,            SPRITE_DIGLETT
+	decoration DECO_DOLL,    STARYU,          SET_UP_DOLL,       EVENT_DECO_STARMIE_DOLL,            SPRITE_STARMIE
+	decoration DECO_DOLL,    MAGIKARP,        SET_UP_DOLL,       EVENT_DECO_MAGIKARP_DOLL,           SPRITE_MAGIKARP
+	decoration DECO_DOLL,    CHARMANDER,          SET_UP_DOLL,       EVENT_DECO_ODDISH_DOLL,             SPRITE_ODDISH
+	decoration DECO_DOLL,    GENGAR,          SET_UP_DOLL,       EVENT_DECO_GENGAR_DOLL,             SPRITE_GENGAR
+	decoration DECO_DOLL,    CHARMANDER,        SET_UP_DOLL,       EVENT_DECO_SHELLDER_DOLL,           SPRITE_SHELLDER
+	decoration DECO_DOLL,    CHARMANDER,          SET_UP_DOLL,       EVENT_DECO_GRIMER_DOLL,             SPRITE_GRIMER
+	decoration DECO_DOLL,    CHARMANDER,         SET_UP_DOLL,       EVENT_DECO_VOLTORB_DOLL,            SPRITE_VOLTORB
+	decoration DECO_DOLL,    CHARMANDER,          SET_UP_DOLL,       EVENT_DECO_WEEDLE_DOLL,             SPRITE_WEEDLE
+	decoration DECO_DOLL,    UNOWN,           SET_UP_DOLL,       EVENT_DECO_UNOWN_DOLL,              SPRITE_UNOWN
+	decoration DECO_DOLL,    GEODUDE,         SET_UP_DOLL,       EVENT_DECO_GEODUDE_DOLL,            SPRITE_GEODUDE
+	decoration DECO_DOLL,    MACHOP,          SET_UP_DOLL,       EVENT_DECO_MACHOP_DOLL,             SPRITE_MACHOP
+	decoration DECO_DOLL,    SKRELP,       SET_UP_DOLL,          EVENT_DECO_TENTACOOL_DOLL,          SPRITE_TENTACOOL
 	decoration DECO_PLANT,   GOLD_TROPHY,     SET_UP_DOLL,       EVENT_DECO_GOLD_TROPHY,             SPRITE_GOLD_TROPHY
 	decoration DECO_PLANT,   SILVER_TROPHY,   SET_UP_DOLL,       EVENT_DECO_SILVER_TROPHY,           SPRITE_SILVER_TROPHY
 	assert_table_length NUM_DECOS + NUM_DECO_CATEGORIES + 1
@@ -67,21 +67,21 @@ DecorationAttributePokemonNames:
 	dw BULBASAUR  ;  0
 	dw CHARMANDER ;  1
 	dw SQUIRTLE   ;  2
-	dw WEEDLE     ;  3
+	dw EKANS     ;  3
 	dw PIKACHU    ;  4
-	dw CLEFAIRY   ;  5
-	dw JIGGLYPUFF ;  6
-	dw ODDISH     ;  7
-	dw DIGLETT    ;  8
-	dw POLIWAG    ;  9
+	dw EKANS   ;  5
+	dw EKANS ;  6
+	dw EKANS     ;  7
+	dw EKANS    ;  8
+	dw EKANS    ;  9
 	dw MACHOP     ; 10
-	dw TENTACOOL  ; 11
+	dw EKANS  ; 11
 	dw GEODUDE    ; 12
-	dw GRIMER     ; 13
-	dw SHELLDER   ; 14
+	dw EKANS     ; 13
+	dw EKANS   ; 14
 	dw GENGAR     ; 15
 	dw ONIX       ; 16
-	dw VOLTORB    ; 17
+	dw EKANS    ; 17
 	dw STARYU     ; 18
 	dw MAGIKARP   ; 19
 	dw LAPRAS     ; 20

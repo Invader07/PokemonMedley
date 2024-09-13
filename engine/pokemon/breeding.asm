@@ -38,21 +38,18 @@ CheckBreedmonCompatibility:
 	jr nz, .compute
 
 .genderless
-	ld hl, DITTO
-	call GetPokemonIDFromIndex
-	ld b, a
 	ld c, $0
 	ld a, [wBreedMon1Species]
-	cp b
+	cp DITTO
 	jr z, .ditto1
 	ld a, [wBreedMon2Species]
-	cp b
+	cp DITTO
 	jr nz, .done
 	jr .compute
 
 .ditto1
 	ld a, [wBreedMon2Species]
-	cp b
+	cp DITTO
 	jr z, .done
 
 .compute
@@ -124,11 +121,8 @@ CheckBreedmonCompatibility:
 
 ; Ditto is automatically compatible with everything.
 ; If not Ditto, load the breeding groups into b/c and d/e.
-	ld hl, DITTO
-	call GetPokemonIDFromIndex
-	ld d, a
 	ld a, [wBreedMon2Species]
-	cp d
+	cp DITTO
 	jr z, .Compatible
 	ld [wCurSpecies], a
 	call GetBaseData
@@ -142,7 +136,7 @@ CheckBreedmonCompatibility:
 	ld c, a
 
 	ld a, [wBreedMon1Species]
-	cp d
+	cp DITTO
 	jr z, .Compatible
 	ld [wCurSpecies], a
 	push bc
@@ -202,7 +196,7 @@ DoEggStep::
 	jr .loop
 
 OverworldHatchEgg::
-	call ReanchorMap
+	call RefreshScreen
 	call LoadStandardMenuHeader
 	call HatchEggs
 	call ExitAllMenus
@@ -239,23 +233,11 @@ HatchEggs:
 	call AddNTimes
 	ld a, [hl]
 	ld [wCurPartySpecies], a
+	dec a
 	call SetSeenAndCaughtMon
 
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	ld a, l
-	sub LOW(TOGEPI)
-	if HIGH(TOGEPI) == 0
-		or h
-	else
-		jr nz, .nottogepi
-		if HIGH(TOGEPI) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(TOGEPI)
-		endc
-	endc
+	cp CELEBI
 	jr nz, .nottogepi
 	; set the event flag for hatching togepi
 	ld de, EVENT_TOGEPI_HATCHED
@@ -314,7 +296,7 @@ HatchEggs:
 	ld [hli], a
 	ld a, [de]
 	ld [hl], a
-	ld hl, MON_OT_ID
+	ld hl, MON_ID
 	add hl, bc
 	ld a, [wPlayerID]
 	ld [hli], a
@@ -376,8 +358,8 @@ HatchEggs:
 	; Huh? @ @
 	text_far Text_BreedHuh
 	text_asm
-	ld hl, wStateFlags
-	res SPRITE_UPDATES_DISABLED_F, [hl]
+	ld hl, wVramState
+	res 0, [hl]
 	push hl
 	push de
 	push bc
@@ -438,113 +420,96 @@ InitEggMoves:
 
 GetEggMove:
 	push bc
-	push de
+	ld a, [wEggMonSpecies]
+	dec a
+	ld c, a
+	ld b, 0
+	ld hl, EggMovePointers
+	add hl, bc
+	add hl, bc
+	ld a, BANK(EggMovePointers)
+	call GetFarWord
+.loop
+	ld a, BANK("Egg Moves 1")
+	call GetFarByte
+	cp -1
+	jr z, .reached_end
+	ld b, a
+	ld a, [de]
+	cp b
+	jr z, .done_carry
+	inc hl
+	jr .loop
+
+.reached_end
 	call GetBreedmonMovePointer
 	ld b, NUM_MOVES
+.loop2
 	ld a, [de]
-	ld c, a
-.breedmon_loop
-	ld a, [hli]
-	and a
-	jr z, .not_breedmon
-	cp c
-	jr z, .breedmon_found
+	cp [hl]
+	jr z, .found_eggmove
+	inc hl
 	dec b
-	jr nz, .breedmon_loop
-.not_breedmon
+	jr z, .inherit_tmhm
+	jr .loop2
 
-	ld a, c
-	call GetMoveIndexFromID
-	ld d, h
-	ld e, l
-.not_learnset_move
+.found_eggmove
 	ld a, [wEggMonSpecies]
-	call GetPokemonIndexFromID
-	ld b, h
-	ld c, l
-	ld hl, EggMovePointers
-	ld a, BANK(EggMovePointers)
-	call LoadDoubleIndirectPointer
-.egg_move_loop
-	push hl
-	call GetFarWord
-	ld a, h
-	and l
+	dec a
 	ld c, a
-	ld a, h
-	cp d
-	jr nz, .no_egg_match
-	ld a, l
-	cp e
-.no_egg_match
-	pop hl
-	jr z, .is_egg_move
-	inc hl
-	inc hl
-	ld a, b
-	inc c
-	jr nz, .egg_move_loop
-
-	ld bc, TMHMMoves
-.tmhm_loop
-	ld a, BANK(TMHMMoves)
-	ld h, b
-	ld l, c
-	call GetFarWord
-	ld a, h
-	and l
-	jr z, .done
-	inc bc
-	inc bc
-	ld a, h
-	cp d
-	jr nz, .tmhm_loop
-	ld a, l
-	cp e
-	jr nz, .tmhm_loop
-	pop de
-	ld a, [de]
-	push de
-	ld [wPutativeTMHMMove], a
-	predef CanLearnTMHMMove
-	xor a
-	cp c ;will carry if non-zero
-	jr .done
-
-.breedmon_found
-	call GetMoveIndexFromID
-	ld d, h
-	ld e, l
-	ld a, [wEggMonSpecies]
-	call GetPokemonIndexFromID
-	ld b, h
-	ld c, l
+	ld b, 0
 	ld hl, EvosAttacksPointers
+	add hl, bc
+	add hl, bc
 	ld a, BANK(EvosAttacksPointers)
-	call LoadDoubleIndirectPointer
-	call FarSkipEvolutions
-.learnset_loop
-	ld a, b
+	call GetFarWord
+.loop3
+	ld a, BANK("Evolutions and Attacks 1")
 	call GetFarByte
 	inc hl
 	and a
-	jr z, .not_learnset_move
-	push hl
-	call GetFarWord
-	ld a, l
-	cp e
-	ld a, h
-	pop hl
+	jr nz, .loop3
+.loop4
+	ld a, BANK("Evolutions and Attacks 1")
+	call GetFarByte
+	and a
+	jr z, .inherit_tmhm
 	inc hl
+	ld a, BANK("Evolutions and Attacks 1")
+	call GetFarByte
+	ld b, a
+	ld a, [de]
+	cp b
+	jr z, .done_carry
 	inc hl
-	jr nz, .learnset_loop
-	cp d
-	jr nz, .learnset_loop
-.is_egg_move
-	scf
-.done
-	pop de
+	jr .loop4
+
+.inherit_tmhm
+	ld hl, TMHMMoves
+.loop5
+	ld a, BANK(TMHMMoves)
+	call GetFarByte
+	inc hl
+	and a
+	jr z, .done
+	ld b, a
+	ld a, [de]
+	cp b
+	jr nz, .loop5
+	ld [wPutativeTMHMMove], a
+	predef CanLearnTMHMMove
+	ld a, c
+	and a
+	jr z, .done
+
+.done_carry
 	pop bc
+	scf
+	ret
+
+.done
+	pop bc
+	and a
 	ret
 
 LoadEggMove:
@@ -582,15 +547,12 @@ LoadEggMove:
 	ret
 
 GetHeritableMoves:
-	ld hl, DITTO
-	call GetPokemonIDFromIndex
-	ld b, a
 	ld hl, wBreedMon2Moves
 	ld a, [wBreedMon1Species]
-	cp b
+	cp DITTO
 	jr z, .ditto1
 	ld a, [wBreedMon2Species]
-	cp b
+	cp DITTO
 	jr z, .ditto2
 	ld a, [wBreedMotherOrNonDitto]
 	and a
@@ -642,15 +604,12 @@ GetHeritableMoves:
 	ret
 
 GetBreedmonMovePointer:
-	ld hl, DITTO
-	call GetPokemonIDFromIndex
-	ld b, a
 	ld hl, wBreedMon1Moves
 	ld a, [wBreedMon1Species]
-	cp b
+	cp DITTO
 	ret z
 	ld a, [wBreedMon2Species]
-	cp b
+	cp DITTO
 	jr z, .ditto
 	ld a, [wBreedMotherOrNonDitto]
 	and a
@@ -820,9 +779,9 @@ EggHatch_CrackShell:
 	ret nc
 	swap a
 	srl a
-	add 9 * TILE_WIDTH + 4
+	add 9 * 8 + 4
 	ld d, a
-	ld e, 11 * TILE_WIDTH
+	ld e, 11 * 8
 	ld a, SPRITE_ANIM_OBJ_EGG_CRACK
 	call InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_TILE_ID
@@ -878,11 +837,8 @@ Hatch_InitShellFragments:
 	ret
 
 MACRO shell_fragment
-; y tile, y pxl, x tile, x pxl, frameset, angle
-	db (\1) * TILE_WIDTH + (\2) ; y coord
-	db (\3) * TILE_WIDTH + (\4) ; x coord
-	db (\5) - SPRITE_ANIM_FRAMESET_EGG_HATCH_1 ; frameset offset
-	db \6 ; angle (6 bits)
+; y tile, y pxl, x tile, x pxl, frameset offset, ???
+	db (\1 * 8) % $100 + \2, (\3 * 8) % $100 + \4, \5 - SPRITE_ANIM_FRAMESET_EGG_HATCH_1, \6
 ENDM
 
 .SpriteData:

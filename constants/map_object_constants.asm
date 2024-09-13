@@ -14,7 +14,7 @@ DEF OBJECT_STEP_DURATION    rb ; 0a
 DEF OBJECT_ACTION           rb ; 0b
 DEF OBJECT_STEP_FRAME       rb ; 0c
 DEF OBJECT_FACING           rb ; 0d
-DEF OBJECT_TILE_COLLISION   rb ; 0e
+DEF OBJECT_TILE             rb ; 0e
 DEF OBJECT_LAST_TILE        rb ; 0f
 DEF OBJECT_MAP_X            rb ; 10
 DEF OBJECT_MAP_Y            rb ; 11
@@ -97,7 +97,6 @@ DEF RELATIVE_ATTRIBUTES EQU 1 << RELATIVE_ATTRIBUTES_F
 DEF ABSOLUTE_TILE_ID    EQU 1 << ABSOLUTE_TILE_ID_F
 
 ; map_object struct members (see macros/ram.asm)
-; struct initialized by object_event macro (see macros/scripts/maps.asm)
 rsreset
 DEF MAPOBJECT_OBJECT_STRUCT_ID rb ; 0
 DEF MAPOBJECT_SPRITE           rb ; 1
@@ -258,6 +257,7 @@ DEF NUM_STEP_TYPES EQU const_value
 	const OBJECT_ACTION_BOULDER_DUST  ; 0e
 	const OBJECT_ACTION_GRASS_SHAKE   ; 0f
 	const OBJECT_ACTION_SKYFALL       ; 10
+  const OBJECT_ACTION_RUN           ; 11
 DEF NUM_OBJECT_ACTIONS EQU const_value
 
 ; Facings indexes (see data/sprites/facings.asm)
@@ -300,10 +300,11 @@ DEF NUM_FACINGS EQU const_value
 	const_def
 	const STEP_SLOW          ; 0
 	const STEP_WALK          ; 1
-	const STEP_BIKE          ; 2
-	const STEP_LEDGE         ; 3
-	const STEP_ICE           ; 4
-	const STEP_TURN          ; 5
-	const STEP_BACK_LEDGE    ; 6
-	const STEP_WALK_IN_PLACE ; 7
+  const STEP_RUN           ; 2
+	const STEP_BIKE          ; 3
+	const STEP_LEDGE         ; 4
+	const STEP_ICE           ; 5
+	const STEP_TURN          ; 6
+	const STEP_BACK_LEDGE    ; 7
+	const STEP_WALK_IN_PLACE ; 8
 DEF NUM_STEPS EQU const_value

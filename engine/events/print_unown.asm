@@ -56,8 +56,7 @@ _UnownPrinter:
 	call .UpdateUnownFrontpic
 	call WaitBGMap
 
-	ld hl, UNOWN
-	call GetPokemonIDFromIndex
+	ld a, UNOWN
 	ld [wCurPartySpecies], a
 	xor a
 	ld [wTempMonDVs], a
@@ -76,7 +75,7 @@ _UnownPrinter:
 
 	ldh a, [hJoyPressed]
 	vc_patch Forbid_printing_Unown
-if DEF(_CRYSTAL_VC)
+if DEF(_CRYSTAL11_VC)
 	and NO_INPUT
 else
 	and A_BUTTON
@@ -143,8 +142,7 @@ endc
 	jr z, .vacant
 	inc a
 	ld [wUnownLetter], a
-	ld hl, UNOWN
-	call GetPokemonIDFromIndex
+	ld a, UNOWN
 	ld [wCurPartySpecies], a
 	xor a
 	ld [wBoxAlignment], a

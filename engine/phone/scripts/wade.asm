@@ -1,5 +1,5 @@
 WadePhoneCalleeScript:
-	gettrainername STRING_BUFFER_3, BUG_CATCHER, WADE1
+	gettrainername STRING_BUFFER_3, BUG_CATCHER, BLAINE
 	checkflag ENGINE_WADE_READY_FOR_REMATCH
 	iftrue .WantsBattle
 	farscall PhoneScript_AnswerPhone_Male
@@ -29,15 +29,15 @@ WadePhoneCalleeScript:
 	farsjump PhoneScript_BugCatchingContest
 
 .WantsBattle:
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_31
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	farsjump WadeQuickBattleScript
 
 .HasItem:
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_31
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	farsjump WadeComeQuickScript
 
 WadePhoneCallerScript:
-	gettrainername STRING_BUFFER_3, BUG_CATCHER, WADE1
+	gettrainername STRING_BUFFER_3, BUG_CATCHER, BLAINE
 	farscall PhoneScript_GreetPhone_Male
 	farscall PhoneScript_Random2
 	ifequal 0, .NoContest
@@ -57,7 +57,8 @@ WadePhoneCallerScript:
 	iftrue .next
 	farscall PhoneScript_Random2
 	ifequal 0, WadeHasItem2
-	checkflag ENGINE_FLYPOINT_GOLDENROD
+; TODO: Change this flypoint to a midgame one like Goldenrod.
+	checkflag ENGINE_FLYPOINT_NEW_BARK
 	iffalse .next
 	farscall PhoneScript_Random2
 	ifequal 0, WadeWantsBattle2
@@ -74,7 +75,7 @@ WadeTuesdayNight:
 	setflag ENGINE_WADE_TUESDAY_NIGHT
 
 WadeWantsBattle2:
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_31
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	setflag ENGINE_WADE_READY_FOR_REMATCH
 	farsjump PhoneScript_WantsToBattle_Male
 
@@ -83,7 +84,7 @@ WadeFoundRare:
 
 WadeHasItem2:
 	setflag ENGINE_WADE_HAS_ITEM
-	getlandmarkname STRING_BUFFER_5, LANDMARK_ROUTE_31
+	getlandmarkname STRING_BUFFER_5, LANDMARK_SPECIAL
 	clearevent EVENT_WADE_HAS_BERRY
 	clearevent EVENT_WADE_HAS_PSNCUREBERRY
 	clearevent EVENT_WADE_HAS_PRZCUREBERRY

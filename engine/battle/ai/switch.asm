@@ -19,9 +19,14 @@ CheckPlayerMoveTypeMatchups:
 	and a
 	jr z, .exit
 	push hl
-	call GetMoveTypeIfDamaging
+	dec a
+	ld hl, Moves + MOVE_POWER
+	call GetMoveAttr
+	and a
 	jr z, .next
 
+	inc hl
+	call GetMoveByte
 	ld hl, wEnemyMonType
 	call CheckTypeMatchup
 	ld a, [wTypeMatchup]
@@ -107,9 +112,14 @@ CheckPlayerMoveTypeMatchups:
 	jr z, .exit2
 
 	inc de
-	call GetMoveTypeIfDamaging
+	dec a
+	ld hl, Moves + MOVE_POWER
+	call GetMoveAttr
+	and a
 	jr z, .loop2
 
+	inc hl
+	call GetMoveByte
 	ld hl, wBattleMonType1
 	call CheckTypeMatchup
 
@@ -362,10 +372,15 @@ FindEnemyMonsImmuneToLastCounterMove:
 
 	; the player's last move is damaging...
 	ld a, [wLastPlayerCounterMove]
-	call GetMoveTypeIfDamaging
+	dec a
+	ld hl, Moves + MOVE_POWER
+	call GetMoveAttr
+	and a
 	jr z, .next
 
 	; and the Pokemon is immune to it...
+	inc hl
+	call GetMoveByte
 	ld hl, wBaseType
 	call CheckTypeMatchup
 	ld a, [wTypeMatchup]
@@ -447,10 +462,15 @@ FindEnemyMonsWithASuperEffectiveMove:
 	jr z, .break3
 
 	; if move has no power: continue
-	call GetMoveTypeIfDamaging
+	dec a
+	ld hl, Moves + MOVE_POWER
+	call GetMoveAttr
+	and a
 	jr z, .nope
 
 	; check type matchups
+	inc hl
+	call GetMoveByte
 	ld hl, wBattleMonType1
 	call CheckTypeMatchup
 
@@ -541,8 +561,15 @@ FindEnemyMonsThatResistPlayer:
 	and a
 	jr z, .skip_move
 
-	call GetMoveTypeIfDamaging
-	jr nz, .check_type
+	dec a
+	ld hl, Moves + MOVE_POWER
+	call GetMoveAttr
+	and a
+	jr z, .skip_move
+
+	inc hl
+	call GetMoveByte
+	jr .check_type
 
 .skip_move
 	ld a, [wBattleMonType1]
@@ -628,23 +655,4 @@ FindEnemyMonsWithAtLeastQuarterMaxHP:
 	pop bc
 	and c
 	ld c, a
-	ret
-
-GetMoveTypeIfDamaging:
-; returns the type of move a in a, and sets the zero flag depending on whether the move causes damage
-; clobbers hl
-	push bc
-	call GetMoveAddress
-	ld b, a
-	rept MOVE_POWER - 1
-		inc hl
-	endr
-	call GetFarByte
-	ld c, a
-	ld a, b
-	inc hl
-	call GetFarByte
-	inc c
-	dec c
-	pop bc
 	ret

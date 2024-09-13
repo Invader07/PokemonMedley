@@ -107,7 +107,7 @@ ReadCaughtData:
 	ld a, SEERACTION_TRADED
 	ld [wSeerAction], a
 
-	ld a, MON_OT_ID
+	ld a, MON_ID
 	call GetPartyParamLocation
 	ld a, [wPlayerID]
 	cp [hl]
@@ -181,11 +181,11 @@ GetCaughtLevel:
 GetCaughtTime:
 	ld a, [wSeerCaughtData]
 	and CAUGHT_TIME_MASK
-	jr z, .none
 
 	rlca
 	rlca
 	dec a
+	maskbits NUM_DAYTIMES
 	ld hl, .times
 	call GetNthString
 	ld d, h
@@ -195,15 +195,12 @@ GetCaughtTime:
 	and a
 	ret
 
-.none
-	ld de, wSeerTimeOfDay
-	call UnknownCaughtData
-	ret
 
 .times
-	db "Morning@"
+	db "Dawn@"
 	db "Day@"
 	db "Night@"
+	db "Dusk@"
 
 UnknownCaughtData:
 	ld hl, .unknown

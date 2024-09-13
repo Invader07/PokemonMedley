@@ -12,10 +12,12 @@ DEF NAME_LENGTH_JAPANESE      EQU 6
 	const_def 1
 	const MON_NAME              ; 1
 	const MOVE_NAME             ; 2
-	const ITEM_NAME             ; 3
-	const PARTY_OT_NAME         ; 4
-	const ENEMY_OT_NAME         ; 5
-	const TRAINER_NAME          ; 6
+	const DUMMY_NAME            ; 3
+	const ITEM_NAME             ; 4
+	const PARTY_OT_NAME         ; 5
+	const ENEMY_OT_NAME         ; 6
+	const TRAINER_NAME          ; 7
+	const MOVE_DESC_NAME_BROKEN ; 8
 
 ; see home/text.asm
 DEF BORDER_WIDTH   EQU 2
@@ -43,7 +45,7 @@ DEF PRINTNUM_LEFTALIGN    EQU 1 << PRINTNUM_LEFTALIGN_F
 DEF PRINTNUM_LEADINGZEROS EQU 1 << PRINTNUM_LEADINGZEROS_F
 
 ; character sets (see charmap.asm)
-DEF FIRST_REGULAR_TEXT_CHAR     EQU $60
+DEF FIRST_REGULAR_TEXT_CHAR  		EQU $7f
 DEF FIRST_HIRAGANA_DAKUTEN_CHAR EQU $20
 
 ; gfx/font/unown_font.png

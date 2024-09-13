@@ -24,7 +24,7 @@ DEF AUTO_INPUT EQU $ff
 
 ; wGameTimerPaused::
 DEF GAME_TIMER_COUNTING_F EQU 0
-DEF GAME_TIMER_MOBILE_F   EQU 7
+DEF GAME_TIMER_MOBILE_F EQU 7
 
 ; wJoypadDisable::
 DEF JOYPAD_DISABLE_MON_FAINT_F    EQU 6
@@ -38,6 +38,7 @@ DEF TEXT_DELAY_MASK EQU %111
 	const BATTLE_SHIFT   ; 6
 	const BATTLE_SCENE   ; 7
 
+DEF TEXT_DELAY_NONE EQU %000 ; 0
 DEF TEXT_DELAY_FAST EQU %001 ; 1
 DEF TEXT_DELAY_MED  EQU %011 ; 3
 DEF TEXT_DELAY_SLOW EQU %101 ; 5
@@ -57,7 +58,7 @@ DEF NUM_FRAMES EQU const_value
 ; wTextboxFlags::
 	const_def
 	const FAST_TEXT_DELAY_F ; 0
-	const TEXT_DELAY_F      ; 1
+	const NO_TEXT_DELAY_F   ; 1
 
 ; wGBPrinterBrightness::
 DEF GBPRINTER_LIGHTEST EQU $00
@@ -98,6 +99,7 @@ DEF LAST_12_SPRITE_OAM_STRUCTS_RESERVED_F EQU 1
 DEF TEXT_STATE_F                          EQU 6
 DEF SCRIPTED_MOVEMENT_STATE_F             EQU 7
 
+
 ; wPokemonWithdrawDepositParameter::
 DEF PC_WITHDRAW       EQU 0
 DEF PC_DEPOSIT        EQU 1
@@ -125,18 +127,19 @@ DEF INIT_MON_LIST        EQU 5
 	const MORN_F     ; 0
 	const DAY_F      ; 1
 	const NITE_F     ; 2
-	const DARKNESS_F ; 3
+	const EVE_F      ; 3
 DEF NUM_DAYTIMES EQU const_value
 
 DEF MORN     EQU 1 << MORN_F
 DEF DAY      EQU 1 << DAY_F
 DEF NITE     EQU 1 << NITE_F
-DEF DARKNESS EQU 1 << DARKNESS_F
+DEF EVE      EQU 1 << EVE_F
 
-DEF ANYTIME EQU MORN | DAY | NITE
+DEF ANYTIME EQU MORN | DAY | EVE | NITE
 
 ; wTimeOfDayPalset::
-DEF DARKNESS_PALSET EQU (DARKNESS_F << 6) | (DARKNESS_F << 4) | (DARKNESS_F << 2) | DARKNESS_F
+; Must be different from any in ReplaceTimeOfDayPals.BrightnessLevels
+DEF DARKNESS_PALSET EQU (MORN_F << 6) | (DAY_F << 4) | (EVE_F << 2) | NITE_F
 
 ; wBattleAnimFlags::
 	const_def
@@ -223,7 +226,7 @@ DEF MOM_SAVING_MONEY_MASK EQU (1 << MOM_SAVING_SOME_MONEY_F) | (1 << MOM_SAVING_
 
 ; wJohtoBadges::
 	const_def
-	const ZEPHYRBADGE
+	const ANCHORBADGE
 	const HIVEBADGE
 	const PLAINBADGE
 	const FOGBADGE
@@ -265,6 +268,7 @@ DEF PLAYER_BIKE      EQU 1
 DEF PLAYER_SKATE     EQU 2
 DEF PLAYER_SURF      EQU 4
 DEF PLAYER_SURF_PIKA EQU 8
+DEF PLAYER_RUN       EQU 16
 
 ; wCelebiEvent::
 DEF CELEBIEVENT_FOREST_IS_RESTLESS_F EQU 2

@@ -17,6 +17,9 @@ DEF ITEMATTR_STRUCT_LENGTH EQU _RS
 	const KEY_ITEM ; 2
 	const BALL     ; 3
 	const TM_HM    ; 4
+	const MEDICINE ; 5
+	const BERRIES  ; 6
+
 DEF NUM_ITEM_TYPES EQU const_value - 1
 
 ; item menu types
@@ -43,12 +46,17 @@ DEF CANT_TOSS   EQU 1 << CANT_TOSS_F
 	const BALL_POCKET     ; 1
 	const KEY_ITEM_POCKET ; 2
 	const TM_HM_POCKET    ; 3
+	const MEDICINE_POCKET ; 4
+	const BERRY_POCKET 		; 5
+
 DEF NUM_POCKETS EQU const_value
 
 DEF MAX_ITEMS     EQU 20
 DEF MAX_BALLS     EQU 12
 DEF MAX_KEY_ITEMS EQU 25
 DEF MAX_PC_ITEMS  EQU 50
+DEF MAX_MEDICINE  EQU 20
+DEF MAX_BERRIES   EQU 17
 
 DEF MAX_ITEM_STACK EQU 99
 
@@ -71,7 +79,7 @@ DEF MAIL_STRUCT_LENGTH_JP EQU $2a ; mailmsg_jp struct
 	const_def
 	const HELD_NONE
 	const HELD_BERRY
-	const HELD_2
+	const HELD_DREAM_BERRY
 	const HELD_LEFTOVERS
 	const_skip
 	const HELD_5
@@ -108,9 +116,16 @@ DEF MAIL_STRUCT_LENGTH_JP EQU $2a ; mailmsg_jp struct
 	const HELD_38
 
 	const_next 40
-	const_skip
-	const_skip
+	const HELD_LIFE_ORB
+	const HELD_FOCUS_SASH
+	const HELD_CHOICE_BOOST
+	const HELD_EXPERT_BELT
+	const HELD_BLACK_SLUDGE
+	const HELD_CATEGORY_BOOST
 	const HELD_METAL_POWDER
+	const HELD_SHELL_BELL
+	const HELD_ROCKY_HELMET
+	const HELD_ZOOM_LENS
 
 	const_next 50
 	const HELD_NORMAL_BOOST
@@ -133,7 +148,7 @@ DEF MAIL_STRUCT_LENGTH_JP EQU $2a ; mailmsg_jp struct
 
 	const_next 70
 	const HELD_CATCH_CHANCE
-	const HELD_71
+	const HELD_ACCURACY_BOOST
 	const HELD_ESCAPE
 	const HELD_CRITICAL_UP
 	const HELD_QUICK_CLAW

@@ -177,32 +177,39 @@ GetGender:
 
 .DVs:
 ; Attack DV
-	ld a, [hli]
-	and $f0
-	ld b, a
-; Speed DV
 	ld a, [hl]
-	and $f0
+	cpl
+	and $10
 	swap a
-
-; Put our DVs together.
+	ld b, a  ; ~(Atk DV & 1) << 1
+; Defense DV
+	ld a, [hli]
+	and $1
+	add a
+	add a
 	or b
-	ld b, a
+	ld b, a  ; ~(Atk DV & 1) << 1 | (Def DV & 1) << 2
+; Special DV
+	ld a, [hl]
+	cpl
+	and $1
+	add a
+	add a
+	add a
+	or b
+	swap a
+	ld b, a  ; ~(Atk DV & 1) << 1 | (Def DV & 1) << 2 | ~(Spc DV & 1) << 3
 
 ; We need the gender ratio to do anything with this.
 	push bc
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	ld b, h
-	ld c, l
-	ld hl, BaseData
-	ld a, BANK(BaseData)
-	call LoadIndirectPointer
-	ld bc, BASE_GENDER
-	add hl, bc
+	dec a
+	ld hl, BaseData + BASE_GENDER
+	ld bc, BASE_DATA_SIZE
+	call AddNTimes
 	pop bc
-	jr z, .Genderless
 
+	ld a, BANK(BaseData)
 	call GetFarByte
 
 ; The higher the ratio, the more likely the monster is to be female.
@@ -445,8 +452,10 @@ ListMoves:
 	push de
 	push hl
 	push hl
-	ld [wNamedObjectIndex], a
-	call GetMoveName
+	ld [wCurSpecies], a
+	ld a, MOVE_NAME
+	ld [wNamedObjectType], a
+	call GetName
 	ld de, wStringBuffer1
 	pop hl
 	push bc

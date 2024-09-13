@@ -15,20 +15,24 @@ HandleStoneQueue::
 	add hl, de
 	ld a, [hl]
 	cp $ff
-	ret nc
+	jr z, .nope
 
 	ld l, a
 	push hl
 	call .IsObjectOnWarp
 	pop hl
-	ret nc
+	jr nc, .nope
 	ld d, a
 	ld e, l
 	call .IsObjectInStoneTable
-	ret nc
+	jr nc, .nope
 	call CallMapScript
 	farcall EnableScriptMode
 	scf
+	ret
+
+.nope
+	and a
 	ret
 
 .IsObjectOnWarp:
@@ -52,13 +56,13 @@ HandleStoneQueue::
 	ret
 
 .check_on_warp
-	ld hl, wCurMapWarpEventsPointer
+	ld hl, wCurMapWarpsPointer
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [wCurMapWarpEventCount]
+	ld a, [wCurMapWarpCount]
 	and a
-	ret z
+	jr z, .nope2
 
 .loop
 	push af
@@ -68,7 +72,8 @@ HandleStoneQueue::
 	inc hl
 	ld a, [hld]
 	cp d
-	jr z, .found_warp
+	jr nz, .not_on_warp
+	jr .found_warp
 
 .not_on_warp
 	ld a, WARP_EVENT_SIZE
@@ -81,13 +86,15 @@ HandleStoneQueue::
 	pop af
 	dec a
 	jr nz, .loop
+
+.nope2
 	and a
 	ret
 
 .found_warp
 	pop af
 	ld d, a
-	ld a, [wCurMapWarpEventCount]
+	ld a, [wCurMapWarpCount]
 	sub d
 	inc a
 	scf
@@ -103,7 +110,7 @@ HandleStoneQueue::
 .loop2
 	ld a, [hli]
 	cp $ff
-	ret z
+	jr z, .nope3
 	cp d
 	jr nz, .next_inc3
 	ld a, [hli]
@@ -112,8 +119,7 @@ HandleStoneQueue::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	scf
-	ret
+	jr .yes
 
 .next_inc3
 	inc hl
@@ -122,3 +128,11 @@ HandleStoneQueue::
 	inc hl
 	inc hl
 	jr .loop2
+
+.nope3
+	and a
+	ret
+
+.yes
+	scf
+	ret

@@ -462,7 +462,7 @@ Function1161d5:
 	pop af
 	ldh [rSVBK], a
 
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ld a, $8
 	ld [wMusicFade], a
 	ld de, MUSIC_MOBILE_ADAPTER
@@ -637,7 +637,7 @@ Function11636e:
 	call UpdateSprites
 	pop af
 	ldh [rSVBK], a
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ld a, $8
 	ld [wMusicFade], a
 	ld a, [wMapMusic]
@@ -680,7 +680,7 @@ Function1163c0:
 	farcall _ClearSprites
 	pop af
 	ldh [rSVBK], a
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ld a, [wLinkMode]
 	cp LINK_MOBILE
 	jr z, .asm_11642a
@@ -710,7 +710,7 @@ Function116441:
 	farcall Function17d405
 	ld a, $90
 	ldh [hWY], a
-	farcall HDMATransferTilemapAndAttrmap_Overworld
+	farcall ReloadMapPart
 	ld a, $8
 	ld [wMusicFade], a
 	ld a, [wMapMusic]

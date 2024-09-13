@@ -147,7 +147,6 @@ WildFled_EnemyFled_LinkBattleCanceled:
 	call CheckMobileBattleError
 	jr c, .skip_sfx
 
-; BUG: SFX_RUN does not play correctly when a wild Pokémon flees from battle (see docs/bugs_and_glitches.md)
 	ld de, SFX_RUN
 	call PlaySFX
 
@@ -265,6 +264,9 @@ HandleBetweenTurnEffects:
 	call HandlePerishSong
 	call CheckFaint_PlayerThenEnemy
 	ret c
+	call HandleTrickRoom
+	call CheckFaint_PlayerThenEnemy
+	ret c
 	jr .NoMoreFaintingConditions
 
 .CheckEnemyFirst:
@@ -281,6 +283,9 @@ HandleBetweenTurnEffects:
 	ret c
 	call HandlePerishSong
 	call CheckFaint_EnemyThenPlayer
+	ret c
+	call HandleTrickRoom
+	call CheckFaint_PlayerThenEnemy
 	ret c
 
 .NoMoreFaintingConditions:
@@ -536,6 +541,10 @@ DetermineMoveOrder:
 	ld c, 2
 	call CompareBytes
 	jr z, .speed_tie
+	ld a, [wTrickRoom]
+	ld d, a
+	and d ; Is Trick Room active?
+	jp nz, .trick_room
 	jp nc, .player_first
 	jp .enemy_first
 
@@ -552,6 +561,7 @@ DetermineMoveOrder:
 	call BattleRandom
 	cp 50 percent + 1
 	jp c, .enemy_first
+
 .player_first
 	scf
 	ret
@@ -559,6 +569,27 @@ DetermineMoveOrder:
 .enemy_first
 	and a
 	ret
+
+.trick_room
+	ld hl, wTrickRoom
+	jp nc, .enemy_first
+	jp .player_first
+
+
+HandleTrickRoom:
+	ld hl, wTrickRoom
+	ld a, [hl]
+	and a
+	ret z
+	dec [hl]
+	ret nz
+	ld hl, TrickRoomEndedText
+	jp StdBattleTextbox
+
+.end_trick_room
+	ld hl, TrickRoomEndedText
+	jp StdBattleTextbox
+
 
 CheckContestBattleOver:
 	ld a, [wBattleType]
@@ -610,6 +641,8 @@ ParsePlayerAction:
 	bit SUBSTATUS_ENCORED, [hl]
 	jr z, .not_encored
 	ld a, [wLastPlayerMove]
+	and a
+	jr z, .not_encored
 	ld [wCurPlayerMove], a
 	jr .encored
 
@@ -624,37 +657,23 @@ ParsePlayerAction:
 	jr nz, .locked_in
 	xor a
 	ld [wMoveSelectionMenuType], a
-	if HIGH(POUND)
-		ld a, HIGH(POUND)
-	endc
-	ld [wFXAnimID + 1], a
-	if LOW(POUND) == (HIGH(POUND) + 1)
-		inc a
-	else
-		ld a, LOW(POUND)
-	endc
+	inc a ; POUND
 	ld [wFXAnimID], a
 	call MoveSelectionScreen
 	push af
 	call SafeLoadTempTilemapToTilemap
 	call UpdateBattleHuds
 	ld a, [wCurPlayerMove]
-	call GetMoveIndexFromID
-	ld a, h
-	if HIGH(STRUGGLE)
-		cp HIGH(STRUGGLE)
-	else
-		and a
-	endc
-	jr nz, .not_struggle
-	ld a, l
-	cp LOW(STRUGGLE)
-.not_struggle
-	call nz, PlayClickSFX
+	cp STRUGGLE
+	jr z, .struggle
+	call PlayClickSFX
+
+.struggle
 	ld a, $1
 	ldh [hBGMapMode], a
 	pop af
 	ret nz
+	call SetChoiceLock
 
 .encored
 	call SetPlayerTurn
@@ -788,32 +807,32 @@ TryEnemyFlee:
 	jr nz, .Stay
 
 	ld a, [wTempEnemyMonSpecies]
-	call GetPokemonIndexFromID
-	ld b, h
-	ld c, l
-	ld de, 2
+	ld de, 1
 	ld hl, AlwaysFleeMons
-	call IsInWordArray
+	call IsInArray
 	jr c, .Flee
 
 	call BattleRandom
-	add a, a
+	ld b, a
+	cp 50 percent + 1
 	jr nc, .Stay
 
-	push af
-	; de preserved from last call
+	push bc
+	ld a, [wTempEnemyMonSpecies]
+	ld de, 1
 	ld hl, OftenFleeMons
-	call IsInWordArray
-	pop de
+	call IsInArray
+	pop bc
 	jr c, .Flee
 
-	ld a, d
-	cp 20 percent ; double the value because of the previous add a, a
+	ld a, b
+	cp 10 percent + 1
 	jr nc, .Stay
 
-	ld de, 2
+	ld a, [wTempEnemyMonSpecies]
+	ld de, 1
 	ld hl, SometimesFleeMons
-	call IsInWordArray
+	call IsInArray
 	jr c, .Flee
 
 .Stay:
@@ -845,20 +864,11 @@ GetMovePriority:
 
 	ld b, a
 
-	; Vital Throw goes last.
-	call GetMoveIndexFromID
-	ld a, h
-	if HIGH(VITAL_THROW)
-		cp HIGH(VITAL_THROW)
-	else
-		and a
-	endc
-	jr nz, .not_vital_throw
-	ld a, l
-	sub LOW(VITAL_THROW)
+	; Trick Room goes last.
+	cp TRICK_ROOM
+	ld a, 0
 	ret z
 
-.not_vital_throw
 	call GetMoveEffect
 	ld hl, MoveEffectPriorities
 .loop
@@ -879,9 +889,13 @@ GetMovePriority:
 INCLUDE "data/moves/effects_priorities.asm"
 
 GetMoveEffect:
-	ld l, b
-	ld a, MOVE_EFFECT
-	call GetMoveAttribute
+	ld a, b
+	dec a
+	ld hl, Moves + MOVE_EFFECT
+	ld bc, MOVE_LENGTH
+	call AddNTimes
+	ld a, BANK(Moves)
+	call GetFarByte
 	ld b, a
 	ret
 
@@ -1260,13 +1274,7 @@ HandleWrap:
 
 	ld a, [de]
 	ld [wNamedObjectIndex], a
-	push hl
-	call GetMoveIndexFromID
-	ld a, l
 	ld [wFXAnimID], a
-	ld a, h
-	ld [wFXAnimID + 1], a
-	pop hl
 	call GetMoveName
 	dec [hl]
 	jr z, .release_from_bounds
@@ -1279,6 +1287,7 @@ HandleWrap:
 	call SwitchTurnCore
 	xor a
 	ld [wNumHits], a
+	ld [wFXAnimID + 1], a
 	predef PlayBattleAnim
 	call SwitchTurnCore
 
@@ -1320,9 +1329,33 @@ HandleLeftovers:
 	ld [wNamedObjectIndex], a
 	call GetItemName
 	ld a, b
+	cp HELD_BLACK_SLUDGE
+	jr nz, .check_leftovers
+
+; check if user is poison type
+	ld hl, wBattleMonType1
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .gottype
+	ld hl, wEnemyMonType1
+.gottype
+	ld a, [hli]
+	cp POISON
+	jp z, .get_hp
+	ld a, [hl]
+	cp POISON
+	jp z, .get_hp
+
+; User is not poison, deal damage
+	call GetEighthMaxHP
+	call SubtractHPFromTarget
+	ld hl, BattleText_UsersHurtByStringBuffer1
+	jp StdBattleTextbox
+
+.check_leftovers
 	cp HELD_LEFTOVERS
 	ret nz
-
+.get_hp
 	ld hl, wBattleMonHP
 	ldh a, [hBattleTurn]
 	and a
@@ -1348,6 +1381,7 @@ HandleLeftovers:
 	call RestoreHP
 	ld hl, BattleText_TargetRecoveredWithItem
 	jp StdBattleTextbox
+
 
 HandleMysteryberry:
 	ldh a, [hSerialConnectionStatus]
@@ -1415,22 +1449,11 @@ HandleMysteryberry:
 .restore
 	; lousy hack
 	ld a, [hl]
-	push hl
-	call GetMoveIndexFromID
-	ld a, h
-	if HIGH(SKETCH)
-		cp HIGH(SKETCH)
-	else
-		and a
-	endc
-	ld a, l
-	pop hl
-	ld b, 5
-	jr nz, .not_sketch
-	cp LOW(SKETCH)
-	jr nz, .not_sketch
+	cp SKETCH
 	ld b, 1
-.not_sketch
+	jr z, .sketch
+	ld b, 5
+.sketch
 	ld a, [de]
 	add b
 	ld [de], a
@@ -1534,10 +1557,7 @@ HandleFutureSight:
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVarAddr
 	push af
-	push hl
-	ld hl, FUTURE_SIGHT
-	call GetMoveIDFromIndex
-	pop hl
+	ld a, FUTURE_SIGHT
 	ld [hl], a
 
 	callfar UpdateMoveData
@@ -1727,14 +1747,22 @@ HandleWeather:
 
 	ld hl, wWeatherCount
 	dec [hl]
-	jr z, .ended
+	jr nz, .continues
 
+	; ended
+	ld hl, .WeatherEndedMessages
+	call .PrintWeatherMessage
+	xor a
+	ld [wBattleWeather], a
+	ret
+
+.continues
 	ld hl, .WeatherMessages
 	call .PrintWeatherMessage
 
 	ld a, [wBattleWeather]
 	cp WEATHER_SANDSTORM
-	ret nz
+	jr nz, .check_hail
 
 	ldh a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
@@ -1791,12 +1819,51 @@ HandleWeather:
 	ld hl, SandstormHitsText
 	jp StdBattleTextbox
 
-.ended
-	ld hl, .WeatherEndedMessages
-	call .PrintWeatherMessage
-	xor a
-	ld [wBattleWeather], a
-	ret
+	.check_hail
+		ld a, [wBattleWeather]
+		cp WEATHER_HAIL
+		ret nz
+
+		ldh a, [hSerialConnectionStatus]
+		cp USING_EXTERNAL_CLOCK
+		jr z, .enemy_first_hail
+
+	; player first
+		call SetPlayerTurn
+		call .HailDamage
+		call SetEnemyTurn
+		jr .HailDamage
+
+	.enemy_first_hail
+		call SetEnemyTurn
+		call .HailDamage
+		call SetPlayerTurn
+
+	.HailDamage:
+		ld a, BATTLE_VARS_SUBSTATUS3
+		call GetBattleVar
+		bit SUBSTATUS_UNDERGROUND, a
+		ret nz
+
+		ld hl, wBattleMonType1
+		ldh a, [hBattleTurn]
+		and a
+		jr z, .ok1
+		ld hl, wEnemyMonType1
+	.ok1
+		ld a, [hli]
+		cp ICE
+		ret z
+
+		ld a, [hl]
+		cp ICE
+		ret z
+
+		call GetSixteenthMaxHP
+		call SubtractHPFromUser
+
+		ld hl, PeltedByHailText
+		jp StdBattleTextbox
 
 .PrintWeatherMessage:
 	ld a, [wBattleWeather]
@@ -1815,12 +1882,14 @@ HandleWeather:
 	dw BattleText_RainContinuesToFall
 	dw BattleText_TheSunlightIsStrong
 	dw BattleText_TheSandstormRages
+	dw BattleText_HailContinuesToFall
 
 .WeatherEndedMessages:
 ; entries correspond to WEATHER_* constants
 	dw BattleText_TheRainStopped
 	dw BattleText_TheSunlightFaded
 	dw BattleText_TheSandstormSubsided
+	dw BattleText_TheHailStopped
 
 SubtractHPFromTarget:
 	call SubtractHP
@@ -2867,7 +2936,7 @@ SetUpBattlePartyMenu_Loop: ; switch to fullscreen menu?
 
 JumpToPartyMenuAndPrintText:
 	farcall WritePartyMenuTilemap
-	farcall PlacePartyMenuText
+	farcall PrintPartyMenuText
 	call WaitBGMap
 	call SetDefaultBGPAndOBP
 	call DelayFrame
@@ -3323,8 +3392,13 @@ LookUpTheEffectivenessOfEveryMove:
 	push hl
 	push de
 	push bc
+	dec a
+	ld hl, Moves
+	ld bc, MOVE_LENGTH
+	call AddNTimes
 	ld de, wEnemyMoveStruct
-	call GetMoveData
+	ld a, BANK(Moves)
+	call FarCopyBytes
 	call SetEnemyTurn
 	callfar BattleCheckTypeMatchup
 	pop bc
@@ -3350,17 +3424,13 @@ IsThePlayerMonTypesEffectiveAgainstOTMon:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
-	call GetPokemonIndexFromID
-	ld b, h
-	ld c, l
-	ld hl, BaseData
-	ld a, BANK(BaseData)
-	call LoadIndirectPointer
-	jr z, .done
-	ld bc, BASE_TYPES
-	add hl, bc
+	dec a
+	ld hl, BaseData + BASE_TYPES
+	ld bc, BASE_DATA_SIZE
+	call AddNTimes
 	ld de, wEnemyMonType
-	ld c, BASE_CATCH_RATE - BASE_TYPES
+	ld bc, BASE_CATCH_RATE - BASE_TYPES
+	ld a, BANK(BaseData)
 	call FarCopyBytes
 	ld a, [wBattleMonType1]
 	ld [wPlayerMoveStruct + MOVE_TYPE], a
@@ -3375,7 +3445,6 @@ IsThePlayerMonTypesEffectiveAgainstOTMon:
 	ld a, [wTypeMatchup]
 	cp EFFECTIVE + 1
 	jr nc, .super_effective
-.done
 	pop bc
 	ret
 
@@ -3476,20 +3545,7 @@ LoadEnemyMonToSwitchTo:
 	call LoadEnemyMon
 
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	ld a, l
-	sub LOW(UNOWN)
-	if HIGH(UNOWN) == 0
-		or h
-	else
-		jr nz, .skip_unown
-		if HIGH(UNOWN) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(UNOWN)
-		endc
-	endc
+	cp UNOWN
 	jr nz, .skip_unown
 	ld a, [wFirstUnownSeen]
 	and a
@@ -3595,7 +3651,6 @@ ShowBattleTextEnemySentOut:
 
 ShowSetEnemyMonAndSendOutAnimation:
 	ld a, [wTempEnemyMonSpecies]
-	call SetSeenMon
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	call GetBaseData
@@ -3879,8 +3934,7 @@ TryToRunAwayFromBattle:
 	cp BATTLEACTION_FORFEIT
 	ld a, DRAW
 	jr z, .fled
-	assert DRAW - 1 == LOSE
-	dec a
+	dec a ; LOSE
 .fled
 	ld b, a
 	ld a, [wBattleResult]
@@ -3918,9 +3972,9 @@ InitBattleMon:
 	ld a, MON_SPECIES
 	call GetPartyParamLocation
 	ld de, wBattleMonSpecies
-	ld bc, MON_OT_ID
+	ld bc, MON_ID
 	call CopyBytes
-	ld bc, MON_DVS - MON_OT_ID
+	ld bc, MON_DVS - MON_ID
 	add hl, bc
 	ld de, wBattleMonDVs
 	ld bc, MON_POKERUS - MON_DVS
@@ -4004,9 +4058,9 @@ InitEnemyMon:
 	ld hl, wOTPartyMon1Species
 	call GetPartyLocation
 	ld de, wEnemyMonSpecies
-	ld bc, MON_OT_ID
+	ld bc, MON_ID
 	call CopyBytes
-	ld bc, MON_DVS - MON_OT_ID
+	ld bc, MON_DVS - MON_ID
 	add hl, bc
 	ld de, wEnemyMonDVs
 	ld bc, MON_POKERUS - MON_DVS
@@ -4192,6 +4246,7 @@ SpikesDamage:
 	call StdBattleTextbox
 
 	call GetEighthMaxHP
+	call GetSixteenthMaxHP
 	call SubtractHPFromTarget
 
 	pop hl
@@ -4227,7 +4282,7 @@ PursuitSwitch:
 
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVarAddr
-	ld a, $ff
+	xor a ; NO_MOVE
 	ld [hl], a
 
 	pop af
@@ -4415,15 +4470,12 @@ ItemRecoveryAnim:
 	push de
 	push bc
 	call EmptyBattleTextbox
+	ld a, RECOVER
+	ld [wFXAnimID], a
 	call SwitchTurnCore
 	xor a
 	ld [wNumHits], a
-	if HIGH(RECOVER)
-		ld a, HIGH(RECOVER)
-	endc
 	ld [wFXAnimID + 1], a
-	ld a, LOW(RECOVER)
-	ld [wFXAnimID], a
 	predef PlayBattleAnim
 	call SwitchTurnCore
 	pop bc
@@ -5787,8 +5839,7 @@ MoveInfoBox:
 	ret
 
 CheckPlayerHasUsableMoves:
-	ld hl, STRUGGLE
-	call GetMoveIDFromIndex
+	ld a, STRUGGLE
 	ld [wCurPlayerMove], a
 	ld a, [wPlayerDisableCount]
 	and a
@@ -5867,6 +5918,7 @@ ParseEnemyAction:
 	bit SUBSTATUS_ENCORED, [hl]
 	ld a, [wLastEnemyMove]
 	jp nz, .finish
+	call SetChoiceLock
 	ld hl, wEnemyMonMoves
 	ld b, 0
 	add hl, bc
@@ -5947,6 +5999,7 @@ ParseEnemyAction:
 
 .skip_load
 	call SetEnemyTurn
+	call SetChoiceLock
 	callfar UpdateMoveData
 	call CheckEnemyLockedIn
 	jr nz, .raging
@@ -5980,9 +6033,32 @@ ParseEnemyAction:
 	ret
 
 .struggle
-	ld hl, STRUGGLE
-	call GetMoveIDFromIndex
+	ld a, STRUGGLE
 	jr .finish
+
+SetChoiceLock:
+	push hl
+	push bc
+	callfar GetUserItem
+	ld a, b
+	cp HELD_CHOICE_BOOST
+	jr nz, .done
+	ld hl, wPlayerEncoreCount
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .GotEncoreCount
+	ld hl, wEnemyEncoreCount
+.GotEncoreCount
+	ld a, -1 ; Set encore count to 255
+	ld [hl], a
+	ld a, BATTLE_VARS_SUBSTATUS5
+	call GetBattleVarAddr
+	set SUBSTATUS_ENCORED, [hl]
+
+.done
+	pop bc
+	pop hl
+	ret
 
 ResetVarsForSubstatusRage:
 	xor a
@@ -6198,20 +6274,7 @@ LoadEnemyMon:
 
 ; Unown
 	ld a, [wTempEnemyMonSpecies]
-	call GetPokemonIndexFromID ; will be preserved for the Magikarp check
-	ld a, l
-	sub LOW(UNOWN)
-	if HIGH(UNOWN) == 0
-		or h
-	else
-		jr nz, .Magikarp
-		ld a, h
-		if HIGH(UNOWN) == 1
-			dec a
-		else
-			cp HIGH(UNOWN)
-		endc
-	endc
+	cp UNOWN
 	jr nz, .Magikarp
 
 ; Get letter based on DVs
@@ -6221,7 +6284,6 @@ LoadEnemyMon:
 ; If combined with forced shiny battletype, causes an infinite loop
 	call CheckUnownLetter
 	jr c, .GenerateDVs ; try again
-	jr .Happiness ; skip the Magikarp check
 
 .Magikarp:
 ; These filters are untranslated.
@@ -6232,19 +6294,8 @@ LoadEnemyMon:
 ; by targeting those 1600 mm (= 5'3") or larger.
 ; After the conversion to feet, it is unable to target any,
 ; since the largest possible Magikarp is 5'3", and $0503 = 1283 mm.
-	ld a, l
-	sub LOW(MAGIKARP)
-	if HIGH(MAGIKARP) == 0
-		or h
-	else
-		jr nz, .Happiness
-		if HIGH(MAGIKARP) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(MAGIKARP)
-		endc
-	endc
+	ld a, [wTempEnemyMonSpecies]
+	cp MAGIKARP
 	jr nz, .Happiness
 
 ; Get Magikarp's length
@@ -6277,12 +6328,13 @@ LoadEnemyMon:
 	jr nc, .GenerateDVs
 
 .CheckMagikarpArea:
+; TODO: Replace GROUP_NONE and MAP_NONE with the map you want for large Magikarp.
 ; BUG: Magikarp in Lake of Rage are shorter, not longer (see docs/bugs_and_glitches.md)
 	ld a, [wMapGroup]
-	cp GROUP_LAKE_OF_RAGE
+	cp GROUP_NONE
 	jr z, .Happiness
 	ld a, [wMapNumber]
-	cp MAP_LAKE_OF_RAGE
+	cp MAP_NONE
 	jr z, .Happiness
 ; 40% chance of not flooring
 	call Random
@@ -6481,7 +6533,11 @@ LoadEnemyMon:
 
 ; Saw this mon
 	ld a, [wTempEnemyMonSpecies]
-	call SetSeenMon
+	dec a
+	ld c, a
+	ld b, SET_FLAG
+	ld hl, wPokedexSeen
+	predef SmallFarFlagAction
 
 	ld hl, wEnemyMonStats
 	ld de, wEnemyStats
@@ -6500,11 +6556,6 @@ CheckSleepingTreeMon:
 	cp BATTLETYPE_TREE
 	jr nz, .NotSleeping
 
-	ld a, [wTempEnemyMonSpecies]
-	call GetPokemonIndexFromID
-	ld b, h
-	ld c, l
-
 ; Get list for the time of day
 	ld hl, AsleepTreeMonsMorn
 	ld a, [wTimeOfDay]
@@ -6515,8 +6566,9 @@ CheckSleepingTreeMon:
 	ld hl, AsleepTreeMonsNite
 
 .Check:
-	ld de, 2 ; length of species id
-	call IsInWordArray
+	ld a, [wTempEnemyMonSpecies]
+	ld de, 1 ; length of species id
+	call IsInArray
 ; If it's a match, the opponent is asleep
 	ret c
 
@@ -6838,8 +6890,7 @@ ApplyStatLevelMultiplier:
 	pop bc
 	ret
 
-StatLevelMultipliers_Applied:
-INCLUDE "data/battle/stat_multipliers.asm"
+INCLUDE "data/battle/stat_multipliers_2.asm"
 
 BadgeStatBoosts:
 ; Raise the stats of the battle mon in wBattleMon
@@ -6877,7 +6928,7 @@ BadgeStatBoosts:
 	rrca
 	ld c, a
 	ld a, d
-	and ((1 << ZEPHYRBADGE) | (1 << HIVEBADGE) | (1 << FOGBADGE) | (1 << STORMBADGE) | (1 << GLACIERBADGE) | (1 << RISINGBADGE))
+	and ((1 << ANCHORBADGE) | (1 << HIVEBADGE) | (1 << FOGBADGE) | (1 << STORMBADGE) | (1 << GLACIERBADGE) | (1 << RISINGBADGE))
 	or b
 	or c
 	ld b, a
@@ -7159,7 +7210,7 @@ GiveExperiencePoints:
 	call Divide
 ; Boost Experience for traded Pokemon
 	pop bc
-	ld hl, MON_OT_ID
+	ld hl, MON_ID
 	add hl, bc
 	ld a, [wPlayerID]
 	cp [hl]
@@ -7488,6 +7539,37 @@ BoostExp:
 	adc b
 	ldh [hProduct + 2], a
 	pop bc
+	ret
+
+CheckOpponentFullHP:
+; check if the opponent has full HP
+; z: yes, nz: no
+	ld hl, wEnemyMonHP
+	ld a, [hBattleTurn]
+	and a
+	jr z, DoCheckFullHP
+	ld hl, wBattleMonHP
+	jr DoCheckFullHP
+
+CheckFullHP:
+; check if the user has full HP
+; z: yes, nz: no
+	ld hl, wBattleMonHP
+	ld a, [hBattleTurn]
+	and a
+	jr z, DoCheckFullHP
+	ld hl, wEnemyMonHP
+	; fallthrough
+DoCheckFullHP:
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	cp b
+	ret nz
+	ld a, [hl]
+	cp c
 	ret
 
 Text_MonGainedExpPoint:
@@ -8005,7 +8087,7 @@ PlaceExpBar:
 	sub $8
 	jr c, .next
 	ld b, a
-	ld a, $6a ; full bar
+	ld a, $5c ; full bar
 	ld [hld], a
 	dec c
 	jr z, .finish
@@ -8018,11 +8100,11 @@ PlaceExpBar:
 	jr .skip
 
 .loop2
-	ld a, $62 ; empty bar
+	ld a, $55 ; empty bar
 
 .skip
 	ld [hld], a
-	ld a, $62 ; empty bar
+	ld a, $55 ; empty bar
 	dec c
 	jr nz, .loop2
 
@@ -8209,9 +8291,9 @@ InitEnemyTrainer:
 	callfar GetTrainerAttributes
 	callfar ReadTrainerParty
 
-	; RIVAL1's first mon has no held item
+	; RIVALP's first mon has no held item
 	ld a, [wTrainerClass]
-	cp RIVAL1
+	cp POKEMON_PROF
 	jr nz, .ok
 	xor a
 	ld [wOTPartyMon1Item], a
@@ -8272,20 +8354,7 @@ InitEnemyWildmon:
 	ld hl, wEnemyMonDVs
 	predef GetUnownLetter
 	ld a, [wCurPartySpecies]
-	call GetPokemonIndexFromID
-	ld a, l
-	sub UNOWN
-	if HIGH(UNOWN) == 0
-		or h
-	else
-		jr nz, .skip_unown
-		if HIGH(UNOWN) == 1
-			dec h
-		else
-			ld a, h
-			cp HIGH(UNOWN)
-		endc
-	endc
+	cp UNOWN
 	jr nz, .skip_unown
 	ld a, [wFirstUnownSeen]
 	and a
@@ -8318,9 +8387,12 @@ FillEnemyMovesFromMoveIndicesBuffer: ; unreferenced
 	push hl
 
 	push hl
-	ld l, a
-	ld a, MOVE_PP
-	call GetMoveAttribute
+	dec a
+	ld hl, Moves + MOVE_PP
+	ld bc, MOVE_LENGTH
+	call AddNTimes
+	ld a, BANK(Moves)
+	call GetFarByte
 	pop hl
 
 	ld bc, wEnemyMonPP - (wEnemyMonMoves + 1)
@@ -8446,7 +8518,7 @@ CheckPayDay:
 
 ShowLinkBattleParticipantsAfterEnd:
 	farcall StubbedTrainerRankings_LinkBattles
-	farcall BackupGSBallFlag
+	farcall BackupMobileEventIndex
 	ld a, [wCurOTMon]
 	ld hl, wOTPartyMon1Status
 	call GetPartyLocation
@@ -8492,7 +8564,7 @@ DisplayLinkBattleResult:
 .store_result
 	hlcoord 6, 8
 	call PlaceString
-	farcall BackupGSBallFlag
+	farcall BackupMobileEventIndex
 	ld c, 200
 	call DelayFrames
 
@@ -9171,7 +9243,7 @@ BattleStartMessage:
 	farcall Battle_GetTrainerName
 
 	ld hl, WantsToBattleText
-	jr .PrintBattleStartText
+	jr .PlaceBattleStartText
 
 .wild
 	call BattleCheckEnemyShininess
@@ -9213,18 +9285,18 @@ BattleStartMessage:
 	farcall StubbedTrainerRankings_HookedEncounters
 
 	ld hl, HookedPokemonAttackedText
-	jr .PrintBattleStartText
+	jr .PlaceBattleStartText
 
 .NotFishing:
 	ld hl, PokemonFellFromTreeText
 	cp BATTLETYPE_TREE
-	jr z, .PrintBattleStartText
+	jr z, .PlaceBattleStartText
 	ld hl, WildCelebiAppearedText
 	cp BATTLETYPE_CELEBI
-	jr z, .PrintBattleStartText
+	jr z, .PlaceBattleStartText
 	ld hl, WildPokemonAppearedText
 
-.PrintBattleStartText:
+.PlaceBattleStartText:
 	push hl
 	farcall BattleStart_TrainerHuds
 	pop hl

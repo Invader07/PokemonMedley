@@ -31,6 +31,7 @@ BattleCommand_MirrorMove:
 	ld e, l
 	pop af
 
+	dec a
 	call GetMoveData
 	call GetMoveName
 	call CopyName1

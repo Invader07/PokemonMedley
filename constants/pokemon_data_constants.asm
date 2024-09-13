@@ -69,12 +69,15 @@ DEF NUM_GROWTH_RATES EQU const_value
 	const EGG_DRAGON        ; e
 	const EGG_NONE          ; f (Undiscovered)
 
+; pokedex entries (see data/pokemon/dex_entries.asm)
+DEF NUM_DEX_ENTRY_BANKS EQU 4
+
 ; party_struct members (see macros/ram.asm)
 rsreset
 DEF MON_SPECIES            rb
 DEF MON_ITEM               rb
 DEF MON_MOVES              rb NUM_MOVES
-DEF MON_OT_ID              rw
+DEF MON_ID                 rw
 DEF MON_EXP                rb 3
 DEF MON_STAT_EXP           rw NUM_EXP_STATS
 rsset MON_STAT_EXP
@@ -216,11 +219,11 @@ DEF NUM_HOF_TEAMS EQU 30
 
 ; wild data
 
-DEF NUM_GRASSMON EQU 7 ; data/wild/*_grass.asm table size
-DEF NUM_WATERMON EQU 3 ; data/wild/*_water.asm table size
+DEF NUM_GRASSMON EQU 8 ; data/wild/*_grass.asm table size
+DEF NUM_WATERMON EQU 4 ; data/wild/*_water.asm table size
 
-DEF GRASS_WILDDATA_LENGTH EQU 2 + (1 + NUM_GRASSMON * 3) * 3
-DEF WATER_WILDDATA_LENGTH EQU 2 + (1 + NUM_WATERMON * 3) * 1
+DEF GRASS_WILDDATA_LENGTH EQU 2 + (1 + NUM_GRASSMON * 5) * 3
+DEF WATER_WILDDATA_LENGTH EQU 2 + (1 + NUM_WATERMON * 5) * 1
 DEF FISHGROUP_DATA_LENGTH EQU 1 + 2 * 3
 
 DEF NUM_ROAMMON_MAPS EQU 16 ; RoamMaps table size (see data/wild/roammon_maps.asm)

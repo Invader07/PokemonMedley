@@ -101,6 +101,8 @@ EggMovePointers2::
 	dw NoEggMoves2
 	dw NoEggMoves2
 	dw NoEggMoves2
+	dw NoEggMoves2
+	dw NoEggMoves2
 .IndirectEnd::
 
 ChikoritaEggMoves:
@@ -116,17 +118,17 @@ CyndaquilEggMoves:
 	dw FURY_SWIPES
 	dw QUICK_ATTACK
 	dw REVERSAL
-	dw THRASH
+	dw POUND
 	dw FORESIGHT
 	dw SUBMISSION
 	dw -1 ; end
 
 TotodileEggMoves:
 	dw CRUNCH
-	dw THRASH
+	dw POUND
 	dw HYDRO_PUMP
 	dw ANCIENTPOWER
-	dw RAZOR_WIND
+	dw POUND
 	dw ROCK_SLIDE
 	dw -1 ; end
 
@@ -139,24 +141,24 @@ SentretEggMoves:
 	dw -1 ; end
 
 HoothootEggMoves:
-	dw MIRROR_MOVE
+	dw POUND
 	dw SUPERSONIC
 	dw FAINT_ATTACK
 	dw WING_ATTACK
 	dw WHIRLWIND
-	dw SKY_ATTACK
+	dw POUND
 	dw -1 ; end
 
 LedybaEggMoves:
 	dw PSYBEAM
-	dw BIDE
+	dw POUND
 	dw LIGHT_SCREEN
 	dw -1 ; end
 
 SpinarakEggMoves:
 	dw PSYBEAM
 	dw DISABLE
-	dw SONICBOOM
+	dw POUND
 	dw BATON_PASS
 	dw PURSUIT
 	dw -1 ; end
@@ -169,30 +171,30 @@ ChinchouEggMoves:
 
 PichuEggMoves:
 	dw REVERSAL
-	dw BIDE
-	dw PRESENT
+	dw POUND
+	dw POUND
 	dw ENCORE
-	dw DOUBLESLAP
+	dw POUND
 	dw -1 ; end
 
 CleffaEggMoves:
-	dw PRESENT
+	dw POUND
 	dw METRONOME
 	dw AMNESIA
 	dw BELLY_DRUM
-	dw SPLASH
-	dw MIMIC
+	dw POUND
+	dw POUND
 	dw -1 ; end
 
 IgglybuffEggMoves:
 	dw PERISH_SONG
-	dw PRESENT
+	dw POUND
 	dw FAINT_ATTACK
 	dw -1 ; end
 
 TogepiEggMoves:
-	dw PRESENT
-	dw MIRROR_MOVE
+	dw POUND
+	dw POUND
 	dw PECK
 	dw FORESIGHT
 	dw FUTURE_SIGHT
@@ -209,7 +211,7 @@ NatuEggMoves:
 MareepEggMoves:
 	dw THUNDERBOLT
 	dw TAKE_DOWN
-	dw BODY_SLAM
+	dw POUND
 	dw SAFEGUARD
 	dw SCREECH
 	dw REFLECT
@@ -217,7 +219,7 @@ MareepEggMoves:
 
 MarillEggMoves:
 	dw LIGHT_SCREEN
-	dw PRESENT
+	dw POUND
 	dw AMNESIA
 	dw FUTURE_SIGHT
 	dw BELLY_DRUM
@@ -237,7 +239,7 @@ HoppipEggMoves:
 	dw DOUBLE_EDGE
 	dw REFLECT
 	dw AMNESIA
-	dw PAY_DAY
+	dw POUND
 	dw -1 ; end
 
 AipomEggMoves:
@@ -245,10 +247,10 @@ AipomEggMoves:
 	dw SCREECH
 	dw PURSUIT
 	dw AGILITY
-	dw SPITE
-	dw SLAM
-	dw DOUBLESLAP
-	dw BEAT_UP
+	dw POUND
+	dw POUND
+	dw POUND
+	dw POUND
 	dw -1 ; end
 
 YanmaEggMoves:
@@ -258,7 +260,7 @@ YanmaEggMoves:
 	dw -1 ; end
 
 WooperEggMoves:
-	dw BODY_SLAM
+	dw POUND
 	dw ANCIENTPOWER
 	dw SAFEGUARD
 	dw -1 ; end
@@ -267,9 +269,9 @@ MurkrowEggMoves:
 	dw WHIRLWIND
 	dw DRILL_PECK
 	dw QUICK_ATTACK
-	dw MIRROR_MOVE
+	dw POUND
 	dw WING_ATTACK
-	dw SKY_ATTACK
+	dw POUND
 	dw -1 ; end
 
 MisdreavusEggMoves:
@@ -282,7 +284,7 @@ GirafarigEggMoves:
 	dw AMNESIA
 	dw FORESIGHT
 	dw FUTURE_SIGHT
-	dw BEAT_UP
+	dw POUND
 	dw -1 ; end
 
 PinecoEggMoves:
@@ -293,7 +295,7 @@ PinecoEggMoves:
 	dw -1 ; end
 
 DunsparceEggMoves:
-	dw BIDE
+	dw POUND
 	dw ANCIENTPOWER
 	dw ROCK_SLIDE
 	dw BITE
@@ -303,7 +305,7 @@ DunsparceEggMoves:
 GligarEggMoves:
 	dw METAL_CLAW
 	dw WING_ATTACK
-	dw RAZOR_WIND
+	dw POUND
 	dw COUNTER
 	dw -1 ; end
 
@@ -311,7 +313,7 @@ SnubbullEggMoves:
 	dw METRONOME
 	dw FAINT_ATTACK
 	dw REFLECT
-	dw PRESENT
+	dw POUND
 	dw CRUNCH
 	dw HEAL_BELL
 	dw LICK
@@ -321,23 +323,23 @@ SnubbullEggMoves:
 QwilfishEggMoves:
 	dw FLAIL
 	dw HAZE
-	dw BUBBLEBEAM
+	dw POUND
 	dw SUPERSONIC
 	dw -1 ; end
 
 ShuckleEggMoves:
-	dw SWEET_SCENT
+	dw POUND
 	dw -1 ; end
 
 HeracrossEggMoves:
 	dw HARDEN
-	dw BIDE
+	dw POUND
 	dw FLAIL
 	dw -1 ; end
 
 SneaselEggMoves:
 	dw COUNTER
-	dw SPITE
+	dw POUND
 	dw FORESIGHT
 	dw REFLECT
 	dw BITE
@@ -359,7 +361,7 @@ SlugmaEggMoves:
 SwinubEggMoves:
 	dw TAKE_DOWN
 	dw BITE
-	dw BODY_SLAM
+	dw POUND
 	dw ROCK_SLIDE
 	dw ANCIENTPOWER
 	dw -1 ; end
@@ -374,7 +376,7 @@ CorsolaEggMoves:
 
 RemoraidEggMoves:
 	dw AURORA_BEAM
-	dw OCTAZOOKA
+	dw POUND
 	dw SUPERSONIC
 	dw HAZE
 	dw SCREECH
@@ -384,7 +386,7 @@ DelibirdEggMoves:
 	dw AURORA_BEAM
 	dw QUICK_ATTACK
 	dw FUTURE_SIGHT
-	dw SPLASH
+	dw POUND
 	dw RAPID_SPIN
 	dw -1 ; end
 
@@ -392,36 +394,36 @@ MantineEggMoves:
 	dw TWISTER
 	dw HYDRO_PUMP
 	dw HAZE
-	dw SLAM
+	dw POUND
 	dw -1 ; end
 
 SkarmoryEggMoves:
 	dw DRILL_PECK
 	dw PURSUIT
 	dw WHIRLWIND
-	dw SKY_ATTACK
+	dw POUND
 	dw -1 ; end
 
 HoundourEggMoves:
-	dw FIRE_SPIN
+	dw POUND
 	dw RAGE
 	dw PURSUIT
 	dw COUNTER
-	dw SPITE
+	dw POUND
 	dw REVERSAL
-	dw BEAT_UP
+	dw POUND
 	dw -1 ; end
 
 PhanpyEggMoves:
 	dw FOCUS_ENERGY
-	dw BODY_SLAM
+	dw POUND
 	dw ANCIENTPOWER
 	dw WATER_GUN
 	dw -1 ; end
 
 StantlerEggMoves:
 	dw REFLECT
-	dw SPITE
+	dw POUND
 	dw DISABLE
 	dw LIGHT_SCREEN
 	dw BITE
@@ -431,39 +433,39 @@ TyrogueEggMoves:
 	dw RAPID_SPIN
 	dw HI_JUMP_KICK
 	dw MACH_PUNCH
-	dw MIND_READER
+	dw POUND
 	dw -1 ; end
 
 SmoochumEggMoves:
-	dw MEDITATE
+	dw POUND
 	dw -1 ; end
 
 ElekidEggMoves:
 	dw KARATE_CHOP
-	dw BARRIER
-	dw ROLLING_KICK
-	dw MEDITATE
+	dw POUND
+	dw POUND
+	dw POUND
 	dw CROSS_CHOP
 	dw -1 ; end
 
 MagbyEggMoves:
 	dw KARATE_CHOP
-	dw MEGA_PUNCH
-	dw BARRIER
+	dw POUND
+	dw POUND
 	dw SCREECH
 	dw CROSS_CHOP
 	dw -1 ; end
 
 MiltankEggMoves:
-	dw PRESENT
+	dw POUND
 	dw REVERSAL
 	dw SEISMIC_TOSS
 	dw -1 ; end
 
 LarvitarEggMoves:
 	dw PURSUIT
-	dw STOMP
-	dw OUTRAGE
+	dw POUND
+	dw POUND
 	dw FOCUS_ENERGY
 	dw ANCIENTPOWER
 NoEggMoves2:

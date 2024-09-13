@@ -256,9 +256,15 @@ MoveDescriptions1:
 	dw RockSmashDescription
 	dw WhirlpoolDescription
 	dw BeatUpDescription
+	dw Extra1Description
+	dw Extra2Description
+	dw Extra3Description
+	dw Extra4Description
 .IndirectEnd::
 
-InvalidMoveDescription:
+
+MoveFFDescription:
+Move00Description:
 	db "?@"
 
 PoundDescription:
@@ -1264,3 +1270,19 @@ WhirlpoolDescription:
 BeatUpDescription:
 	db   "Party #MON join"
 	next "in the attack.@"
+
+Extra1Description:
+	db   "Pounds with fore-"
+	next "legs or tail.@"
+
+Extra2Description:
+	db   "Pounds with fore-"
+	next "legs or tail.@"
+
+Extra3Description:
+	db   "Pounds with fore-"
+	next "legs or tail.@"
+
+Extra4Description:
+	db   "Pounds with fore-"
+	next "legs or tail.@"

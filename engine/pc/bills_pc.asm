@@ -164,6 +164,7 @@ SwapStorageBoxSlots:
 	pop af
 	jr nz, .not_last_healthy
 
+
 	; Doing this would lose us our last healthy mon, so abort.
 	ld a, 4
 .pop_bcde_and_return
@@ -771,7 +772,7 @@ EncodeBufferMon:
 ; Encodes party_struct wBufferMon in-place to savemon_struct wEncodedBufferMon.
 ; Bytes identical to both structs do not need encoding.
 
-	; Handle EGGs, store as high bit in EXP.
+; Handle EGGs, store as high bit in EXP.
 	ld a, [wBufferMonAltSpecies]
 	ld hl, wEncodedBufferMonIsEgg
 	cp EGG
@@ -788,9 +789,9 @@ EncodeBufferMon:
 	ld [wEncodedBufferMonSpeciesHigh], a
 
 	; Convert 4 PP bytes to 1 PP Up byte.
-	ld hl, wEncodedBufferMonPPUps
+	ld hl, wBufferMonPP
 	ld b, NUM_MOVES
-.pp_up_loop
+	.pp_up_loop
 	ld a, PP_UP_MASK
 	and a, [hl]
 	ld [hli], a
@@ -814,9 +815,8 @@ EncodeBufferMon:
 	add e
 	ld e, a
 	adc d
-	sub e
-	ld d, a
 
+.loop
 	ld a, [de]
 	or h ; OR with already stored 2 PP-UP bits.
 	ld [de], a
@@ -1019,7 +1019,6 @@ DecodeBufferMon:
 	adc h
 	sub l
 	ld h, a
-
 	ld a, [hl]
 	and PP_MASK
 	ld h, a

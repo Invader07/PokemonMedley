@@ -3,8 +3,8 @@
 TrainerGroups:
 ; entries correspond to trainer classes (see constants/trainer_constants.asm)
 	table_width 3, TrainerGroups
-	dba FalknerGroup
-	dba WhitneyGroup
+	dba EdwardGroup
+	dba KenjiGroup
 	dba BugsyGroup
 	dba MortyGroup
 	dba PryceGroup
@@ -70,4 +70,27 @@ TrainerGroups:
 	dba OfficerGroup
 	dba GruntFGroup
 	dba MysticalmanGroup
+	dba BlaireGroup
+	dba PercyGroup
+	dba BreederGroup
+	dba BugManiacGroup
+	dba ClownGroup
+	dba CyclistGroup
+	dba NurseGroup
+	dba EngineerGroup
+	dba HexManiacGroup
+	dba MysteryManGroup
+	dba PainterGroup
+	dba RangerGroup
+	dba RuinManiacGroup
+	dba ScubaDiverGroup
+	dba SuperTrainerGroup
+	dba SurferGroup
+	dba RocketCaptGroup
+	dba RocketSciGroup
+	dba TouristGroup
+	dba SurvivalistGroup
+	dba FarmerGroup
+	dba GardenerGroup
+  dba DancerGroup
 	assert_table_length NUM_TRAINER_CLASSES

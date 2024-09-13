@@ -157,15 +157,22 @@ _OakTimeWokeUpText::
 	text "<……><……><……><……><……><……>"
 	line "<……><……><……><……><……><……>"
 
-	para "Zzz… Hm? Wha…?"
-	line "You woke me up!"
+	para "OAK: Alright then,"
+	line "we are about to"
 
-	para "Will you check the"
-	line "clock for me?"
+	para "arrive at HERALD"
+	line "COVE."
+
 	prompt
 
+
+
 _OakTimeWhatTimeIsItText::
-	text "What time is it?"
+	text "<PLAYER>, could"
+	line "you check the time"
+
+	para "and see when we"
+	line "will arrive?"
 	done
 
 _OakTimeWhatHoursText::
@@ -181,7 +188,7 @@ _OakTimeHowManyMinutesText::
 	done
 
 _OakTimeWhoaMinutesText::
-	text "Whoa!@"
+	text "What?@"
 	text_end
 
 _OakTimeMinutesQuestionMarkText::
@@ -189,20 +196,29 @@ _OakTimeMinutesQuestionMarkText::
 	done
 
 _OakTimeOversleptText::
-	text "!"
-	line "I overslept!"
+	text "."
+	line "Let's wake the"
+	cont "others!"
+
+	para "We have a lot to"
+	line "do here!"
 	done
 
 _OakTimeYikesText::
-	text "!"
-	line "Yikes! I over-"
-	cont "slept!"
+	text "."
+	line "It's a gorgeous"
+	cont "day today!"
+
+	para "Let's get going!"
 	done
 
 _OakTimeSoDarkText::
-	text "!"
-	line "No wonder it's so"
-	cont "dark!"
+	text "."
+	line "It will be dark"
+	cont "when we arrive."
+
+	para "I hope the others"
+	line "are ready!"
 	done
 
 _OakTimeWhatDayIsItText::

@@ -1,7 +1,6 @@
 TypeNames:
 ; entries correspond to types (see constants/type_constants.asm)
 	table_width 2, TypeNames
-
 	dw Normal
 	dw Fighting
 	dw Flying
@@ -10,14 +9,14 @@ TypeNames:
 	dw Rock
 	dw Bird
 	dw Bug
-	dw Ghost
+	dw Dark
 	dw Steel
 	assert_table_length UNUSED_TYPES
 
-rept UNUSED_TYPES_END - UNUSED_TYPES - 1 ; discount CURSE_TYPE
-	dw Normal
-endr
-	dw CurseType
+	rept UNUSED_TYPES_END - UNUSED_TYPES - 1 ; discount CURSE_TYPE
+		dw Normal
+	endr
+		dw CurseType
 	assert_table_length UNUSED_TYPES_END
 
 	dw Fire
@@ -27,7 +26,7 @@ endr
 	dw Psychic
 	dw Ice
 	dw Dragon
-	dw Dark
+	dw Ghost
 	assert_table_length TYPES_END
 
 Normal:    db "NORMAL@"

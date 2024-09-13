@@ -739,7 +739,12 @@ _ActorNameText::
 	text "<USER>@"
 	text_end
 
-_UsedMoveText::
+_UsedMove1Text::
+	text_start
+	line "used @"
+	text_end
+
+_UsedMove2Text::
 	text_start
 	line "used @"
 	text_end
@@ -751,6 +756,27 @@ _UsedInsteadText::
 
 _MoveNameText::
 	text_ram wStringBuffer2
+	text_end
+
+	text_end ; unreferenced
+
+_EndUsedMove1Text::
+	text "!"
+	done
+
+_EndUsedMove2Text::
+	text "!"
+	done
+
+_EndUsedMove3Text::
+	text "!"
+	done
+
+_EndUsedMove4Text::
+	text "!"
+	done
+
+_EndUsedMove5Text::
 	text "!"
 	done
 
@@ -1505,23 +1531,22 @@ _MayRegisterItemText::
 	done
 
 _OakText1::
-	text "Hello! Sorry to"
-	line "keep you waiting!"
+	text "Hi there! Welcome"
+	line "to the wonderful"
 
-	para "Welcome to the"
-	line "world of #MON!"
+	para "world of #MON!"
+	line "My name is OAK,"
 
-	para "My name is OAK."
-
-	para "People call me the"
-	line "#MON PROF."
+	para "but most people"
+	line "call me the"
+	cont "#MON PROF."
 	prompt
 
 _OakText2::
-	text "This world is in-"
-	line "habited by crea-"
-	cont "tures that we call"
-	cont "#MON.@"
+	text "#MON, as you"
+	line "know, are found"
+	cont "all over the"
+	cont "world.@"
 	text_end
 
 _OakText3::
@@ -1532,25 +1557,24 @@ _OakText3::
 
 _OakText4::
 	text "People and #MON"
-	line "live together by"
+	line "live in harmony by"
 
 	para "supporting each"
 	line "other."
 
-	para "Some people play"
-	line "with #MON, some"
-	cont "battle with them."
+	para "This is true for"
+	line "many places around"
+
+	para "the world, but"
+	line "where we are going"
+	cont "is truly unique."
 	prompt
 
 _OakText5::
-	text "But we don't know"
-	line "everything about"
-	cont "#MON yet."
+	text "There is so much"
+	line "we don't know,"
 
-	para "There are still"
-	line "many mysteries to"
-	cont "solve."
-
-	para "That's why I study"
-	line "#MON every day."
+	para "but learning more"
+	line "about #MON is"
+	cont "always exciting!"
 	prompt

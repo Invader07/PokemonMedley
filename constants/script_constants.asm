@@ -113,8 +113,7 @@ DEF CALLBACK_SIZE     EQU  3 ; callback
 DEF WARP_EVENT_SIZE   EQU  5 ; warp_event
 DEF COORD_EVENT_SIZE  EQU  8 ; coord_event
 DEF BG_EVENT_SIZE     EQU  5 ; bg_event
-; An object_event is a map_object without its initial MAPOBJECT_OBJECT_STRUCT_ID or final padding
-DEF OBJECT_EVENT_SIZE EQU MAPOBJECT_LENGTH - 3 ; 13
+DEF OBJECT_EVENT_SIZE EQU 13 ; object_event
 
 ; A coord_event for scene -1 will always activate,
 ; regardless of the map's scene variable value.
@@ -209,12 +208,13 @@ DEF EMOTE_LENGTH EQU 6
 ; fruittree arguments
 ; FruitTreeItems indexes (see data/items/fruit_trees.asm)
 	const_def 1
-	const FRUITTREE_ROUTE_29      ; 01
-	const FRUITTREE_ROUTE_30_1    ; 02
-	const FRUITTREE_ROUTE_38      ; 03
-	const FRUITTREE_ROUTE_46_1    ; 04
-	const FRUITTREE_ROUTE_30_2    ; 05
-	const FRUITTREE_ROUTE_33      ; 06
+	const FRUITTREE_HERALD_ROUTE  ; 01
+	const FRUITTREE_SCENIC_BLUFF  ; 01
+	const FRUITTREE_BERRY_FOREST_1 ; 02
+	const FRUITTREE_BERRY_FOREST_2      ; 03
+	const FRUITTREE_BERRY_FOREST_3    ; 04
+	const FRUITTREE_BERRY_FOREST_4    ; 05
+	const FRUITTREE_BERRY_FOREST_5      ; 06
 	const FRUITTREE_ROUTE_31      ; 07
 	const FRUITTREE_ROUTE_43      ; 08
 	const FRUITTREE_VIOLET_CITY   ; 09
@@ -302,7 +302,7 @@ DEF BUG_CONTESTANT_SIZE EQU 4
 ; HealMachineAnim.Pointers indexes (see engine/events/heal_machine_anim.asm)
 	const_def
 	const HEALMACHINE_POKECENTER   ; 0
-	const HEALMACHINE_ELMS_LAB     ; 1
+	const HEALMACHINE_HERALD_LAB   ; 1
 	const HEALMACHINE_HALL_OF_FAME ; 2
 
 ; UnownPuzzle setval arguments

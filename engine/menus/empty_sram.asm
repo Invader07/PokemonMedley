@@ -7,8 +7,8 @@ endr
 
 .EmptyBank:
 	call OpenSRAM
-	ld hl, STARTOF(SRAM)
-	ld bc, SIZEOF(SRAM)
+	ld hl, SRAM_Begin
+	ld bc, SRAM_End - SRAM_Begin
 	xor a
 	call ByteFill
 	call CloseSRAM

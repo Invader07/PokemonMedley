@@ -7,21 +7,16 @@ IrwinRumorScript:
 	iftrue .TrainPass
 	checkflag ENGINE_MARSHBADGE
 	iftrue .MarshBadge
-	checkflag ENGINE_FLYPOINT_VERMILION
+; TODO: Change this flypoint and the various other dialog conditions.
+	checkflag ENGINE_FLYPOINT_NEW_BARK
 	iftrue .VermilionCity
 	checkevent EVENT_BEAT_ELITE_FOUR
 	iftrue .EliteFour
 	checkflag ENGINE_RISINGBADGE
 	iftrue .RisingBadge
-	checkevent EVENT_CLEARED_RADIO_TOWER
-	iftrue .RadioTower
-	checkevent EVENT_CLEARED_ROCKET_HIDEOUT
-	iftrue .RocketHideout
-	checkevent EVENT_JASMINE_RETURNED_TO_GYM
-	iftrue .JasmineReturned
 	checkflag ENGINE_FOGBADGE
 	iftrue .FogBadge
-	checkflag ENGINE_PLAINBADGE
+	checkflag ENGINE_CRUSHBADGE
 	iftrue .PlainBadge
 	farwritetext IrwinCalledRightAwayText
 	promptbutton
@@ -29,11 +24,6 @@ IrwinRumorScript:
 
 .PlainBadge:
 	farwritetext IrwinPlainBadgeGossipText
-	promptbutton
-	sjump PhoneScript_HangUpText_Male
-
-.JasmineReturned:
-	farwritetext IrwinJasmineReturnedGossipText
 	promptbutton
 	sjump PhoneScript_HangUpText_Male
 
