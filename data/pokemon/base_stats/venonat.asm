@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db VENONAT ; 048
 
-	db  60,  55,  50,  45,  40,  55
+	db  60,  55,  50,  45,  60,  55
 	;   hp  atk  def  spd  sat  sdf
 
 	db BUG, POISON ; type
@@ -17,5 +17,5 @@
 	dn EGG_BUG, EGG_BUG ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

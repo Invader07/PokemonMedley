@@ -1,11 +1,11 @@
-	db 0 ; species ID placeholder
+	db 0 ; 222
 
-	db  55,  55,  85,  35,  65,  85
+	db  80,  65,  95,  30,  80,  95
 	;   hp  atk  def  spd  sat  sdf
 
 	db WATER, ROCK ; type
 	db 60 ; catch rate
-	db 113 ; base exp
+	db 133 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F75 ; gender ratio
 	db 100 ; unknown 1
@@ -17,5 +17,5 @@
 	dn EGG_WATER_1, EGG_WATER_3 ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

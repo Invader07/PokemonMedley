@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db HOOTHOOT ; 163
 
-	db  60,  30,  30,  50,  36,  56
+	db  60,  30,  35,  50,  46,  56
 	;   hp  atk  def  spd  sat  sdf
 
 	db NORMAL, FLYING ; type
@@ -17,5 +17,5 @@
 	dn EGG_FLYING, EGG_FLYING ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE, TOXIC, HIDDEN_POWER, SUNNY_DAY, SNORE, PROTECT, ENDURE, FRUSTRATION, RETURN, MUD_SLAP, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, SWIFT, DREAM_EATER, DETECT, REST, ATTRACT, THIEF, STEEL_WING, NIGHTMARE, FLY, FLASH
+	tmhm
 	; end

@@ -1,9 +1,9 @@
-	db 0 ; species ID placeholder
+	db VULPIX ; 037
 
-	db  38,  41,  40,  65,  50,  65
+	db  40,  40,  40,  65,  50,  65
 	;   hp  atk  def  spd  sat  sdf
 
-	db ICE, ICE ; type
+	db ICE, FAIRY ; type
 	db 190 ; catch rate
 	db 63 ; base exp
 	db ICE_BERRY, ICE_BERRY ; items
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

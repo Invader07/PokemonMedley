@@ -640,43 +640,27 @@ ClearBottomLine:
 	ld a, " "
 	jp ByteFill
 
-PokedexShow_GetDexEntryBank:
-	push hl
-	push de
-	ld a, [wCurPartySpecies]
-	dec a
-	rlca
-	rlca
-	maskbits NUM_DEX_ENTRY_BANKS
-	ld hl, .PokedexEntryBanks
-	ld d, 0
-	ld e, a
-	add hl, de
-	ld a, [hl]
-	pop de
-	pop hl
-	ret
-
-.PokedexEntryBanks:
-	db BANK("Pokedex Entries 001-064")
-	db BANK("Pokedex Entries 065-128")
-	db BANK("Pokedex Entries 129-192")
-	db BANK("Pokedex Entries 193-251")
-
 PokedexShow1:
 	call StartRadioStation
 .loop
 	call Random
-	cp NUM_POKEMON
+	ld e, a
+	call Random
+	and $f
+	ld d, a
+	cp HIGH(NUM_POKEMON)
+	jr c, .ok
+	jr nz, .loop
+	ld a, e
+	cp LOW(NUM_POKEMON)
 	jr nc, .loop
-	ld c, a
-	push bc
-	ld a, c
-	call CheckCaughtMon
-	pop bc
+.ok
+	inc de
+	push de
+	call CheckCaughtMonIndex
+	pop hl
 	jr z, .loop
-	inc c
-	ld a, c
+	call GetPokemonIDFromIndex
 	ld [wCurPartySpecies], a
 	ld [wNamedObjectIndex], a
 	call GetPokemonName
@@ -692,9 +676,14 @@ PokedexShow2:
 	ld b, 0
 	add hl, bc
 	add hl, bc
+	add hl, bc
+	ld a, BANK(PokedexDataPointerTable)
+	call GetFarByte
+	ld b, a
+	inc hl
 	ld a, BANK(PokedexDataPointerTable)
 	call GetFarWord
-	call PokedexShow_GetDexEntryBank
+	ld a, b
 	push af
 	push hl
 	call CopyDexEntryPart1
@@ -1541,8 +1530,16 @@ GetBuenasPassword:
 	assert_table_length NUM_BUENA_FUNCTIONS
 
 .Mon:
-	call .GetTheIndex
+	ld h, 0
+	ld l, c
+	add hl, hl
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call GetPokemonIDFromIndex
 	call GetPokemonName
+	ld [wNamedObjectIndex], a
 	ret
 
 .Item:

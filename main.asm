@@ -193,6 +193,8 @@ INCLUDE "data/maps/scenes.asm"
 INCLUDE "engine/overworld/load_map_part.asm"
 INCLUDE "engine/phone/phonering_copytilemapatonce.asm"
 INCLUDE "engine/events/buena_menu.asm"
+INCLUDE "engine/events/sacred_ash.asm"
+INCLUDE "data/pokemon/names.asm"
 
 
 SECTION "bank13_2", ROMX
@@ -227,18 +229,15 @@ INCLUDE "engine/events/sweet_scent.asm"
 INCLUDE "engine/events/squirtbottle.asm"
 INCLUDE "engine/events/card_key.asm"
 INCLUDE "engine/events/basement_key.asm"
-INCLUDE "engine/events/sacred_ash.asm"
 INCLUDE "engine/pokemon/tempmon.asm"
 INCLUDE "engine/pokemon/types.asm"
-INCLUDE "engine/battle/getgen1trainerclassname.asm"
 INCLUDE "engine/pokemon/mon_stats.asm"
 INCLUDE "engine/link/init_list.asm"
 INCLUDE "engine/pokemon/experience.asm"
 INCLUDE "engine/pokemon/switchpartymons.asm"
 INCLUDE "engine/gfx/load_pics.asm"
 INCLUDE "data/pokemon/base_stats.asm"
-INCLUDE "data/pokemon/names.asm"
-INCLUDE "data/pokemon/unused_pic_banks.asm"
+
 
 
 SECTION "Crystal Phone Text", ROMX
@@ -311,6 +310,7 @@ INCLUDE "engine/rtc/timeset.asm"
 INCLUDE "engine/pokegear/pokegear.asm"
 INCLUDE "engine/events/fish.asm"
 INCLUDE "engine/games/slot_machine.asm"
+INCLUDE "data/pokemon/first_stages.asm"
 
 
 SECTION "Phone Scripts 1", ROMX
@@ -414,24 +414,22 @@ INCLUDE "engine/battle_anims/helpers.asm"
 
 
 SECTION "Pic Animations 1", ROMX
-
 INCLUDE "engine/gfx/pic_animation.asm"
 INCLUDE "gfx/pokemon/anim_pointers.asm"
 INCLUDE "gfx/pokemon/anims.asm"
 INCLUDE "gfx/pokemon/idle_pointers.asm"
 INCLUDE "gfx/pokemon/idles.asm"
-INCLUDE "gfx/pokemon/unown_anim_pointers.asm"
-INCLUDE "gfx/pokemon/unown_anims.asm"
-INCLUDE "gfx/pokemon/unown_idle_pointers.asm"
-INCLUDE "gfx/pokemon/unown_idles.asm"
-INCLUDE "gfx/pokemon/bitmask_pointers.asm"
-INCLUDE "gfx/pokemon/bitmasks.asm"
 INCLUDE "gfx/pokemon/unown_bitmask_pointers.asm"
 INCLUDE "gfx/pokemon/unown_bitmasks.asm"
 
 
 SECTION "Pic Animations 2", ROMX
-
+INCLUDE "gfx/pokemon/bitmask_pointers.asm"
+INCLUDE "gfx/pokemon/bitmasks.asm"
+INCLUDE "gfx/pokemon/unown_anim_pointers.asm"
+INCLUDE "gfx/pokemon/unown_anims.asm"
+INCLUDE "gfx/pokemon/unown_idle_pointers.asm"
+INCLUDE "gfx/pokemon/unown_idles.asm"
 INCLUDE "gfx/pokemon/frame_pointers.asm"
 INCLUDE "gfx/pokemon/kanto_frames.asm"
 
@@ -445,6 +443,7 @@ INCLUDE "gfx/pokemon/unown_frames.asm"
 
 SECTION "bank38", ROMX
 
+INCLUDE "engine/events/magikarp.asm"
 INCLUDE "engine/events/print_unown_2.asm"
 INCLUDE "engine/games/card_flip.asm"
 INCLUDE "engine/games/unown_puzzle.asm"
@@ -461,19 +460,18 @@ INCLUDE "engine/movie/intro.asm"
 SECTION "bank3E", ROMX
 
 INCLUDE "engine/gfx/load_font.asm"
-INCLUDE "engine/link/time_capsule.asm"
 INCLUDE "engine/events/name_rater.asm"
 INCLUDE "engine/events/play_slow_cry.asm"
 INCLUDE "engine/pokedex/new_pokedex_entry.asm"
-INCLUDE "engine/link/time_capsule_2.asm"
 INCLUDE "engine/pokedex/unown_dex.asm"
-INCLUDE "engine/events/magikarp.asm"
 INCLUDE "engine/battle/hidden_power.asm"
 INCLUDE "engine/battle/misc.asm"
 
 
 SECTION "bank3F", ROMX
 
+INCLUDE "engine/link/time_capsule.asm"
+INCLUDE "engine/link/time_capsule_2.asm"
 INCLUDE "engine/tilesets/tileset_anims.asm"
 INCLUDE "engine/events/npc_trade.asm"
 INCLUDE "engine/events/mom_phone.asm"

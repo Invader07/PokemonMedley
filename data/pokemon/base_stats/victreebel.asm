@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db VICTREEBEL ; 071
 
-	db  80, 105,  65,  70, 100,  60
+	db  80, 110,  65,  70, 105,  60
 	;   hp  atk  def  spd  sat  sdf
 
 	db GRASS, POISON ; type
@@ -17,5 +17,5 @@
 	dn EGG_PLANT, EGG_PLANT ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE, TOXIC, HIDDEN_POWER, SUNNY_DAY, SWEET_SCENT, SNORE, HYPER_BEAM, PROTECT, GIGA_DRAIN, ENDURE, FRUSTRATION, SOLARBEAM, RETURN, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, SLUDGE_BOMB, REST, ATTRACT, CUT, FLASH
+	tmhm
 	; end

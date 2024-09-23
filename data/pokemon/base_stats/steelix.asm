@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db STEELIX ; 208
 
 	db  75,  85, 200,  30,  55,  65
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

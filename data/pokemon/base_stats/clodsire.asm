@@ -1,4 +1,4 @@
-	db CLODSIRE ; 040
+	db 0 ; 040
 
 	db  130,  75,  60,  20,  45,  100
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

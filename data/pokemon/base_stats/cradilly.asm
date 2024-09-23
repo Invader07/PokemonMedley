@@ -1,4 +1,4 @@
-	db CRADILLY ; 178
+	db 0 ; 178
 
 	db  110,  80,  80,  30,  90,  80
 	;   hp  atk  def  spd  sat  sdf

@@ -1,4 +1,4 @@
-	db DUSCLOPS ; 160
+	db 0 ; 160
 
 	db  40,  70,  130,  25,  60,  130
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

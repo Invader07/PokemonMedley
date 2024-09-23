@@ -5,7 +5,7 @@
 
 	db ELECTRIC, ELECTRIC ; type
 	db 45 ; catch rate
-	db 194 ; base exp
+	db 204 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

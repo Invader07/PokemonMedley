@@ -1,10 +1,10 @@
-	db "PSI@" ; species name
-	dw 211, 430 ; height, weight
+	db "SUN@" ; species name
+	dw 207, 190 ; height, weight
 
-	db   "It hypnotizes"
-	next "itself so that it"
-	next "can teleport away"
+	db   "As the hot season"
+	next "approaches, the"
+	next "petals on this"
 
-	page "when it senses"
-	next "danger, even"
-	next "if it is asleep.@"
+	page "#MON's face"
+	next "become more vivid"
+	next "and lively.@"

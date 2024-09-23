@@ -1,9 +1,9 @@
-	db COTTONEE ; 131
+	db 0 ; 131
 
 	db  40,  27,  60,  66,  37,  50
 	;   hp  atk  def  spd  sat  sdf
 
-	db GRASS, GRASS ; type
+	db GRASS, FAIRY ; type
 	db 190 ; catch rate
 	db 60 ; base exp
 	db NO_ITEM, NO_ITEM ; items
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

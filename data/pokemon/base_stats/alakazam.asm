@@ -1,11 +1,11 @@
-	db 0 ; species ID placeholder
+	db 0 ; 065
 
 	db  55,  50,  45, 120, 135,  85
 	;   hp  atk  def  spd  sat  sdf
 
 	db PSYCHIC_TYPE, PSYCHIC_TYPE ; type
 	db 50 ; catch rate
-	db 186 ; base exp
+	db 206 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F25 ; gender ratio
 	db 100 ; unknown 1
@@ -17,5 +17,5 @@
 	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

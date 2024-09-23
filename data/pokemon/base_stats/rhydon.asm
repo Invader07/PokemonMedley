@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db RHYDON ; 112
 
 	db 105, 130, 120,  40,  45,  45
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MONSTER, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

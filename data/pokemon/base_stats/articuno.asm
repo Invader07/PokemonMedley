@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db 0 ; 144
 
-	db  90,  85, 100,  85,  95, 125
+	db  90,  70, 100,  85, 110, 125
 	;   hp  atk  def  spd  sat  sdf
 
 	db ICE, FLYING ; type
@@ -17,5 +17,5 @@
 	dn EGG_NONE, EGG_NONE ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE, ROAR, TOXIC, ROCK_SMASH, HIDDEN_POWER, SUNNY_DAY, SNORE, BLIZZARD, HYPER_BEAM, ICY_WIND, PROTECT, RAIN_DANCE, ENDURE, FRUSTRATION, RETURN, MUD_SLAP, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, SANDSTORM, SWIFT, DETECT, REST, STEEL_WING, FLY, ICE_BEAM
+	tmhm
 	; end

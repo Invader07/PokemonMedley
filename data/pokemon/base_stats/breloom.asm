@@ -1,4 +1,4 @@
-	db BRELOOM ; 084
+	db 0 ; 084
 
 	db  60,  130,  80,  70,  60,  60
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

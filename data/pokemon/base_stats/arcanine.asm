@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db 0 ; 059
 
 	db  90, 110,  80,  95, 100,  80
 	;   hp  atk  def  spd  sat  sdf
@@ -16,5 +16,6 @@
 	db GROWTH_SLOW ; growth rate
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
-	tmhm CURSE
-		; end
+	; tm/hm learnset
+	tmhm
+	; end

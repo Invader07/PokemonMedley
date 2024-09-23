@@ -1,9 +1,9 @@
-	db 0 ; species ID placeholder
+	db RAICHU ; 026
 
-	db  60,  85,  50, 110,  95,  85
+	db  60,  90,  55, 110,  90,  80
 	;   hp  atk  def  spd  sat  sdf
 
-	db ELECTRIC, PSYCHIC_TYPE ; type
+	db ELECTRIC, ELECTRIC ; type
 	db 75 ; catch rate
 	db 122 ; base exp
 	db NO_ITEM, BERRY ; items
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_FAIRY ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

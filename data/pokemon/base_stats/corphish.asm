@@ -1,4 +1,4 @@
-	db CORPHISH ; 055
+	db 0 ; 055
 
 	db  43,  80,  65,  35,  50,  35
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

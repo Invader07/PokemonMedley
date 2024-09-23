@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db GYARADOS ; 130
 
 	db  95, 125,  79,  81,  60, 100
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_WATER_2, EGG_DRAGON ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

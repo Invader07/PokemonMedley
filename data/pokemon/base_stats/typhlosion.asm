@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db TYPHLOSION ; 157
 
 	db  78,  84,  78, 100, 109,  85
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

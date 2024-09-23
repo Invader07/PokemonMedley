@@ -1,4 +1,4 @@
-	db DHELMISE ; 067
+	db 0 ; 067
 
 	db  46,  57,  40,  50,  40,  40
 	;   hp  atk  def  spd  sat  sdf

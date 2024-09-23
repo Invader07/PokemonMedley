@@ -250,11 +250,17 @@ ComputeAIContestantScores:
 	and 3
 	cp 3
 	jr z, .loop2
+	add a, a
+	add a, a
 	ld c, a
 	ld b, 0
 	add hl, bc
-	add hl, bc
-	add hl, bc
+	push hl
+	ld h, [hl]
+	ld l, a
+	call GetPokemonIDFromIndex
+	pop hl
+	inc hl
 	ld a, [hli]
 	ld [wBugContestTempMon], a
 	ld a, [hli]

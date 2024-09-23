@@ -140,9 +140,7 @@ BattleAnimClearHud:
 	call ClearActorHud
 	ld a, $1
 	ldh [hBGMapMode], a
-	call DelayFrames
-	call DelayFrames
-	call DelayFrames
+	call Delay3
 	call WaitTop
 	ret
 
@@ -162,9 +160,7 @@ BattleAnimRestoreHuds:
 
 	ld a, $1
 	ldh [hBGMapMode], a
-	call DelayFrames
-	call DelayFrames
-	call DelayFrames
+	call Delay3
 	call WaitTop
 	ret
 

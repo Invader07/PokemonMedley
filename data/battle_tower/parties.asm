@@ -1683,7 +1683,7 @@ BattleTowerMons:
 	bigdw 58 ; SDef
 	db "ONIDORIRU@@"
 
-	dw PRIMEAPE
+	dw EKANS
 	db MIRACLEBERRY
 	dw POUND, KARATE_CHOP, REVERSAL, FOCUS_ENERGY
 
@@ -3795,7 +3795,7 @@ BattleTowerMons:
 	bigdw 226 ; SDef
 	db "BARIYA-DO@@"
 
-	dw PRIMEAPE
+	dw EKANS
 	db QUICK_CLAW
 	dw CROSS_CHOP, ICE_PUNCH, THUNDERPUNCH, ROCK_SLIDE
 

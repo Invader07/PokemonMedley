@@ -42,8 +42,6 @@ HeraldCove_MapScripts:
 	HeraldCoveNoop1:
 		end
 
-
-
 	OakEscortScript:
 	applymovement PLAYER, PlayerExitDoorMovement
 	turnobject PLAYER, LEFT

@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db SPINARAK ; 167
 
-	db  40,  60,  40,  30,  40,  40
+	db  50,  65,  50,  30,  40,  40
 	;   hp  atk  def  spd  sat  sdf
 
 	db BUG, POISON ; type
@@ -17,5 +17,5 @@
 	dn EGG_BUG, EGG_BUG ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE, TOXIC, HIDDEN_POWER, SUNNY_DAY, SNORE, PROTECT, GIGA_DRAIN, ENDURE, FRUSTRATION, SOLARBEAM, RETURN, DIG, PSYCHIC_M, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, SLUDGE_BOMB, REST, ATTRACT, THIEF, FLASH
+	tmhm
 	; end

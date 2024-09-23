@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db WOOPER ; 194
 
 	db  55,  45,  45,  15,  25,  25
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_WATER_1, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

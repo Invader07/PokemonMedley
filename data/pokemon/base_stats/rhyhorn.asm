@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db RHYHORN ; 111
 
 	db  80,  85,  95,  25,  30,  30
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MONSTER, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

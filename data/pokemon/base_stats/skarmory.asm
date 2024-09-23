@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db SKARMORY ; 227
 
 	db  65,  80, 140,  70,  40,  70
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_FLYING, EGG_FLYING ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

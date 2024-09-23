@@ -1,4 +1,4 @@
-	db DARKRAI ; 245
+	db 0 ; 245
 
 	db  110,  80,  80,  30,  90,  80
 	;   hp  atk  def  spd  sat  sdf

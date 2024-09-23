@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db TYROGUE ; 236
 
-	db  35,  35,  35,  35,  35,  35
+	db  55,  45,  45,  40,  35,  55
 	;   hp  atk  def  spd  sat  sdf
 
 	db FIGHTING, FIGHTING ; type
@@ -17,5 +17,5 @@
 	dn EGG_NONE, EGG_NONE ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

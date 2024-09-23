@@ -1,11 +1,11 @@
-	db MASQUERAIN ; 024
+	db 0 ; 024
 
-	db  70,  60,  60,  80,  100,  70
+	db  70,  60,  60,  90,  100,  70
 	;   hp  atk  def  spd  sat  sdf
 
 	db BUG, WATER ; type
 	db 75 ; catch rate
-	db 135 ; base exp
+	db 144 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

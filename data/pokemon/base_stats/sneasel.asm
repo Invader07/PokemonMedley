@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db SNEASEL ; 215
 
 	db  55,  95,  55, 115,  35,  75
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

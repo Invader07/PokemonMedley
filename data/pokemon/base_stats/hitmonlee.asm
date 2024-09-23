@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db HITMONLEE ; 106
 
-	db  50, 120,  53,  87,  35, 110
+	db  65, 120,  53,  87,  35, 110
 	;   hp  atk  def  spd  sat  sdf
 
 	db FIGHTING, FIGHTING ; type
@@ -17,5 +17,5 @@
 	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

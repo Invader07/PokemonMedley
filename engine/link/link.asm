@@ -800,13 +800,16 @@ Link_PrepPartyData_Gen1:
 
 .skip_steel
 	push bc
-	dec a
-	ld hl, BaseData + BASE_TYPES
-	ld bc, BASE_DATA_SIZE
-	call AddNTimes
-	ld bc, BASE_CATCH_RATE - BASE_TYPES
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
+	ld hl, BaseData
 	ld a, BANK(BaseData)
-	call FarCopyBytes
+	call LoadIndirectPointer
+	ld bc, BASE_TYPES
+	add hl, bc
+	ld c, BASE_CATCH_RATE - BASE_TYPES
+	call nz, FarCopyBytes
 	pop bc
 
 .done_steel
@@ -2000,17 +2003,17 @@ LinkTrade:
 	ld b, 1
 	pop af
 	ld c, a
-	cp MEW
+	cp EGG
 	jr z, .send_checkbyte
 	ld a, [wCurPartySpecies]
-	cp MEW
+	cp EGG
 	jr z, .send_checkbyte
 	ld b, 2
 	ld a, c
-	cp CELEBI
+	cp EGG
 	jr z, .send_checkbyte
 	ld a, [wCurPartySpecies]
-	cp CELEBI
+	cp EGG
 	jr z, .send_checkbyte
 
 ; Send the byte in a loop until the desired byte has been received.

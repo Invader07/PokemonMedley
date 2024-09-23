@@ -96,12 +96,21 @@ DisplayDexEntry:
 	ld [hli], a
 	ld a, $5d ; .
 	ld [hli], a
-	ld de, wTempSpecies
-	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
+	push hl
+	ld a, [wTempSpecies]
+	call GetPokemonIndexFromID
+	ld b, l
+	ld c, h
+	ld hl, sp + 0
+	ld d, h
+	ld e, l
+	pop hl
+	push bc
+	lb bc, PRINTNUM_LEADINGZEROS | 2, 3
 	call PrintNum
+	pop bc
 ; Check to see if we caught it.  Get out of here if we haven't.
 	ld a, [wTempSpecies]
-	dec a
 	call CheckCaughtMon
 	pop hl
 	pop bc
@@ -227,27 +236,14 @@ GetDexEntryPointer:
 	ld e, a
 	add hl, de
 	add hl, de
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	push de
-	rlca
-	rlca
-	maskbits NUM_DEX_ENTRY_BANKS
-	ld hl, .PokedexEntryBanks
-	ld d, 0
-	ld e, a
 	add hl, de
-	ld b, [hl]
-	pop de
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
 	pop hl
 	ret
-
-.PokedexEntryBanks:
-	db BANK("Pokedex Entries 001-064")
-	db BANK("Pokedex Entries 065-128")
-	db BANK("Pokedex Entries 129-192")
-	db BANK("Pokedex Entries 193-251")
 
 GetDexEntryPagePointer:
 	call GetDexEntryPointer

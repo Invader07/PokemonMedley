@@ -3951,10 +3951,19 @@ BattleTower_UbersCheck:
 	ld a, [wPartyCount]
 .loop
 	push af
+	push bc
+	push de
+	push hl
 	ld a, [de]
-	cp MEW
-	jr z, .next
-	cp NUM_POKEMON + 1
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
+	ld hl, .uber
+	ld de, 2
+	call IsInWordArray
+	pop hl
+	pop de
+	pop bc
 	jr nc, .next
 .uber
 	ld a, [hl]
@@ -6406,7 +6415,6 @@ CheckCaughtMemMon:
 	push de
 	push hl
 	ld a, [wTempSpecies]
-	dec a
 	call CheckCaughtMon
 	pop hl
 	pop de
@@ -6416,7 +6424,6 @@ CheckSeenMemMon:
 	push de
 	push hl
 	ld a, [wTempSpecies]
-	dec a
 	call CheckSeenMon
 	pop hl
 	pop de

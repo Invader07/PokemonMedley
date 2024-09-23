@@ -1,11 +1,11 @@
-	db 0 ; species ID placeholder
+	db YANMA ; 193
 
 	db  65,  65,  45,  95,  75,  45
 	;   hp  atk  def  spd  sat  sdf
 
 	db BUG, FLYING ; type
 	db 75 ; catch rate
-	db 80 ; base exp
+	db 86 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -17,5 +17,5 @@
 	dn EGG_BUG, EGG_BUG ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

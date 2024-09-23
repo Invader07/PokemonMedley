@@ -1,11 +1,11 @@
-	db SALAMENCE ; 234
+	db 0 ; 234
 
-	db  95,  135,  80,  110,  110,  80
+	db  95, 135,  80, 100, 110,  80
 	;   hp  atk  def  spd  sat  sdf
 
 	db DRAGON, FLYING ; type
 	db 45 ; catch rate
-	db 218 ; base exp
+	db 240 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

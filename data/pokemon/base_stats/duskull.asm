@@ -1,4 +1,4 @@
-	db DUSKULL ; 159
+	db 0 ; 159
 
 	db  20,  40,  90,  25,  30,  90
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

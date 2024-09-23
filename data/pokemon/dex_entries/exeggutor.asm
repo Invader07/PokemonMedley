@@ -1,10 +1,10 @@
-	db "BEAK@" ; species name
-	dw 311, 840 ; height, weight
+	db "COCONUT@" ; species name
+	dw 607, 2650 ; height, weight
 
-	db   "It uses its long"
-	next "beak to attack. It"
-	next "has a surprisingly"
+	db   "Living in a good"
+	next "environment makes"
+	next "it grow lots of"
 
-	page "long reach, so it"
-	next "must be treated"
-	next "with caution.@"
+	page "heads. A head that"
+	next "drops off becomes"
+	next "an EXEGGCUTE.@"

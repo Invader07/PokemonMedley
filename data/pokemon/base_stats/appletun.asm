@@ -1,4 +1,4 @@
-	db APPLETUN ; 052
+	db 0 ; 052
 
 	db  110,  80,  80,  30,  90,  80
 	;   hp  atk  def  spd  sat  sdf
@@ -11,10 +11,11 @@
 	db 100 ; unknown 1
 	db 20 ; step cycles to hatch
 	db 5 ; unknown 2
-	INCBIN "gfx/pokemon/charmander/front.dimensions"
+	INCBIN "gfx/pokemon/appletun/front.dimensions"
 	dw NULL, NULL ; unused (beta front/back pics)
 	db GROWTH_SLIGHTLY_FAST ; growth rate
-	dn EGG_GROUND, EGG_GROUND ; egg groups
+	dn EGG_PLANT, EGG_DRAGON ; egg groups
 
+	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

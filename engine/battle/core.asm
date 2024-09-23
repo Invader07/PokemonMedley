@@ -889,13 +889,9 @@ GetMovePriority:
 INCLUDE "data/moves/effects_priorities.asm"
 
 GetMoveEffect:
-	ld a, b
-	dec a
-	ld hl, Moves + MOVE_EFFECT
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	call GetFarByte
+	ld l, b
+	ld a, MOVE_EFFECT
+	call GetMoveAttribute
 	ld b, a
 	ret
 
@@ -3392,13 +3388,8 @@ LookUpTheEffectivenessOfEveryMove:
 	push hl
 	push de
 	push bc
-	dec a
-	ld hl, Moves
-	ld bc, MOVE_LENGTH
-	call AddNTimes
 	ld de, wEnemyMoveStruct
-	ld a, BANK(Moves)
-	call FarCopyBytes
+	call GetMoveData
 	call SetEnemyTurn
 	callfar BattleCheckTypeMatchup
 	pop bc
@@ -3424,13 +3415,17 @@ IsThePlayerMonTypesEffectiveAgainstOTMon:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
-	dec a
-	ld hl, BaseData + BASE_TYPES
-	ld bc, BASE_DATA_SIZE
-	call AddNTimes
-	ld de, wEnemyMonType
-	ld bc, BASE_CATCH_RATE - BASE_TYPES
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
+	ld hl, BaseData
 	ld a, BANK(BaseData)
+	call LoadIndirectPointer
+	jr z, .done
+	ld bc, BASE_TYPES
+	add hl, bc
+	ld de, wEnemyMonType
+	ld c, BASE_CATCH_RATE - BASE_TYPES
 	call FarCopyBytes
 	ld a, [wBattleMonType1]
 	ld [wPlayerMoveStruct + MOVE_TYPE], a
@@ -3445,6 +3440,7 @@ IsThePlayerMonTypesEffectiveAgainstOTMon:
 	ld a, [wTypeMatchup]
 	cp EFFECTIVE + 1
 	jr nc, .super_effective
+.done
 	pop bc
 	ret
 
@@ -3545,7 +3541,20 @@ LoadEnemyMonToSwitchTo:
 	call LoadEnemyMon
 
 	ld a, [wCurPartySpecies]
-	cp UNOWN
+	call GetPokemonIndexFromID
+	ld a, l
+	sub LOW(UNOWN)
+	if HIGH(UNOWN) == 0
+		or h
+	else
+		jr nz, .skip_unown
+		if HIGH(UNOWN) == 1
+			dec h
+		else
+			ld a, h
+			cp HIGH(UNOWN)
+		endc
+	endc
 	jr nz, .skip_unown
 	ld a, [wFirstUnownSeen]
 	and a
@@ -3651,6 +3660,7 @@ ShowBattleTextEnemySentOut:
 
 ShowSetEnemyMonAndSendOutAnimation:
 	ld a, [wTempEnemyMonSpecies]
+	call SetSeenMon
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	call GetBaseData
@@ -6274,7 +6284,20 @@ LoadEnemyMon:
 
 ; Unown
 	ld a, [wTempEnemyMonSpecies]
-	cp UNOWN
+	call GetPokemonIndexFromID ; will be preserved for the Magikarp check
+	ld a, l
+	sub LOW(UNOWN)
+	if HIGH(UNOWN) == 0
+		or h
+	else
+		jr nz, .Magikarp
+		ld a, h
+		if HIGH(UNOWN) == 1
+			dec a
+		else
+			cp HIGH(UNOWN)
+		endc
+	endc
 	jr nz, .Magikarp
 
 ; Get letter based on DVs
@@ -6284,6 +6307,7 @@ LoadEnemyMon:
 ; If combined with forced shiny battletype, causes an infinite loop
 	call CheckUnownLetter
 	jr c, .GenerateDVs ; try again
+	jr .Happiness ; Skip the Magikarp Check
 
 .Magikarp:
 ; These filters are untranslated.
@@ -6295,7 +6319,19 @@ LoadEnemyMon:
 ; After the conversion to feet, it is unable to target any,
 ; since the largest possible Magikarp is 5'3", and $0503 = 1283 mm.
 	ld a, [wTempEnemyMonSpecies]
-	cp MAGIKARP
+	ld a, l
+	sub LOW(MAGIKARP)
+	if HIGH(MAGIKARP) == 0
+		or h
+	else
+		jr nz, .Happiness
+		if HIGH(MAGIKARP) == 1
+			dec h
+		else
+			ld a, h
+			cp HIGH(MAGIKARP)
+		endc
+	endc
 	jr nz, .Happiness
 
 ; Get Magikarp's length
@@ -6343,7 +6379,7 @@ LoadEnemyMon:
 ; Try again if length < 1024 mm (i.e. if HIGH(length) < 3 feet)
 	ld a, [wMagikarpLength]
 	cp HIGH(1024)
-	jr c, .GenerateDVs ; try again
+	jp c, .GenerateDVs ; try again
 
 ; Finally done with DVs
 
@@ -6533,11 +6569,7 @@ LoadEnemyMon:
 
 ; Saw this mon
 	ld a, [wTempEnemyMonSpecies]
-	dec a
-	ld c, a
-	ld b, SET_FLAG
-	ld hl, wPokedexSeen
-	predef SmallFarFlagAction
+	call SetSeenMon
 
 	ld hl, wEnemyMonStats
 	ld de, wEnemyStats
@@ -8354,7 +8386,20 @@ InitEnemyWildmon:
 	ld hl, wEnemyMonDVs
 	predef GetUnownLetter
 	ld a, [wCurPartySpecies]
-	cp UNOWN
+	call GetPokemonIndexFromID
+	ld a, l
+	sub UNOWN
+	if HIGH(UNOWN) == 0
+		or h
+	else
+		jr nz, .skip_unown
+		if HIGH(UNOWN) == 1
+			dec h
+		else
+			ld a, h
+			cp HIGH(UNOWN)
+		endc
+	endc
 	jr nz, .skip_unown
 	ld a, [wFirstUnownSeen]
 	and a
@@ -8387,12 +8432,9 @@ FillEnemyMovesFromMoveIndicesBuffer: ; unreferenced
 	push hl
 
 	push hl
-	dec a
-	ld hl, Moves + MOVE_PP
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	call GetFarByte
+	ld l, a
+	ld a, MOVE_PP
+	call GetMoveAttribute
 	pop hl
 
 	ld bc, wEnemyMonPP - (wEnemyMonMoves + 1)

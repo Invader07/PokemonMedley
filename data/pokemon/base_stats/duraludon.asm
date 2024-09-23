@@ -1,4 +1,4 @@
-	db DURALUDON ; 130
+	db 0 ; 130
 
 	db  70,  95,  115,  85,  120,  50
 	;   hp  atk  def  spd  sat  sdf

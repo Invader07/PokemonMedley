@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db 0 ; 050
 
-	db  10,  55,  25,  95,  35,  45
+	db  10,  65,  25,  95,  35,  45
 	;   hp  atk  def  spd  sat  sdf
 
 	db GROUND, GROUND ; type
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE, TOXIC, ROCK_SMASH, HIDDEN_POWER, SUNNY_DAY, SNORE, PROTECT, ENDURE, FRUSTRATION, EARTHQUAKE, RETURN, DIG, MUD_SLAP, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, SLUDGE_BOMB, REST, ATTRACT, THIEF, CUT
+	tmhm
 	; end

@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db MEGANIUM ; 154
 
 	db  80,  82, 100,  80,  83, 100
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MONSTER, EGG_PLANT ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

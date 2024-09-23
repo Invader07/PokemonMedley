@@ -1,4 +1,4 @@
-	db BAGON ; 232
+	db 0 ; 232
 
 	db  45,  75,  60,  50,  40,  30
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

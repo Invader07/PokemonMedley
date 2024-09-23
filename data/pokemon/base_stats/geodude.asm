@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db 0 ; 074
 
 	db  40,  80, 100,  20,  30,  30
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

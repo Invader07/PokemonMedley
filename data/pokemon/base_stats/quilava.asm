@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db QUILAVA ; 156
 
 	db  58,  64,  58,  80,  80,  65
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

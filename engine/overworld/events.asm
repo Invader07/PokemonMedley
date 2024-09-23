@@ -22,76 +22,76 @@ OverworldLoop::
 
 DisableEvents:
 	xor a
-	ld [wScriptFlags2], a
+	ld [wEnabledPlayerEvents], a
 	ret
 
 EnableEvents::
 	ld a, $ff
-	ld [wScriptFlags2], a
+	ld [wEnabledPlayerEvents], a
 	ret
 
 CheckEnabledMapEventsBit5:
-	ld hl, wScriptFlags2
+	ld hl, wEnabledPlayerEvents
 	bit 5, [hl]
 	ret
 
-DisableWarpsConnxns: ; unreferenced
-	ld hl, wScriptFlags2
+DisableWarpsConnections: ; unreferenced
+	ld hl, wEnabledPlayerEvents
 	res 2, [hl]
 	ret
 
 DisableCoordEvents: ; unreferenced
-	ld hl, wScriptFlags2
+	ld hl, wEnabledPlayerEvents
 	res 1, [hl]
 	ret
 
 DisableStepCount: ; unreferenced
-	ld hl, wScriptFlags2
+	ld hl, wEnabledPlayerEvents
 	res 0, [hl]
 	ret
 
 DisableWildEncounters: ; unreferenced
-	ld hl, wScriptFlags2
+	ld hl, wEnabledPlayerEvents
 	res 4, [hl]
 	ret
 
-EnableWarpsConnxns: ; unreferenced
-	ld hl, wScriptFlags2
+EnableWarpsConnections: ; unreferenced
+	ld hl, wEnabledPlayerEvents
 	set 2, [hl]
 	ret
 
 EnableCoordEvents: ; unreferenced
-	ld hl, wScriptFlags2
+	ld hl, wEnabledPlayerEvents
 	set 1, [hl]
 	ret
 
 EnableStepCount: ; unreferenced
-	ld hl, wScriptFlags2
+	ld hl, wEnabledPlayerEvents
 	set 0, [hl]
 	ret
 
 EnableWildEncounters:
-	ld hl, wScriptFlags2
+	ld hl, wEnabledPlayerEvents
 	set 4, [hl]
 	ret
 
-CheckWarpConnxnScriptFlag:
-	ld hl, wScriptFlags2
+CheckWarpConnectionsEnabled:
+	ld hl, wEnabledPlayerEvents
 	bit 2, [hl]
 	ret
 
-CheckCoordEventScriptFlag:
-	ld hl, wScriptFlags2
+CheckCoordEventsEnabled:
+	ld hl, wEnabledPlayerEvents
 	bit 1, [hl]
 	ret
 
-CheckStepCountScriptFlag:
-	ld hl, wScriptFlags2
+CheckStepCountEnabled:
+	ld hl, wEnabledPlayerEvents
 	bit 0, [hl]
 	ret
 
-CheckWildEncountersScriptFlag:
-	ld hl, wScriptFlags2
+CheckWildEncountersEnabled:
+	ld hl, wEnabledPlayerEvents
 	bit 4, [hl]
 	ret
 
@@ -139,19 +139,19 @@ UnusedWait30Frames: ; unreferenced
 
 HandleMap:
 	call HandleMapTimeAndJoypad
-  call HandleCmdQueue
+	call HandleCmdQueue
 	call MapEvents
 
 ; Not immediately entering a connected map will cause problems.
 	ld a, [wMapStatus]
 	cp MAPSTATUS_HANDLE
 	ret nz
-
 	call HandleMapObjects
 	call NextOverworldFrame
 	call HandleMapBackground
 	call CheckPlayerState
 	xor a
+	ret
 	ret
 
 MapEvents:
@@ -161,9 +161,10 @@ MapEvents:
 	call PlayerEvents
 	call DisableEvents
 	farcall ScriptEvents
-	ret
 
 NextOverworldFrame:
+	; If we haven't already performed a delay outside DelayFrame as a result
+	; of a busy LY overflow, perform that now.
 	ld a, [hDelayFrameLY]
 	inc a
 	jp nz, DelayFrame
@@ -226,9 +227,9 @@ PlayerEvents:
 	and a
 	ret nz
 
-	call Dummy_CheckScriptFlags2Bit5 ; This is a waste of time
+	call Dummy_CheckEnabledMapEventsBit5 ; This is a waste of time
 
-	call CheckTrainerBattle_GetPlayerEvent
+	call CheckTrainerEvent
 	jr c, .ok
 
 	call CheckTileEvent
@@ -265,19 +266,11 @@ PlayerEvents:
 	xor a
 	ld [wLandmarkSignTimer], a
 
-; Have player stand (resets running sprite to standing if event starts while running)
-	ld a, [wPlayerState]
-	cp PLAYER_RUN
-	jr nz, .ok2
-	ld a, PLAYER_NORMAL
-	ld [wPlayerState], a
-	farcall UpdatePlayerSprite
-
 .ok2
 	scf
 	ret
 
-CheckTrainerBattle_GetPlayerEvent:
+CheckTrainerEvent:
 	nop
 	nop
 	call CheckTrainerBattle
@@ -294,7 +287,7 @@ CheckTrainerBattle_GetPlayerEvent:
 CheckTileEvent:
 ; Check for warps, coord events, or wild battles.
 
-	call CheckWarpConnxnScriptFlag
+	call CheckWarpConnectionsEnabled
 	jr z, .connections_disabled
 
 	farcall CheckMovingOffEdgeOfMap
@@ -304,21 +297,21 @@ CheckTileEvent:
 	jr c, .warp_tile
 
 .connections_disabled
-	call CheckCoordEventScriptFlag
+	call CheckCoordEventsEnabled
 	jr z, .coord_events_disabled
 
 	call CheckCurrentMapCoordEvents
 	jr c, .coord_event
 
 .coord_events_disabled
-	call CheckStepCountScriptFlag
+	call CheckStepCountEnabled
 	jr z, .step_count_disabled
 
 	call CountStep
 	ret c
 
 .step_count_disabled
-	call CheckWildEncountersScriptFlag
+	call CheckWildEncountersEnabled
 	jr z, .ok
 
 	call RandomEncounter
@@ -381,7 +374,7 @@ SetMinTwoStepWildEncounterCooldown:
 	ld [wWildEncounterCooldown], a
 	ret
 
-Dummy_CheckScriptFlags2Bit5:
+Dummy_CheckEnabledMapEventsBit5:
 	call CheckEnabledMapEventsBit5
 	ret
 
@@ -464,8 +457,8 @@ CheckTimeEvents:
 	scf
 	ret
 
-.unused ; unreferenced
-	ld a, $8 ; ???
+.hatch ; unreferenced
+	ld a, PLAYEREVENT_HATCH
 	scf
 	ret
 
@@ -538,13 +531,12 @@ TryObjectEvent:
 	ld a, [hl]
 	and MAPOBJECT_TYPE_MASK
 
-; BUG: TryObjectEvent arbitrary code execution (see docs/bugs_and_glitches.md)
 	push bc
 	ld de, 3
 	ld hl, ObjectEventTypeArray
 	call IsInArray
-	jr nc, .nope
 	pop bc
+	jr nc, .nope
 
 	inc hl
 	ld a, [hli]
@@ -1046,7 +1038,7 @@ RunMemScript::
 	pop af
 	ret
 
-LoadScriptBDE::
+LoadMemScript::
 ; If there's already a script here, don't overwrite.
 	ld hl, wMapReentryScriptQueueFlag
 	ld a, [hl]
@@ -1113,16 +1105,14 @@ TryTileCollisionEvent::
 
 .done
 	call PlayClickSFX
-	ld a, $ff
+	ld a, PLAYEREVENT_MAPSCRIPT
 	scf
 	ret
 
 RandomEncounter::
-; Random encounter
-
 	call CheckWildEncounterCooldown
 	jr c, .nope
-	call CanUseSweetScent
+	call CanEncounterWildMon
 	jr nc, .nope
 	ld hl, wStatusFlags2
 	bit STATUSFLAGS2_BUG_CONTEST_TIMER_F, [hl]
@@ -1162,7 +1152,7 @@ WildBattleScript:
 	reloadmapafterbattle
 	end
 
-CanUseSweetScent::
+CanEncounterWildMon::
 	ld hl, wStatusFlags
 	bit STATUSFLAGS_NO_WILD_ENCOUNTERS_F, [hl]
 	jr nz, .no
@@ -1202,7 +1192,7 @@ ChooseWildEncounter_BugContest::
 	srl a
 
 	ld hl, ContestMons
-	ld de, 4
+	ld de, 5
 .CheckMon:
 	sub [hl]
 	jr c, .GotMon
@@ -1214,6 +1204,12 @@ ChooseWildEncounter_BugContest::
 
 ; Species
 	ld a, [hli]
+	push hl
+	ld h, [hl]
+	ld l, a
+	call GetPokemonIDFromIndex
+	pop hl
+	inc hl
 	ld [wTempWildMonSpecies], a
 
 ; Min level

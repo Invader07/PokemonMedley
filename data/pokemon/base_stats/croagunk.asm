@@ -1,11 +1,11 @@
-	db CROAGUNK ; 189
+	db 0 ; 189
 
 	db  48,  61,  40,  50,  61,  40
 	;   hp  atk  def  spd  sat  sdf
 
 	db POISON, FIGHTING ; type
 	db 140 ; catch rate
-	db 70 ; base exp
+	db 83 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

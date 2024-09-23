@@ -1,6 +1,6 @@
-	db SHELGON ; 233
+	db 0 ; 233
 
-	db  65,  80,  100,  50,  75,  50
+	db  65,  85,  100,  50,  70,  50
 	;   hp  atk  def  spd  sat  sdf
 
 	db DRAGON, DRAGON ; type
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

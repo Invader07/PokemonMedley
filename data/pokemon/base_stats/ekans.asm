@@ -1,11 +1,11 @@
-	db 0 ; species ID placeholder
+	db 0 ; 023
 
 	db  45,  70,  50,  75,  45,  55
 	;   hp  atk  def  spd  sat  sdf
 
 	db POISON, POISON ; type
 	db 255 ; catch rate
-	db 65 ; base exp
+	db 68 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_DRAGON ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

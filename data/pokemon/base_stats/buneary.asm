@@ -1,11 +1,11 @@
-	db BUNEARY ; 085
+	db 0 ; 085
 
 	db  55,  66,  44,  85,  44,  56
 	;   hp  atk  def  spd  sat  sdf
 
 	db NORMAL, NORMAL ; type
 	db 190 ; catch rate
-	db 75 ; base exp
+	db 84 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1

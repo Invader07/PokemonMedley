@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db MAGNETON ; 082
 
 	db  50,  60,  95,  70, 120,  70
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

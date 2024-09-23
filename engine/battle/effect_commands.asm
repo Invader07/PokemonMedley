@@ -2513,7 +2513,23 @@ DittoMetalPowder:
 	ld a, [wTempEnemyMonSpecies]
 
 .got_species
-	cp DITTO
+	push hl
+	call GetPokemonIndexFromID
+	ld a, l
+	sub LOW(DITTO)
+	if HIGH(DITTO) == 0
+		or h
+		pop hl
+	else
+		ld a, h
+		pop hl
+		ret nz
+		if HIGH(DITTO) == 1
+			dec a
+		else
+			cp HIGH(DITTO)
+		endc
+	endc
 	ret nz
 
 	push bc
@@ -2728,10 +2744,15 @@ ThickClubBoost:
 ; it's holding a Thick Club, double it.
 	push bc
 	push de
-;	ld b, CUBONE
-;	ld c, MAROWAK
-;	ld d, THICK_CLUB
+	ld b, CUBONE
+	ld d, THICK_CLUB
 	call SpeciesItemBoost
+	if MAROWAK == (CUBONE + 1)
+		inc bc
+	else
+		ld bc, MAROWAK
+	endc
+	call DoubleStatIfSpeciesHoldingItem
 	pop de
 	pop bc
 	ret
@@ -2743,9 +2764,8 @@ LightBallBoost:
 ; holding a Light Ball, double it.
 	push bc
 	push de
-;	ld b, PIKACHU
-;	ld c, PIKACHU
-;	ld d, LIGHT_BALL
+	ld b, PIKACHU
+	ld d, LIGHT_BALL
 	call SpeciesItemBoost
 	pop de
 	pop bc
@@ -2754,12 +2774,17 @@ LightBallBoost:
 SpeciesItemBoost:
 ; Return in hl the stat value at hl.
 
-; If the attacking monster is species b or c and
+; If the attacking monster is species bc and
 ; it's holding item d, double it.
 
 	ld a, [hli]
 	ld l, [hl]
 	ld h, a
+	; fallthrough
+
+DoubleStatIfSpeciesHoldingItem:
+; If the attacking monster is species bc and
+; it's holding item d, double the stat in hl.
 
 ;	push hl
 ;	ld a, MON_SPECIES
@@ -2771,14 +2796,16 @@ SpeciesItemBoost:
 ;	jr z, .CompareSpecies
 ;	ld a, [wTempEnemyMonSpecies]
 ; .CompareSpecies:
-;	pop hl
 
 ;	cp b
-;	jr z, .GetItemHeldEffect
+;	call GetPokemonIndexFromID
+;	ld a, h
+;	cp b
+;	ld a, l
+;	pop hl
+;	ret nz
 ;	cp c
 ;	ret nz
-
-; .GetItemHeldEffect:
 ;	push hl
 ;	call GetUserItem
 ;	ld a, [hl]
@@ -3754,7 +3781,6 @@ UpdateMoveData:
 	ld [wCurSpecies], a
 	ld [wNamedObjectIndex], a
 
-	dec a
 	call GetMoveData
 	call GetMoveName
 	jp CopyName1
@@ -6885,27 +6911,6 @@ SkipToBattleCommand:
 	ld a, l
 	ld [wBattleScriptBufferAddress], a
 	ret
-
-GetMoveAttr:
-; Assuming hl = Moves + x, return attribute x of move a.
-	push bc
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-	call GetMoveByte
-	pop bc
-	ret
-
-GetMoveData:
-; Copy move struct a to de.
-	ld hl, Moves
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	jp FarCopyBytes
-
-GetMoveByte:
-	ld a, BANK(Moves)
-	jp GetFarByte
 
 DisappearUser:
 	farcall _DisappearUser

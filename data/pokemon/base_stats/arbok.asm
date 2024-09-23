@@ -1,11 +1,11 @@
-	db 0 ; species ID placeholder
+	db 0 ; 024
 
-	db  80,  100,  69,  100,  61,  90
+	db  80, 100,  69, 100,  61,  90
 	;   hp  atk  def  spd  sat  sdf
 
 	db POISON, POISON ; type
 	db 90 ; catch rate
-	db 209 ; base exp
+	db 158 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -16,5 +16,6 @@
 	db GROWTH_MEDIUM_SLOW ; growth rate
 	dn EGG_GROUND, EGG_DRAGON ; egg groups
 
-	tmhm CURSE
-		; end
+	; tm/hm learnset
+	tmhm
+	; end

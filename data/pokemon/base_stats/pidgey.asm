@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db PIDGEY ; 016
 
-	db  40,  55,  40,  56,  35,  45
+	db  40,  55,  40,  55,  35,  45
 	;   hp  atk  def  spd  sat  sdf
 
 	db NORMAL, FLYING ; type
@@ -17,5 +17,5 @@
 	dn EGG_FLYING, EGG_FLYING ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

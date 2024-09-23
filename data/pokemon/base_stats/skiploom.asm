@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db SKIPLOOM ; 188
 
-	db  55,  45,  50,  80,  45,  65
+	db  60,  45,  50,  80,  45,  65
 	;   hp  atk  def  spd  sat  sdf
 
 	db GRASS, FLYING ; type
@@ -17,5 +17,5 @@
 	dn EGG_FAIRY, EGG_PLANT ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

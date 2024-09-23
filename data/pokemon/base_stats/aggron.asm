@@ -1,11 +1,11 @@
-	db AGGRON ; 082
+	db 0 ; 080
 
-	db  70,  110,  180,  50,  60,  60
+	db  70, 110,  180,  50,  60,  60
 	;   hp  atk  def  spd  sat  sdf
 
-	db ROCK, STEEL ; type
+	db STEEL, ROCK ; type
 	db 45 ; catch rate
-	db 205 ; base exp
+	db 229 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

@@ -501,13 +501,11 @@ PokeBallEffect:
 	call ClearSprites
 
 	ld a, [wTempSpecies]
-	dec a
 	call CheckCaughtMon
 
 	ld a, c
 	push af
 	ld a, [wTempSpecies]
-	dec a
 	call SetSeenAndCaughtMon
 	pop af
 	and a
@@ -1021,29 +1019,6 @@ ParkBallMultiplier:
 	ld b, $ff
 	ret
 
-HeavyBall_GetDexEntryBank:
-; BUG: Heavy Ball uses wrong weight value for three Pokémon (see docs/bugs_and_glitches.md)
-	push hl
-	push de
-	ld a, [wEnemyMonSpecies]
-	rlca
-	rlca
-	maskbits NUM_DEX_ENTRY_BANKS
-	ld hl, .PokedexEntryBanks
-	ld d, 0
-	ld e, a
-	add hl, de
-	ld a, [hl]
-	pop de
-	pop hl
-	ret
-
-.PokedexEntryBanks:
-	db BANK("Pokedex Entries 001-064")
-	db BANK("Pokedex Entries 065-128")
-	db BANK("Pokedex Entries 129-192")
-	db BANK("Pokedex Entries 193-251")
-
 HeavyBallMultiplier:
 ; subtract 20 from catch rate if weight < 102.4 kg
 ; else add 0 to catch rate if weight < 204.8 kg
@@ -1057,17 +1032,23 @@ HeavyBallMultiplier:
 	ld d, 0
 	add hl, de
 	add hl, de
+	add hl, de
+	ld a, BANK(PokedexDataPointerTable)
+	call GetFarByte
+	push af
+	inc hl
 	ld a, BANK(PokedexDataPointerTable)
 	call GetFarWord
+	pop de
 
 .SkipText:
-	call HeavyBall_GetDexEntryBank
+	ld a, d
 	call GetFarByte
 	inc hl
 	cp "@"
 	jr nz, .SkipText
 
-	call HeavyBall_GetDexEntryBank
+	ld a, d
 	push bc
 	inc hl
 	inc hl
@@ -1163,35 +1144,31 @@ LureBallMultiplier:
 	ret
 
 MoonBallMultiplier:
+; Multiply catch rate by 4 if mon evolves with moon stone
+	push de
 	push bc
 	ld a, [wTempEnemyMonSpecies]
-	dec a
-	ld c, a
-	ld b, 0
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
 	ld hl, EvosAttacksPointers
-	add hl, bc
-	add hl, bc
 	ld a, BANK(EvosAttacksPointers)
-	call GetFarWord
-	pop bc
+	call LoadDoubleIndirectPointer
 
-	push bc
-	ld a, BANK("Evolutions and Attacks 1")
-	call GetFarByte
-	cp EVOLVE_ITEM
+	ld a, [wCurItem]
+	ld c, a
+	ld a, MOON_STONE
+	ld [wCurItem], a
+	ld d, h
+	ld e, l
+	farcall DetermineEvolutionItemResults
+	ld a, c
+	ld [wCurItem], a
+	ld a, d
+	or e
 	pop bc
-	ret nz
-
-	inc hl
-	inc hl
-	inc hl
-
-	push bc
-	ld a, BANK("Evolutions and Attacks 1")
-	call GetFarByte
-	cp MOON_STONE
-	pop bc
-	ret nz
+	pop de
+	ret z
 
 	sla b
 	jr c, .max
@@ -3267,14 +3244,11 @@ GetMaxPPOfMove:
 
 .gotdatmove
 	ld a, [hl]
-	dec a
 
 	push hl
-	ld hl, Moves + MOVE_PP
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	call GetFarByte
+	ld l, a
+	ld a, MOVE_PP
+	call GetMoveAttribute
 	ld b, a
 	ld de, wStringBuffer1
 	ld [de], a

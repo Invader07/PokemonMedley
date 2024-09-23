@@ -2734,7 +2734,7 @@ wMoveSelectionMenuType:: db
 
 ; corresponds to the data/pokemon/base_stats/*.asm contents
 wCurBaseData::
-wBaseDexNo:: db
+wBaseSpecies:: db
 wBaseStats::
 wBaseHP:: db
 wBaseAttack:: db
@@ -2875,7 +2875,7 @@ wScriptFlags::
 ; bit 3: run deferred script
 	db
 	ds 1
-wScriptFlags2::
+wEnabledPlayerEvents::
 ; bit 0: count steps
 ; bit 1: coord events
 ; bit 2: warps and connections

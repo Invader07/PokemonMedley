@@ -71,10 +71,11 @@ ROMX $10
 	"Evolutions and Attacks Pointers"
 	"Evolutions and Attacks 1"
 ROMX $11
-	"bank11"
+	
 	"Newbox"
 	"Bill's PC Graphics"
 ROMX $12
+	"bank11"
 	"Crystal Features 1"
 	"Egg Moves 2"
 	"Evolutions and Attacks 2"
@@ -171,7 +172,6 @@ ROMX $3b
 	"Songs 2"
 ROMX $3c
 	"Songs 3"
-	"Sound Effects"
 	"Cries"
 ROMX $3d
 	"Songs 4"
@@ -299,6 +299,9 @@ ROMX $74
 	"Pokedex Entries 193-251"
 ROMX $75
 	"16-bit ID stuff"
+ROMX $76
+	"Sound Effects"
+	"Pokedex Entries 251+"
 ROMX $77
 	"Unown Font"
 	"Print Party"
@@ -309,6 +312,10 @@ ROMX $77
 ROMX $78
 	"Debug Room"
 	"Tileset Data 8"
+ROMX $79
+	"Pics 25"
+ROMX $7a
+	"Pics 26"
 ROMX $7b
 	"Battle Tower Text"
 ROMX $7c
@@ -320,6 +327,27 @@ ROMX $7e
 ROMX $7f
 	org $7de0
 	"Stadium 2 Checksums"
+	
+ROMX $80
+	"Pics 27"
+ROMX $81
+	"Pics 28"
+ROMX $82
+	"Pics 29"
+ROMX $83
+	"Pics 30"
+ROMX $84
+	"Pics 31"
+ROMX $85
+	"Pics 32"
+ROMX $86
+	"Pics 33"
+ROMX $87
+	"Pics 34"
+ROMX $88
+	"Pics 35"
+	
+	
 WRAM0
 	"Stack"
 	"Audio RAM"
@@ -339,7 +367,7 @@ WRAM0
 	"16-bit WRAM home data"
 WRAMX 1
 	"WRAM 1"
-	"Miscellaneous WRAM 1"
+	
 	"More WRAM 1"
 	"Enemy Party"
 	"Party"
@@ -347,6 +375,7 @@ WRAMX 2
 	"Pic Animations"
 	align 8
 	"16-bit WRAM tables"
+	"Miscellaneous WRAM 1"
 WRAMX 3
 	"Battle Tower RAM"
 WRAMX 4

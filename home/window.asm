@@ -24,7 +24,7 @@ CloseText::
 	pop af
 	ldh [hOAMUpdate], a
 	ld hl, wVramState
-	res 6, [hl]
+	res TEXT_STATE_F, [hl]
 	ret
 
 .CloseText:
@@ -65,7 +65,7 @@ HDMATransferTilemapAndAttrmap::
 	ld a, $1
 	ldh [hOAMUpdate], a
 
-	farcall HDMATransferTilemapAndAttrmap
+	farcall OpenAndCloseMenu_HDMATransferTilemapAndAttrmap
 
 	pop af
 	ldh [hOAMUpdate], a

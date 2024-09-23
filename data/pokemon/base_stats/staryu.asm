@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db STARYU ; 120
 
 	db  30,  45,  55,  85,  70,  55
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_WATER_3, EGG_WATER_3 ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
+	tmhm
 	; end

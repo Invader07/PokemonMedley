@@ -718,17 +718,6 @@ NamingScreen_AdvanceCursor_CheckEndOfString:
 	scf
 	ret
 
-AddDakutenToCharacter: ; unreferenced
-	ld a, [wNamingScreenCurNameLength]
-	and a
-	ret z
-	push hl
-	ld hl, wNamingScreenCurNameLength
-	dec [hl]
-	call NamingScreen_GetTextCursorPosition
-	ld c, [hl]
-	pop hl
-
 .loop
 	ld a, [hli]
 	cp -1
@@ -741,8 +730,6 @@ AddDakutenToCharacter: ; unreferenced
 .done
 	ld a, [hl]
 	jr NamingScreen_LoadNextCharacter
-
-INCLUDE "data/text/unused_dakutens.asm"
 
 NamingScreen_DeleteCharacter:
 	ld hl, wNamingScreenCurNameLength
@@ -908,9 +895,6 @@ INCBIN "gfx/naming_screen/cursor.2bpp"
 
 INCLUDE "data/text/name_input_chars.asm"
 
-NamingScreenGFX_End: ; unreferenced
-INCBIN "gfx/naming_screen/end.1bpp"
-
 NamingScreenGFX_MiddleLine:
 INCBIN "gfx/naming_screen/middle_line.1bpp"
 
@@ -994,9 +978,6 @@ INCBIN "gfx/naming_screen/mail.2bpp"
 	ld a, MAIL_MSG_LENGTH + 1
 	ld [wNamingScreenMaxNameLength], a
 	ret
-
-.PleaseWriteAMailString: ; unreferenced
-	db "メールを　かいてね@"
 
 .InitCharset:
 	call WaitTop
@@ -1361,17 +1342,6 @@ MailComposition_TryAddLastCharacter:
 	ld a, [wNamingScreenLastCharacter]
 	jp MailComposition_TryAddCharacter
 
-.add_dakuten ; unreferenced
-	ld a, [wNamingScreenCurNameLength]
-	and a
-	ret z
-	cp $11
-	jr nz, .one_back
-	push hl
-	ld hl, wNamingScreenCurNameLength
-	dec [hl]
-	dec [hl]
-	jr .continue
 
 .one_back
 	push hl

@@ -486,11 +486,23 @@ endr
 	ret
 
 GetIconBank:
+	push hl
 	ld a, [wCurIcon]
-	cp ICON_TURTONATOR ; first icon in Icons2
+	call GetPokemonIndexFromID
+	ld a, h
+	cp HIGH(LOTAD) ; first species in "Mon Icons 2"
 	lb bc, BANK("Mon Icons 1"), 8
-	ret c
-	ld b, BANK("Mon Icons 2")
+	jr c, .return
+	ld a, l
+	cp HIGH(SNEASEL) ; first species in "Mon Icons 3"
+	lb bc, BANK("Mon Icons 2"), 8
+	jr c, .return
+	ld a, l
+	cp LOW(SNEASEL)
+	jr c, .return
+	ld b, BANK("Mon Icons 3")
+.return
+	pop hl
 	ret
 
 GetGFXUnlessMobile:

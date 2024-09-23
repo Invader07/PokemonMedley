@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db 0 ; 169
 
 	db  85,  90,  80, 130,  70,  80
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_FLYING, EGG_FLYING ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

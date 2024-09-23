@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db 0 ; 136
 
-	db  65, 130,  60,  65,  95, 110
+	db  65, 130,  60,  65, 110,  95
 	;   hp  atk  def  spd  sat  sdf
 
 	db FIRE, FIRE ; type
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

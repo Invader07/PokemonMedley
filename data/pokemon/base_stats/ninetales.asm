@@ -1,9 +1,9 @@
-	db 0 ; species ID placeholder
+	db NINETALES ; 038
 
-	db  73,  67,  75, 109,  81, 100
+	db  75,  65,  70, 110,  85, 100
 	;   hp  atk  def  spd  sat  sdf
 
-	db FIRE, FIRE ; type
+	db ICE, FAIRY ; type
 	db 75 ; catch rate
 	db 178 ; base exp
 	db ICE_BERRY, ICE_BERRY ; items
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

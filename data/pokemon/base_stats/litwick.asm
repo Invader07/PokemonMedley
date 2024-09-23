@@ -1,20 +1,20 @@
-	db LITWICK ; 070
+	db 0 ; 070
 
-	db  55,  47,  52,  41,  40,  40
+	db  50,  30,  55,  20,  75,  55
 	;   hp  atk  def  spd  sat  sdf
 
-	db POISON, POISON ; type
-	db 235 ; catch rate
-	db 59 ; base exp
+	db GHOST, FIRE ; type
+	db 190 ; catch rate
+	db 55 ; base exp
 	db NO_ITEM, NO_ITEM ; items
-	db GENDER_F100 ; gender ratio
+	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
 	db 20 ; step cycles to hatch
 	db 5 ; unknown 2
-	INCBIN "gfx/pokemon/nidoran_f/front.dimensions"
+	INCBIN "gfx/pokemon/litwick/front.dimensions"
 	dw NULL, NULL ; unused (beta front/back pics)
 	db GROWTH_MEDIUM_SLOW ; growth rate
-	dn EGG_MONSTER, EGG_GROUND ; egg groups
+	dn EGG_INDETERMINATE, EGG_INDETERMINATE ; egg groups
 
 	; tm/hm learnset
 	tmhm CURSE

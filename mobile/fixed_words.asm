@@ -322,9 +322,12 @@ Function11c1b9:
 	farcall ReloadMapPart
 	farcall ClearSpriteAnims
 	farcall LoadPokemonData
-	farcall Pokedex_ABCMode
 	ldh a, [rSVBK]
 	push af
+	ld a, BANK(wPokedexOrder)
+	ldh [rSVBK], a
+	; whatever depends on this will break, but nothing seems to depend on the loaded order anyway!
+	farcall Pokedex_ABCMode
 	ld a, $5
 	ldh [rSVBK], a
 	ld hl, wc6d0
@@ -2958,11 +2961,6 @@ EZChat_GetSeenPokemonByKana:
 	ld [wcd2e], a
 	ld [hl], a
 
-	ld a, LOW(EZChat_SortedPokemon)
-	ld [wcd2f], a
-	ld a, HIGH(EZChat_SortedPokemon)
-	ld [wcd30], a
-
 	ld a, LOW(wc6a8)
 	ld [wcd31], a
 	ld a, HIGH(wc6a8)
@@ -3128,7 +3126,6 @@ EZChat_GetSeenPokemonByKana:
 	push hl
 	push bc
 	push de
-	dec a
 	ld hl, rSVBK
 	ld e, $1
 	ld [hl], e
@@ -3224,8 +3221,6 @@ EZChat_GetCategoryWordsByKana:
 	pop af
 	ldh [rSVBK], a
 	ret
-
-INCLUDE "data/pokemon/ezchat_order.asm"
 
 SelectStartGFX:
 INCBIN "gfx/mobile/select_start.2bpp"

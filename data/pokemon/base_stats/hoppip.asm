@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db HOPPIP ; 187
 
 	db  35,  35,  40,  50,  35,  55
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_FAIRY, EGG_PLANT ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

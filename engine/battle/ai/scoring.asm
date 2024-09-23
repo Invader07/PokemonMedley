@@ -1571,12 +1571,9 @@ AI_Smart_Conversion2:
 
 	push hl
 	dec a
-	ld hl, Moves + MOVE_TYPE
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-
-	ld a, BANK(Moves)
-	call GetFarByte
+	ld l, a
+	ld a, MOVE_TYPE
+	call GetMoveAttribute
 	ld [wPlayerMoveStruct + MOVE_TYPE], a
 
 	xor a
@@ -3173,14 +3170,9 @@ AIGetEnemyMove:
 	push hl
 	push de
 	push bc
-	dec a
-	ld hl, Moves
-	ld bc, MOVE_LENGTH
-	call AddNTimes
 
 	ld de, wEnemyMoveStruct
-	ld a, BANK(Moves)
-	call FarCopyBytes
+	call GetMoveData
 
 	pop bc
 	pop de

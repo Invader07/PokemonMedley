@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db MACHOKE ; 067
 
 	db  80, 100,  70,  45,  50,  60
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

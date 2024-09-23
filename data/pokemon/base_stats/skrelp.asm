@@ -1,4 +1,4 @@
-	db SKRELP ; 118
+	db 0 ; 118
 
 	db  50,  60,  60,  30,  60,  60
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

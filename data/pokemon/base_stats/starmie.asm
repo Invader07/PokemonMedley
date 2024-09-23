@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db STARMIE ; 121
 
 	db  60,  75,  85, 115, 100,  85
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_WATER_3, EGG_WATER_3 ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

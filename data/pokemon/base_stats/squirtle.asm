@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db SQUIRTLE ; 007
 
 	db  44,  48,  65,  43,  50,  64
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MONSTER, EGG_WATER_1 ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

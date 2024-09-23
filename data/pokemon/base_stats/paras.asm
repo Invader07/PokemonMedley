@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db PARAS ; 046
 
 	db  35,  70,  55,  25,  45,  55
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_BUG, EGG_PLANT ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE, TOXIC, ROCK_SMASH, HIDDEN_POWER, SUNNY_DAY, SWEET_SCENT, SNORE, PROTECT, GIGA_DRAIN, ENDURE, FRUSTRATION, SOLARBEAM, RETURN, DIG, DOUBLE_TEAM, SWAGGER, SLEEP_TALK, SLUDGE_BOMB, REST, ATTRACT, THIEF, FURY_CUTTER, CUT, FLASH
+	tmhm
 	; end

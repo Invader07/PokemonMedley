@@ -1,11 +1,11 @@
-	db 0 ; species ID placeholder
+	db 0 ; 151
 
 	db 100, 100, 100, 100, 100, 100
 	;   hp  atk  def  spd  sat  sdf
 
 	db PSYCHIC_TYPE, PSYCHIC_TYPE ; type
 	db 45 ; catch rate
-	db 64 ; base exp
+	db 215 ; base exp
 	db NO_ITEM, MIRACLEBERRY ; items
 	db GENDER_UNKNOWN ; gender ratio
 	db 100 ; unknown 1
@@ -17,5 +17,5 @@
 	dn EGG_NONE, EGG_NONE ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

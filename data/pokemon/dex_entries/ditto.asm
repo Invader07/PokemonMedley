@@ -1,10 +1,10 @@
-	db "ARMOR@" ; species name
-	dw 307, 2650 ; height, weight
+	db "TRANSFORM@" ; species name
+	dw 100, 90 ; height, weight
 
-	db   "Because this"
-	next "#MON's skin is"
-	next "so tough, a normal"
+	db   "When it encount-"
+	next "ers another DITTO,"
+	next "it will move"
 
-	page "attack won't even"
-	next "leave a scratch on"
-	next "it.@"
+	page "faster than normal"
+	next "to duplicate that"
+	next "opponent exactly.@"

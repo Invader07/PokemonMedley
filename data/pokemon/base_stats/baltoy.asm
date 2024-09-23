@@ -1,11 +1,11 @@
-	db BALTOY ; 005
+	db 0 ; 005
 
 	db  50,  50,  65,  55,  50,  70
 	;   hp  atk  def  spd  sat  sdf
 
 	db GROUND, PSYCHIC_TYPE ; type
-	db 45 ; catch rate
-	db 65 ; base exp
+	db 190 ; catch rate
+	db 66 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_UNKNOWN ; gender ratio
 	db 100 ; unknown 1
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

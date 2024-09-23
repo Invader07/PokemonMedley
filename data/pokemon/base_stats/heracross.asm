@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db HERACROSS ; 214
 
 	db  80, 125,  75,  85,  40,  95
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_BUG, EGG_BUG ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

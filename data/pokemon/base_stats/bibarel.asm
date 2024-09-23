@@ -1,4 +1,4 @@
-	db BIBAREL ; 009
+	db 0 ; 009
 
 	db  79,  85,  70,  71,  65,  60
 	;   hp  atk  def  spd  sat  sdf

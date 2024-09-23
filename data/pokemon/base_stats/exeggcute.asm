@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db 0 ; 102
 
 	db  60,  40,  80,  40,  60,  45
 	;   hp  atk  def  spd  sat  sdf
@@ -13,9 +13,9 @@
 	db 5 ; unknown 2
 	INCBIN "gfx/pokemon/exeggcute/front.dimensions"
 	dw NULL, NULL ; unused (beta front/back pics)
-	db GROWTH_SLIGHTLY_FAST ; growth rate
-	dn EGG_GROUND, EGG_GROUND ; egg groups
+	db GROWTH_SLOW ; growth rate
+	dn EGG_PLANT, EGG_PLANT ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db KADABRA ; 064
 
 	db  40,  35,  30, 105, 120,  70
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

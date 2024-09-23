@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db 0 ; 162
 
 	db  85,  76,  64, 100,  45,  55
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

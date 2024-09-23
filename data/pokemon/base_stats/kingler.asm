@@ -1,9 +1,9 @@
-	db 0 ; species ID placeholder
+	db KINGLER ; 099
 
 	db  55, 130,  50,  85,  50, 105
 	;   hp  atk  def  spd  sat  sdf
 
-	db POISON, WATER ; type
+	db WATER, POISON ; type
 	db 60 ; catch rate
 	db 206 ; base exp
 	db NO_ITEM, NO_ITEM ; items
@@ -17,5 +17,5 @@
 	dn EGG_WATER_3, EGG_WATER_3 ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

@@ -1,4 +1,4 @@
-	db DRAGALGE ; 119
+	db 0 ; 119
 
 	db  65,  75,  90,  44,  97, 123
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

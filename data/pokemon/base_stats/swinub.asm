@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db SWINUB ; 220
 
 	db  50,  50,  40,  50,  30,  30
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

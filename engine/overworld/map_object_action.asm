@@ -48,7 +48,7 @@ SetFacingStepAction:
 	ld hl, OBJECT_FLAGS1
 	add hl, bc
 	bit SLIDING_F, [hl]
-	jp nz, SetFacingCurrent
+	jr nz, SetFacingCurrent
 
 	ld hl, OBJECT_STEP_FRAME
 	add hl, bc
@@ -60,6 +60,27 @@ SetFacingStepAction:
 	and %11
 	ld d, a
 	call GetSpriteDirection
+	or d
+	ld hl, OBJECT_FACING
+	add hl, bc
+	ld hl, OBJECT_FLAGS1
+	add hl, bc
+	bit SLIDING_F, [hl]
+	jr nz, SetFacingCurrent
+
+	ld hl, OBJECT_STEP_FRAME
+	add hl, bc
+	inc [hl]
+
+	ld a, [hl]
+	rrca
+	rrca
+	rrca
+	maskbits NUM_DIRECTIONS
+	ld d, a
+
+	call GetSpriteDirection
+	or FACING_STEP_DOWN_0 ; useless
 	or d
 	ld hl, OBJECT_FACING
 	add hl, bc
@@ -147,7 +168,7 @@ CounterclockwiseSpinAction:
 	inc a
 	and %00001111
 	ld d, a
-	cp 6
+	cp 2
 	jr c, .ok
 
 	ld d, 0
@@ -299,7 +320,6 @@ SetFacingRunAction:
 	add hl, bc
 	bit SLIDING_F, [hl]
 	jp nz, SetFacingCurrent
-
 	ld hl, OBJECT_STEP_FRAME
 	add hl, bc
 	inc [hl]

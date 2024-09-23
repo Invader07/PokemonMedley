@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db GROWLITHE ; 058
 
 	db  55,  70,  45,  60,  70,  50
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

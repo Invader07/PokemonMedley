@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db PIDGEOT ; 018
 
-	db  80,  85,  75, 100,  60,  90
+	db  80,  85,  75, 100,  55,  90
 	;   hp  atk  def  spd  sat  sdf
 
 	db NORMAL, FLYING ; type
@@ -17,5 +17,5 @@
 	dn EGG_FLYING, EGG_FLYING ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

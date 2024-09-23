@@ -1,9 +1,9 @@
-	db WHIMSICOTT ; 132
+	db 0 ; 132
 
 	db  60,  67,  85,  116,  77,  75
 	;   hp  atk  def  spd  sat  sdf
 
-	db GRASS, GRASS ; type
+	db GRASS, FAIRY ; type
 	db 75 ; catch rate
 	db 168 ; base exp
 	db NO_ITEM, NO_ITEM ; items
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

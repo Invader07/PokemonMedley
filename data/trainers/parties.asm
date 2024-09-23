@@ -119,7 +119,7 @@ ChuckGroup:
 	next_list_item ; CHUCK (1)
 	db "CHUCK@", TRAINERTYPE_MOVES
 	db 27
-	dw PRIMEAPE
+	dw EKANS
 	dw LEER, RAGE, KARATE_CHOP, FURY_SWIPES
 	db 30
 	dw PIDGEY
@@ -546,9 +546,15 @@ TeacherGroup:
 SabrinaGroup:
 	next_list_item ; SABRINA (1)
 	db "SABRINA@", TRAINERTYPE_MOVES
-	db 46, ESPEON,     SAND_ATTACK, QUICK_ATTACK, POUND, PSYCHIC_M
-	db 46, PIDGEY,   POUND, REFLECT, BATON_PASS, PSYCHIC_M
-	db 48, ALAKAZAM,   RECOVER, FUTURE_SIGHT, PSYCHIC_M, REFLECT
+	db 46
+	dw ESPEON
+	dw SAND_ATTACK, QUICK_ATTACK, POUND, PSYCHIC_M
+	db 46
+	dw PIDGEY
+	dw POUND, REFLECT, BATON_PASS, PSYCHIC_M
+	db 48
+	dw ALAKAZAM
+	dw RECOVER, FUTURE_SIGHT, PSYCHIC_M, REFLECT
 	db -1 ; end
 
 	end_list_items
@@ -628,7 +634,7 @@ HikerGroup:
 	db 13
 	dw ARON
 	db 14
-	dw MANKEY
+	dw GEODUDE
 	db 13
 	dw MACHOP
 	db -1 ; end
@@ -689,7 +695,7 @@ BlackbeltGroup:
 	next_list_item ; BLACKBELT_T (2)
 	db "HONDA@", TRAINERTYPE_NORMAL
 	db 17
-	dw MANKEY
+	dw PANCHAM
 	db 17
 	dw ARON
 	db -1 ; end
@@ -705,7 +711,7 @@ BlackbeltGroup:
 	next_list_item ; BLACKBELT_T (4)
 	db "HONDA@", TRAINERTYPE_NORMAL
 	db 17
-	dw MANKEY
+	dw PAWMI
 	db 17
 	dw MACHOP
 	db -1 ; end
@@ -1009,7 +1015,7 @@ SurvivalistGroup:
 	next_list_item ; PERRY (1)
 	db "PERRY@", TRAINERTYPE_NORMAL
 	db 6
-	dw MANKEY
+	dw BUNEARY
 	db 6
 	dw FLETCHLING
 	db -1 ; end

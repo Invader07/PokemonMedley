@@ -1,4 +1,4 @@
-	db CRAWDAUNT ; 056
+	db 0 ; 056
 
 	db  63,  120,  85,  55,  90,  55
 	;   hp  atk  def  spd  sat  sdf
@@ -18,4 +18,4 @@
 
 	; tm/hm learnset
 	tmhm CURSE
-		; end
+	; end

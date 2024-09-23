@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db GRAVELER ; 075
 
 	db  55,  95, 115,  35,  45,  45
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

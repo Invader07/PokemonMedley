@@ -509,9 +509,9 @@ InitRoamMons:
 ; initialize wRoamMon structs
 
 ; species
-	ld a, MEW
+	ld a, EGG
 	ld [wRoamMon1Species], a
-	ld a, CELEBI
+	ld a, EGG
 	ld [wRoamMon2Species], a
 
 ; level
@@ -771,16 +771,21 @@ _BackUpMapIndices:
 INCLUDE "data/wild/roammon_maps.asm"
 
 ValidateTempWildMonSpecies:
-; Due to a development oversight, this function is called with the wild Pokemon's level, not its species, in a.
-	and a
-	jr z, .nowildmon ; = 0
-	cp NUM_POKEMON + 1 ; 252
-	jr nc, .nowildmon ; >= 252
-	and a ; 1 <= Species <= 251
-	ret
-
-.nowildmon
+  ld a, h
+	or l
 	scf
+	ret z
+	ld a, h
+	if LOW(NUM_POKEMON) == $FF
+		cp HIGH(NUM_POKEMON) + 1
+	else
+		cp HIGH(NUM_POKEMON)
+		ccf
+		ret nz
+		ld a, l
+		cp LOW(NUM_POKEMON) + 1
+	endc
+	ccf
 	ret
 
 ; Finds a rare wild Pokemon in the route of the trainer calling, then checks if it's been Seen already.

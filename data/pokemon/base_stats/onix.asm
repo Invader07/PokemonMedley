@@ -1,6 +1,6 @@
-	db 0 ; species ID placeholder
+	db ONIX ; 095
 
-	db  35,  45, 160,  70,  30,  45
+	db  50,  60, 160,  80,  30,  45
 	;   hp  atk  def  spd  sat  sdf
 
 	db ROCK, GROUND ; type
@@ -17,5 +17,5 @@
 	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

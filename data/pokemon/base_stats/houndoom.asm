@@ -1,11 +1,11 @@
-	db 0 ; species ID placeholder
+	db HOUNDOOM ; 229
 
 	db  75,  90,  50,  95, 110,  80
 	;   hp  atk  def  spd  sat  sdf
 
 	db DARK, FIRE ; type
 	db 45 ; catch rate
-	db 209 ; base exp
+	db 204 ; base exp
 	db NO_ITEM, NO_ITEM ; items
 	db GENDER_F50 ; gender ratio
 	db 100 ; unknown 1
@@ -17,5 +17,5 @@
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

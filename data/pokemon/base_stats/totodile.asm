@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db TOTODILE ; 158
 
 	db  50,  65,  64,  43,  44,  48
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MONSTER, EGG_WATER_1 ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

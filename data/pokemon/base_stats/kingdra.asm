@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db KINGDRA ; 230
 
 	db  75,  95,  95,  85,  95,  95
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_WATER_1, EGG_DRAGON ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end

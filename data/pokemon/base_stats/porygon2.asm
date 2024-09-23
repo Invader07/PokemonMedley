@@ -1,4 +1,4 @@
-	db 0 ; species ID placeholder
+	db PORYGON2 ; 233
 
 	db  85,  80,  90,  60, 105,  95
 	;   hp  atk  def  spd  sat  sdf
@@ -17,5 +17,5 @@
 	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
-	tmhm CURSE
-		; end
+	tmhm
+	; end
