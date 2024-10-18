@@ -3,9 +3,7 @@ LoadOverworldMonIcon:
 	ld [wCurIcon], a
 	; fallthrough
 _LoadOverworldMonIcon:
-	ld [wCurIcon], a
-	ld l, a
-	ld h, 0
+	call GetPokemonIndexFromID
 	add hl, hl
 	ld de, IconPointers
 	add hl, de
@@ -110,13 +108,17 @@ _FinishMenuMonIconColor:
 GetMonPalInBCDE:
 ; Sets BCDE to mon icon palette.
 ; Input: c = species, b = shininess (1=true, 0=false)
+	ld a, c
+	call GetPokemonIndexFromID
+	dec hl
+	ld d, h
+	ld e, l
 	ld hl, MonMenuIconPals
-	dec c
 
 	; This sets z if mon is shiny.
 	dec b
 	ld b, 0
-	add hl, bc
+	add hl, de
 	ld a, [hl]
 	jr z, .shiny
 	swap a
@@ -149,9 +151,10 @@ GetMenuMonIconPalette:
 GetMenuMonIconPalette_PredeterminedShininess:
 	push af
 	ld a, [wCurPartySpecies]
-	dec a
-	ld c, a
-	ld b, 0
+	call GetPokemonIndexFromID
+	dec hl
+	ld b, h
+	ld c, l
 	ld hl, MonMenuIconPals
 	add hl, bc
 	ld e, [hl]
@@ -424,6 +427,24 @@ FlyFunction_GetMonIcon:
 	pop de
 	ld a, e
 	call GetIcon_a
+
+	; Edit the OBJ 0 palette so that the cursor Pokémon has the right colors.
+	ld a, MON_DVS
+	call GetPartyParamLocation
+	call GetMenuMonIconPalette
+	add a
+	add a
+	add a
+	ld e, a
+	farcall SetFirstOBJPalette
+	ret
+
+GetMonIconDE: ; unreferenced
+	push de
+	ld a, [wTempIconSpecies]
+	ld [wCurIcon], a
+	pop de
+	call GetIcon_de
 	ret
 
 GetMemIconGFX:
@@ -468,12 +489,15 @@ endr
 	push hl
 
 	ld a, [wCurIcon]
+	cp EGG
 	push hl
-	ld l, a
-	ld h, 0
+	ld hl, IconPointers - (3 * 2)
+	jr z, .is_egg
+	call GetPokemonIndexFromID
 	add hl, hl
 	ld de, IconPointers
 	add hl, de
+.is_egg
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
@@ -616,4 +640,4 @@ HoldSwitchmonIcon:
 
 
 INCLUDE "data/pokemon/menu_icon_pals.asm"
-INCLUDE "data/icon_pointers.asm"
+INCLUDE "data/pokemon/icon_pointers.asm"

@@ -91,8 +91,7 @@ GetMapSceneID::
 
 OverworldTextModeSwitch::
 	call LoadMapPart
-	call SwapTextboxPalettes
-	ret
+	jp SwapTextboxPalettes
 
 LoadMapPart::
 	ldh a, [hROMBank]
@@ -507,8 +506,7 @@ ReadWarps::
 	and a
 	ret z
 	ld bc, WARP_EVENT_SIZE
-	call AddNTimes
-	ret
+	jp AddNTimes
 
 ReadCoordEvents::
 	ld a, [hli]

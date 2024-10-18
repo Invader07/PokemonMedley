@@ -412,8 +412,8 @@ StatsScreen_InitUpperHalf:
 	ld a, "."
 	ld [hli], a
 	lb bc, PRINTNUM_LEADINGZEROS | 2, 3
-	add sp, 2
 	call PrintNum
+	add sp, 2
 	hlcoord 14, 0
 	call PrintLevel
 	ld hl, .NicknamePointers
@@ -1118,13 +1118,12 @@ StatsScreen_PlaceFrontpic:
 .not_unown_egg
 	ld a, TRUE
 	ld [wBoxAlignment], a
-	; fallthrough
+	jr .get_animation
 
 .unownegg
 	xor a
 	ld [wBoxAlignment], a
-	call .get_animation
-	ret
+	; fallthrough
 
 .get_animation
 	ld a, [wCurPartySpecies]

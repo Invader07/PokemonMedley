@@ -30,7 +30,6 @@ AI_Redundant:
 	dbw EFFECT_SLEEP_TALK,   .SleepTalk
 	dbw EFFECT_MEAN_LOOK,    .MeanLook
 	dbw EFFECT_SPIKES,       .Spikes
-	dbw EFFECT_FORESIGHT,    .Foresight
 	dbw EFFECT_PERISH_SONG,  .PerishSong
 	dbw EFFECT_SANDSTORM,    .Sandstorm
 	dbw EFFECT_ATTRACT,      .Attract
@@ -41,7 +40,6 @@ AI_Redundant:
 	dbw EFFECT_SYNTHESIS,    .Synthesis
 	dbw EFFECT_MOONLIGHT,    .Moonlight
 	dbw EFFECT_SWAGGER,      .Swagger
-	dbw EFFECT_FUTURE_SIGHT, .FutureSight
 	dbw EFFECT_TRICK_ROOM,   .TrickRoom
 	dbw EFFECT_FLATTER,      .Flatter
 	dbw EFFECT_HAIL, 				 .Hail
@@ -117,11 +115,6 @@ AI_Redundant:
 	bit SCREENS_SPIKES, a
 	ret
 
-.Foresight:
-	ld a, [wPlayerSubStatus1]
-	bit SUBSTATUS_IDENTIFIED, a
-	ret
-
 .PerishSong:
 	ld a, [wPlayerSubStatus1]
 	bit SUBSTATUS_PERISH, a
@@ -173,12 +166,6 @@ AI_Redundant:
 .Swagger:
 	ld a, [wPlayerSubStatus3]
 	bit SUBSTATUS_CONFUSED, a
-	ret
-
-.FutureSight:
-; BUG: AI does not discourage Future Sight when it's already been used (see docs/bugs_and_glitches.md)
-	ld a, [wEnemyScreens]
-	bit 5, a
 	ret
 
 .TrickRoom

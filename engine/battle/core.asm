@@ -252,9 +252,6 @@ HandleBetweenTurnEffects:
 	jr z, .CheckEnemyFirst
 	call CheckFaint_PlayerThenEnemy
 	ret c
-	call HandleFutureSight
-	call CheckFaint_PlayerThenEnemy
-	ret c
 	call HandleWeather
 	call CheckFaint_PlayerThenEnemy
 	ret c
@@ -270,9 +267,6 @@ HandleBetweenTurnEffects:
 	jr .NoMoreFaintingConditions
 
 .CheckEnemyFirst:
-	call CheckFaint_EnemyThenPlayer
-	ret c
-	call HandleFutureSight
 	call CheckFaint_EnemyThenPlayer
 	ret c
 	call HandleWeather
@@ -657,18 +651,33 @@ ParsePlayerAction:
 	jr nz, .locked_in
 	xor a
 	ld [wMoveSelectionMenuType], a
-	inc a ; POUND
+	if HIGH(POUND)
+		ld a, HIGH(POUND)
+	endc
+	ld [wFXAnimID + 1], a
+	if LOW(POUND) == (HIGH(POUND) + 1)
+		inc a
+	else
+		ld a, LOW(POUND)
+	endc
 	ld [wFXAnimID], a
 	call MoveSelectionScreen
 	push af
 	call SafeLoadTempTilemapToTilemap
 	call UpdateBattleHuds
 	ld a, [wCurPlayerMove]
-	cp STRUGGLE
-	jr z, .struggle
-	call PlayClickSFX
-
-.struggle
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(STRUGGLE)
+		cp HIGH(STRUGGLE)
+	else
+		and a
+	endc
+	jr nz, .not_struggle
+	ld a, l
+	cp LOW(STRUGGLE)
+.not_struggle
+	call nz, PlayClickSFX
 	ld a, $1
 	ldh [hBGMapMode], a
 	pop af
@@ -807,32 +816,32 @@ TryEnemyFlee:
 	jr nz, .Stay
 
 	ld a, [wTempEnemyMonSpecies]
-	ld de, 1
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
+	ld de, 2
 	ld hl, AlwaysFleeMons
-	call IsInArray
+	call IsInWordArray
 	jr c, .Flee
 
 	call BattleRandom
-	ld b, a
-	cp 50 percent + 1
+	add a, a
 	jr nc, .Stay
 
-	push bc
-	ld a, [wTempEnemyMonSpecies]
-	ld de, 1
+	push af
+	; de preserved from last call
 	ld hl, OftenFleeMons
-	call IsInArray
-	pop bc
+	call IsInWordArray
+	pop de
 	jr c, .Flee
 
-	ld a, b
-	cp 10 percent + 1
+	ld a, d
+	cp 20 percent ; double the value because of the previous add a, a
 	jr nc, .Stay
 
-	ld a, [wTempEnemyMonSpecies]
-	ld de, 1
+	ld de, 2
 	ld hl, SometimesFleeMons
-	call IsInArray
+	call IsInWordArray
 	jr c, .Flee
 
 .Stay:
@@ -865,10 +874,19 @@ GetMovePriority:
 	ld b, a
 
 	; Trick Room goes last.
-	cp TRICK_ROOM
-	ld a, 0
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(TRICK_ROOM)
+		cp HIGH(TRICK_ROOM)
+	else
+		and a
+	endc
+	jr nz, .not_trick_room
+	ld a, l
+	sub LOW(TRICK_ROOM)
 	ret z
 
+.not_trick_room
 	call GetMoveEffect
 	ld hl, MoveEffectPriorities
 .loop
@@ -1270,7 +1288,13 @@ HandleWrap:
 
 	ld a, [de]
 	ld [wNamedObjectIndex], a
+	push hl
+	call GetMoveIndexFromID
+	ld a, l
 	ld [wFXAnimID], a
+	ld a, h
+	ld [wFXAnimID + 1], a
+	pop hl
 	call GetMoveName
 	dec [hl]
 	jr z, .release_from_bounds
@@ -1283,7 +1307,6 @@ HandleWrap:
 	call SwitchTurnCore
 	xor a
 	ld [wNumHits], a
-	ld [wFXAnimID + 1], a
 	predef PlayBattleAnim
 	call SwitchTurnCore
 
@@ -1445,11 +1468,22 @@ HandleMysteryberry:
 .restore
 	; lousy hack
 	ld a, [hl]
-	cp SKETCH
-	ld b, 1
-	jr z, .sketch
+	push hl
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(SKETCH)
+		cp HIGH(SKETCH)
+	else
+		and a
+	endc
+	ld a, l
+	pop hl
 	ld b, 5
-.sketch
+	jr nz, .not_sketch
+	cp LOW(SKETCH)
+	jr nz, .not_sketch
+	ld b, 1
+.not_sketch
 	ld a, [de]
 	add b
 	ld [de], a
@@ -1516,64 +1550,6 @@ HandleMysteryberry:
 	call SwitchTurnCore
 	ld hl, BattleText_UserRecoveredPPUsing
 	jp StdBattleTextbox
-
-HandleFutureSight:
-	ldh a, [hSerialConnectionStatus]
-	cp USING_EXTERNAL_CLOCK
-	jr z, .enemy_first
-	call SetPlayerTurn
-	call .do_it
-	call SetEnemyTurn
-	jp .do_it
-
-.enemy_first
-	call SetEnemyTurn
-	call .do_it
-	call SetPlayerTurn
-
-.do_it
-	ld hl, wPlayerFutureSightCount
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .okay
-	ld hl, wEnemyFutureSightCount
-
-.okay
-	ld a, [hl]
-	and a
-	ret z
-	dec a
-	ld [hl], a
-	cp $1
-	ret nz
-
-	ld hl, BattleText_TargetWasHitByFutureSight
-	call StdBattleTextbox
-
-	ld a, BATTLE_VARS_MOVE
-	call GetBattleVarAddr
-	push af
-	ld a, FUTURE_SIGHT
-	ld [hl], a
-
-	callfar UpdateMoveData
-	xor a
-	ld [wAttackMissed], a
-	ld [wAlreadyDisobeyed], a
-	ld a, EFFECTIVE
-	ld [wTypeModifier], a
-	callfar DoMove
-	xor a
-	ld [wCurDamage], a
-	ld [wCurDamage + 1], a
-
-	ld a, BATTLE_VARS_MOVE
-	call GetBattleVarAddr
-	pop af
-	ld [hl], a
-
-	call UpdateBattleMonInParty
-	jp UpdateEnemyMonInParty
 
 HandleDefrost:
 	ldh a, [hSerialConnectionStatus]
@@ -3944,7 +3920,8 @@ TryToRunAwayFromBattle:
 	cp BATTLEACTION_FORFEIT
 	ld a, DRAW
 	jr z, .fled
-	dec a ; LOSE
+	assert DRAW - 1 == LOSE
+	dec a
 .fled
 	ld b, a
 	ld a, [wBattleResult]
@@ -4480,12 +4457,15 @@ ItemRecoveryAnim:
 	push de
 	push bc
 	call EmptyBattleTextbox
-	ld a, RECOVER
-	ld [wFXAnimID], a
 	call SwitchTurnCore
 	xor a
 	ld [wNumHits], a
+	if HIGH(RECOVER)
+		ld a, HIGH(RECOVER)
+	endc
 	ld [wFXAnimID + 1], a
+	ld a, LOW(RECOVER)
+	ld [wFXAnimID], a
 	predef PlayBattleAnim
 	call SwitchTurnCore
 	pop bc
@@ -5849,7 +5829,8 @@ MoveInfoBox:
 	ret
 
 CheckPlayerHasUsableMoves:
-	ld a, STRUGGLE
+	ld hl, STRUGGLE
+	call GetMoveIDFromIndex
 	ld [wCurPlayerMove], a
 	ld a, [wPlayerDisableCount]
 	and a
@@ -6043,7 +6024,8 @@ ParseEnemyAction:
 	ret
 
 .struggle
-	ld a, STRUGGLE
+	ld hl, STRUGGLE
+	call GetMoveIDFromIndex
 	jr .finish
 
 SetChoiceLock:
@@ -6588,6 +6570,11 @@ CheckSleepingTreeMon:
 	cp BATTLETYPE_TREE
 	jr nz, .NotSleeping
 
+	ld a, [wTempEnemyMonSpecies]
+	call GetPokemonIndexFromID
+	ld b, h
+	ld c, l
+
 ; Get list for the time of day
 	ld hl, AsleepTreeMonsMorn
 	ld a, [wTimeOfDay]
@@ -6598,9 +6585,8 @@ CheckSleepingTreeMon:
 	ld hl, AsleepTreeMonsNite
 
 .Check:
-	ld a, [wTempEnemyMonSpecies]
-	ld de, 1 ; length of species id
-	call IsInArray
+	ld de, 2 ; length of species id
+	call IsInWordArray
 ; If it's a match, the opponent is asleep
 	ret c
 
@@ -6922,7 +6908,8 @@ ApplyStatLevelMultiplier:
 	pop bc
 	ret
 
-INCLUDE "data/battle/stat_multipliers_2.asm"
+StatLevelMultipliers_Applied:
+INCLUDE "data/battle/stat_multipliers.asm"
 
 BadgeStatBoosts:
 ; Raise the stats of the battle mon in wBattleMon

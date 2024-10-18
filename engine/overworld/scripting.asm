@@ -45,7 +45,7 @@ WaitScriptMovement:
 	call StopScript
 
 	ld hl, wVramState
-	bit 7, [hl]
+	bit SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret nz
 
 	farcall UnfreezeAllObjects
@@ -136,7 +136,7 @@ ScriptCommandTable:
 	dw Script_itemnotify                 ; 45
 	dw Script_pocketisfull               ; 46
 	dw Script_opentext                   ; 47
-	dw Script_refreshscreen              ; 48
+	dw Script_reanchormap                ; 48
 	dw Script_closetext                  ; 49
 	dw Script_writeunusedbyte            ; 4a
 	dw Script_farwritetext               ; 4b
@@ -188,7 +188,7 @@ ScriptCommandTable:
 	dw Script_changemapblocks            ; 79
 	dw Script_changeblock                ; 7a
 	dw Script_reloadmap                  ; 7b
-	dw Script_reloadmappart              ; 7c
+	dw Script_refreshmap                 ; 7c
 	dw Script_writecmdqueue              ; 7d
 	dw Script_delcmdqueue                ; 7e
 	dw Script_playmusic                  ; 7f
@@ -917,7 +917,7 @@ ApplyObjectFacing:
 	ld a, e
 	call SetSpriteDirection
 	ld hl, wVramState
-	bit 6, [hl]
+	bit TEXT_STATE_F, [hl]
 	jr nz, .text_state
 	call .DisableTextTiles
 .text_state
@@ -2057,7 +2057,7 @@ Script_warp:
 	ld [wXCoord], a
 	call GetScriptByte
 	ld [wYCoord], a
-	ld a, SPAWN_HERALD_COVE
+	ld a, SPAWN_N_A
 	ld [wDefaultSpawnpoint], a
 	ld a, MAPSETUP_WARP
 	ldh [hMapEntryMethod], a
@@ -2070,7 +2070,7 @@ Script_warp:
 	call GetScriptByte
 	call GetScriptByte
 	call GetScriptByte
-	ld a, SPAWN_HERALD_COVE
+	ld a, SPAWN_N_A
 	ld [wDefaultSpawnpoint], a
 	ld a, MAPSETUP_BADWARP
 	ldh [hMapEntryMethod], a
@@ -2145,7 +2145,7 @@ Script_changeblock:
 	call BufferScreen
 	ret
 
-Script_reloadmappart::
+Script_refreshmap::
 	xor a
 	ldh [hBGMapMode], a
 	call OverworldTextModeSwitch
@@ -2157,6 +2157,10 @@ Script_reloadmappart::
 Script_warpcheck:
 	call WarpCheck
 	ret nc
+	farcall EnableEvents
+	ret
+
+Script_enableevents: ; unreferenced
 	farcall EnableEvents
 	ret
 
@@ -2176,7 +2180,7 @@ Script_opentext:
 	call OpenText
 	ret
 
-Script_refreshscreen:
+Script_reanchormap:
 	call RefreshScreen
 	call GetScriptByte
 	ret
@@ -2185,6 +2189,9 @@ Script_writeunusedbyte:
 	call GetScriptByte
 	ld [wUnusedScriptByte], a
 	ret
+
+UnusedClosetextScript: ; unreferenced
+	closetext
 
 Script_closetext:
 	call HDMATransferTilemapAndAttrmap

@@ -21,11 +21,11 @@ _PlayBattleAnim:
 	call BattleAnimRequestPals
 	call DelayFrame
 
-	ld c, 1
+	ld c, VBLANK_CUTSCENE
 	ldh a, [rKEY1]
 	bit 7, a ; check CGB double speed mode
 	jr nz, .got_speed
-	ld c, 3
+	ld c, VBLANK_CUTSCENE_CGB
 
 .got_speed
 	ld hl, hVBlank
@@ -48,8 +48,8 @@ _PlayBattleAnim:
 
 BattleAnimRunScript:
 	ld a, [wFXAnimID + 1]
-	and a
-	jr nz, .hi_byte
+	add a, a
+	jr c, .play_anyway
 
 	farcall CheckBattleScene
 	jr c, .disabled
@@ -84,7 +84,7 @@ BattleAnimRunScript:
 	ld a, h
 	ld [wFXAnimID + 1], a
 
-.hi_byte
+.play_anyway
 	call WaitSFX
 	call PlayHitSound
 	call RunBattleAnimScript
@@ -105,11 +105,15 @@ RunBattleAnimScript:
 
 ; Speed up Rollout's animation.
 	ld a, [wFXAnimID + 1]
-	or a
+	if HIGH(ROLLOUT)
+		cp HIGH(ROLLOUT)
+	else
+		or a
+	endc
 	jr nz, .not_rollout
 
 	ld a, [wFXAnimID]
-	cp ROLLOUT
+	cp LOW(ROLLOUT)
 	jr nz, .not_rollout
 
 	ld a, BATTLE_BG_EFFECT_ROLLOUT
@@ -130,12 +134,10 @@ RunBattleAnimScript:
 	ld a, [wBattleAnimFlags]
 	bit BATTLEANIM_STOP_F, a
 	jr z, .playframe
-
-	call BattleAnim_ClearOAM
-	ret
+	jp BattleAnim_ClearOAM
 
 BattleAnimClearHud:
-	call DelayFrames
+	call DelayFrame
 	call WaitTop
 	call ClearActorHud
 	ld a, $1
@@ -147,17 +149,13 @@ BattleAnimClearHud:
 BattleAnimRestoreHuds:
 	call DelayFrame
 	call WaitTop
-
 	ldh a, [rSVBK]
 	push af
 	ld a, BANK(wCurBattleMon) ; aka BANK(wTempMon), BANK(wPartyMon1), and several others
 	ldh [rSVBK], a
-
 	call UpdateBattleHuds
-
 	pop af
 	ldh [rSVBK], a
-
 	ld a, $1
 	ldh [hBGMapMode], a
 	call Delay3
@@ -168,18 +166,16 @@ BattleAnimRequestPals:
 	ldh a, [hCGB]
 	and a
 	ret z
-
 	ldh a, [rBGP]
 	ld b, a
 	ld a, [wBGP]
 	cp b
 	call nz, BattleAnim_SetBGPals
-
 	ldh a, [rOBP0]
 	ld b, a
 	ld a, [wOBP0]
 	cp b
-	jp nz, BattleAnim_SetOBPals
+	call nz, BattleAnim_SetOBPals
 	ret
 
 ClearActorHud:
@@ -214,7 +210,8 @@ PlaceWindowOverBattleTextbox: ; unreferenced
 	ldh [hBGMapAddress], a
 	ld a, HIGH(vBGMap0)
 	ldh [hBGMapAddress + 1], a
-	jp DelayFrame
+	call DelayFrame
+	ret
 
 BattleAnim_ClearOAM:
 	ld a, [wBattleAnimFlags]
@@ -630,9 +627,8 @@ BattleAnimCmd_ResetObp0:
 	ret
 
 BattleAnimCmd_ClearObjs:
-; BUG: BattleAnimCmd only clears the first 6⅔ objects (see docs/bugs_and_glitches.md)
 	ld hl, wActiveAnimObjects
-	ld a, $a0
+	ld a, NUM_BATTLE_ANIM_STRUCTS * BATTLEANIMSTRUCT_LENGTH
 .loop
 	ld [hl], 0
 	inc hl
@@ -1355,7 +1351,8 @@ ClearBattleAnims::
 	add hl, de
 	call GetBattleAnimPointer
 	call BattleAnimAssignPals
-	jp DelayFrame
+	call DelayFrame
+	ret
 
 BattleAnim_RevertPals:
 	call WaitTop

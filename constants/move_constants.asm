@@ -198,7 +198,6 @@
 	const WATER_PULSE  ; be
 	const SPIKES       ; bf
 	const ZAP_CANNON   ; c0
-	const FORESIGHT    ; c1
 	const DESTINY_BOND ; c2
 	const PERISH_SONG  ; c3
 	const ICY_WIND     ; c4
@@ -253,42 +252,114 @@
 	const EXTREMESPEED ; f5
 	const ANCIENTPOWER ; f6
 	const SHADOW_BALL  ; f7
-	const FUTURE_SIGHT ; f8
 	const ROCK_SMASH   ; f9
 	const PSYCHO_BOOST ; fa
 	const ACCELEROCK   ; fb
 	const ROCK_BLAST   ; fc
 	const ROCK_POLISH  ; fd
 	const ROCK_TOMB    ; fe
-	const STRUGGLE     ; ff
+	const X_SCISSOR
+	const SPIDER_WEB
+	const SNARL
+	const FAKE_TEARS
+	const DRAGON_DANCE
+	const VOLT_SWITCH
+	const NUZZLE
+	const SUPERPOWER
+	const DRAIN_PUNCH
+	const BOUNCE
+	const AIR_CUTTER
+	const HEX
+	const ROCK_WRECKER
+	const HEAD_SMASH
+	const MAGNET_BOMB
+	const BULLET_PUNCH
+	const MOONBLAST
+	const PLAY_ROUGH
+	const DAZZLE_GLEAM
+	const DRAIN_KISS
+	const DISARM_VOICE
+	const FAIRY_WIND
+	const DRILL_RUN
+	const BONE_CLUB
+	const BONEMERANG
+	const BONE_RUSH
+	const ICE_SHARD
+	const ICE_BALL
+	const MAGMA_STORM
+	const COTTON_GUARD
+	const SPIKY_SHIELD
+	const BUBBLEBEAM
+	const BUBBLE
+	const OCTAZOOKA
+	const WITHDRAW
+	const GUILLOTINE
+	const HORN_DRILL
+	const HYPER_DRILL
+	const MEGA_KICK
+	const THRASH
+	const MEGA_PUNCH
+	const HYPER_FANG
+	const SNORE
+	const STOMP
+	const PAY_DAY
+	const CONSTRICT
+	const BIND
+	const COMET_PUNCH
+	const FRUSTRATION
+	const SUPER_FANG
+	const MIMIC
+	const SOFTBOILED
+	const SPLASH
+	const SONICBOOM
+	const MIND_READER
+	const LOCK_ON
+	const SWEET_SCENT
+	const MIRROR_MOVE
+	const MINIMIZE
+	const FISSURE
+	const CLEAR_SMOG
+	const INFESTATION
+	const YAWN
+	const SLACK_OFF
+	const AQUA_RING
+	const HYPER_VOICE
+	const TAIL_GLOW
+	const STRUGGLE     ; end
 DEF NUM_ATTACKS EQU const_value - 1
 
-; Battle animations use the same constants as the moves up to this point
-	const ANIM_SWEET_SCENT_2     ; 100
-	const ANIM_THROW_POKE_BALL   ; 101
-	const ANIM_SEND_OUT_MON      ; 102
-	const ANIM_RETURN_MON        ; 103
-	const ANIM_CONFUSED          ; 104
-	const ANIM_SLP               ; 105
-	const ANIM_BRN               ; 106
-	const ANIM_PSN               ; 107
-	const ANIM_SAP               ; 108
-	const ANIM_FRZ               ; 109
-	const ANIM_PAR               ; 10a
-	const ANIM_IN_LOVE           ; 10b
-	const ANIM_IN_SANDSTORM      ; 10c
-	const ANIM_IN_NIGHTMARE      ; 10d
-	const ANIM_IN_WHIRLPOOL      ; 10e
+if NUM_ATTACKS > $3fff
+		fail "Too many moves defined!"
+	endc
+
+; Battle animations use the same constants as the moves
+	const ANIM_SWEET_SCENT_2     ; fc
+; Animations with negative IDs will play even when animations are disabled
+	const_def -1, -1
+	const ANIM_HIT_CONFUSION     ;  -1 (ffff)
+	const ANIM_SHAKE             ;  -2 (fffe)
+	const ANIM_WOBBLE            ;  -3 (fffd)
+	const ANIM_PLAYER_DAMAGE     ;  -4 (fffc)
+	const ANIM_PLAYER_STAT_DOWN  ;  -5 (fffb)
+	const ANIM_ENEMY_STAT_DOWN   ;  -6 (fffa)
+	const ANIM_ENEMY_DAMAGE      ;  -7 (fff9)
+	const ANIM_MISS              ;  -8 (fff8)
 ; battle anims
-	const ANIM_MISS              ; 10f
-	const ANIM_ENEMY_DAMAGE      ; 110
-	const ANIM_ENEMY_STAT_DOWN   ; 111
-	const ANIM_PLAYER_STAT_DOWN  ; 112
-	const ANIM_PLAYER_DAMAGE     ; 113
-	const ANIM_WOBBLE            ; 114
-	const ANIM_SHAKE             ; 115
-	const ANIM_HIT_CONFUSION     ; 116
-DEF NUM_BATTLE_ANIMS EQU const_value - 1
+	const ANIM_IN_WHIRLPOOL      ;  -9 (fff7)
+	const ANIM_IN_NIGHTMARE      ;  -a (fff6)
+	const ANIM_IN_SANDSTORM      ;  -b (fff5)
+	const ANIM_IN_LOVE           ;  -c (fff4)
+	const ANIM_PAR               ;  -d (fff3)
+	const ANIM_FRZ               ;  -e (fff2)
+	const ANIM_SAP               ;  -f (fff1)
+	const ANIM_PSN               ; -10 (fff0)
+	const ANIM_BRN               ; -11 (ffef)
+	const ANIM_SLP               ; -12 (ffee)
+	const ANIM_CONFUSED          ; -13 (ffed)
+	const ANIM_RETURN_MON        ; -14 (ffec)
+	const ANIM_SEND_OUT_MON      ; -15 (ffeb)
+	const ANIM_THROW_POKE_BALL   ; -16 (ffea)
+DEF NUM_BATTLE_ANIMS EQU -const_value - 1
 
 ; wNumHits uses offsets from ANIM_MISS
 	const_def

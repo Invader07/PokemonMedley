@@ -84,7 +84,7 @@ Moves1:
 	move EFFECT_NORMAL_HIT,         35, FLYING,       100, 35,   0
 	move EFFECT_NORMAL_HIT,         80, FLYING,       100, 20,   0
 	move EFFECT_RECOIL_HIT,         90, FIGHTING,      95, 25,   0
-	move EFFECT_THUNDER_FANG,       65, ELECTRIC,      95, 20,  10
+	move EFFECT_PARALYZE_HIT,       65, ELECTRIC,      95, 20,  10
 	move EFFECT_COUNTER,             1, FIGHTING,     100, 20,   0
 	move EFFECT_LEVEL_DAMAGE,        1, FIGHTING,     100, 20,   0
 	move EFFECT_NORMAL_HIT,         80, FIGHTING,     100, 15,   0
@@ -119,7 +119,7 @@ Moves1:
 	move EFFECT_RAGE,               20, NORMAL,       100, 20,   0
 	move EFFECT_BLAST_BURN,        150, FIRE,         100,  5,  50
 	move EFFECT_LEVEL_DAMAGE,        1, GHOST,        100, 15,   0
-	move EFFECT_FIRE_FANG,          65, FIRE,          95, 20,  10
+	move EFFECT_BURN_HIT,          65, FIRE,          95, 20,  10
 	move EFFECT_DEFENSE_DOWN_2,      0, NORMAL,        85, 40,   0
 	move EFFECT_EVASION_UP,          0, NORMAL,       100, 15,   0
 	move EFFECT_HEAL,                0, NORMAL,       100, 10,   0
@@ -210,7 +210,6 @@ Moves1:
 	move EFFECT_CONFUSE_HIT,        60, WATER,        100, 20,  30
 	move EFFECT_SPIKES,              0, GROUND,       100, 10,   0
 	move EFFECT_PARALYZE_HIT,       90, ELECTRIC,      80,  5,  75
-	move EFFECT_FORESIGHT,           0, NORMAL,       100, 40,   0
 	move EFFECT_DESTINY_BOND,        0, GHOST,        100,  5,   0
 	move EFFECT_PERISH_SONG,         0, NORMAL,       100,  5,   0
 	move EFFECT_SPEED_DOWN_HIT,     45, ICE,           95, 15, 100
@@ -234,7 +233,7 @@ Moves1:
 	move EFFECT_SLEEP_TALK,          0, NORMAL,       100, 10,   0
 	move EFFECT_HEAL_BELL,           0, NORMAL,       100,  5,   0
 	move EFFECT_RETURN,              1, NORMAL,       100, 20,   0
-	move EFFECT_ICE_FANG,           65, ICE,           95, 20,   0
+	move EFFECT_FREEZE_HIT,         65, ICE,           95, 20,   0
 	move EFFECT_POISON_HIT,         70, POISON,       100, 20,  10
 	move EFFECT_SAFEGUARD,           0, NORMAL,       100, 25,   0
 	move EFFECT_PAIN_SPLIT,          0, NORMAL,       100, 20,   0
@@ -265,7 +264,6 @@ Moves1:
 	move EFFECT_PRIORITY_HIT,       80, NORMAL,       100, 10,   0
 	move EFFECT_ALL_UP_HIT,         60, ROCK,         100, 10,  10
 	move EFFECT_SP_DEF_DOWN_HIT,    80, GHOST,        100, 15,  20
-	move EFFECT_FUTURE_SIGHT,      120, PSYCHIC_TYPE, 100, 15,   0
 	move EFFECT_DEFENSE_DOWN_HIT,   60, FIGHTING,     100, 15,  30
 	move EFFECT_SP_ATK_DOWN_2_USER, 140, PSYCHIC_TYPE, 90,  5,   0
 	move EFFECT_PRIORITY_HIT,       40, ROCK,         100, 10,   0
@@ -273,4 +271,71 @@ Moves1:
 	move EFFECT_SPEED_UP_2,          0, ROCK,         100, 20,   0
 	move EFFECT_SPEED_DOWN_HIT,     60, ROCK,          90, 20, 100
 	move EFFECT_RECOIL_HIT,         50, NORMAL,       100,  1,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
 	.IndirectEnd::

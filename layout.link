@@ -367,7 +367,7 @@ WRAM0
 	"16-bit WRAM home data"
 WRAMX 1
 	"WRAM 1"
-	
+	"Miscellaneous WRAM 1"
 	"More WRAM 1"
 	"Enemy Party"
 	"Party"
@@ -375,7 +375,7 @@ WRAMX 2
 	"Pic Animations"
 	align 8
 	"16-bit WRAM tables"
-	"Miscellaneous WRAM 1"
+	
 WRAMX 3
 	"Battle Tower RAM"
 WRAMX 4

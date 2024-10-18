@@ -180,6 +180,14 @@ ENDM
 	command curl                    ; af
 	command hail						    	  ; b0
 	command uturn               		; b1
+	command checkrampage            ; b2
+	command rampage               	; b3
+	command ohko               			; b4
+	command mimic               		; b5
+	command splash               		; b6
+	command nightmare               ; b7
+	command frustrationpower        ; b8
+	command teleport               	; b9
 DEF NUM_EFFECT_COMMANDS EQU const_value - 1
 
 	const_def -1, -1

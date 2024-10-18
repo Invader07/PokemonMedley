@@ -37,7 +37,7 @@ HeraldPort_MapScripts:
 		moveobject HERALD_PORT_BLAIRE, 9, 6
 		playsound SFX_ENTER_DOOR
 		applymovement HERALD_PORT_SAILOR1, SailorStepsAwayMovement
-		applymovement PLAYER , PlayerExitShipMovement
+		applymovement PLAYER, PlayerExitShipMovement
 		pause 30
 		playsound SFX_ENTER_DOOR
 		appear HERALD_PORT_OAK

@@ -161,8 +161,6 @@ EvosAttacksPointers1::
 	dw LuxrayEvosAttacks
 .IndirectEnd::
 
-
-
 EkansEvosAttacks:
 ArbokEvosAttacks:
 BaltoyEvosAttacks:

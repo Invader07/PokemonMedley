@@ -132,11 +132,6 @@ EnterMap:
 	ld [wMapStatus], a
 	ret
 
-UnusedWait30Frames: ; unreferenced
-	ld c, 30
-	call DelayFrames
-	ret
-
 HandleMap:
 	call HandleMapTimeAndJoypad
 	call HandleCmdQueue
@@ -152,7 +147,6 @@ HandleMap:
 	call CheckPlayerState
 	xor a
 	ret
-	ret
 
 MapEvents:
 	ld a, [wMapEventStatus]
@@ -161,10 +155,17 @@ MapEvents:
 	call PlayerEvents
 	call DisableEvents
 	farcall ScriptEvents
+	ret
+
+.no_events:
+	ret
+
+MaxOverworldDelay:
+	db 2
 
 NextOverworldFrame:
-	; If we haven't already performed a delay outside DelayFrame as a result
-	; of a busy LY overflow, perform that now.
+; If we haven't already performed a delay outside DelayFrame as a result
+; of a busy LY overflow, perform that now.
 	ld a, [hDelayFrameLY]
 	inc a
 	jp nz, DelayFrame
@@ -265,6 +266,14 @@ PlayerEvents:
 
 	xor a
 	ld [wLandmarkSignTimer], a
+
+	; Have player stand (resets running sprite to standing if event starts while running)
+	ld a, [wPlayerState]
+	cp PLAYER_RUN
+	jr nz, .ok2
+	ld a, PLAYER_NORMAL
+	ld [wPlayerState], a
+	farcall UpdatePlayerSprite
 
 .ok2
 	scf

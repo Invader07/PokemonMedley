@@ -203,14 +203,14 @@ CopyCoordsTileToLastCoordsTile:
 	ld hl, OBJECT_LAST_MAP_Y
 	add hl, bc
 	ld [hl], a
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	ld hl, OBJECT_LAST_TILE
 	add hl, bc
 	ld [hl], a
 	call SetTallGrassFlags
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	call UselessAndA
@@ -236,12 +236,12 @@ UpdateTallGrassFlags:
 	add hl, bc
 	bit OVERHEAD_F, [hl]
 	jr z, .ok
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	call SetTallGrassFlags
 .ok
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	call UselessAndA
@@ -331,7 +331,7 @@ GetNextTile:
 	push bc
 	call GetCoordTile
 	pop bc
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld [hl], a
 	ret
@@ -395,25 +395,26 @@ GetStepVector:
 
 StepVectors:
 ; x,  y, duration, speed
-; slow
+	; slow
 	db  0,  1, 32, 1
 	db  0, -1, 32, 1
 	db -1,  0, 32, 1
 	db  1,  0, 32, 1
-; normal
+	; normal
 	db  0,  1, 16, 1
 	db  0, -1, 16, 1
 	db -1,  0, 16, 1
 	db  1,  0, 16, 1
-; running shoes
+	; running shoes
 	db  0,  2,  8, 2
 	db  0, -2,  8, 2
 	db -2,  0,  8, 2
 	db  2,  0,  8, 2
-; bike
+	; bike
 	db  0,  4,  4, 4
 	db  0, -4,  4, 4
 	db -4,  0,  4, 4
+	db  4,  0,  4, 4
 
 GetStepVectorSign:
 	add a
@@ -539,7 +540,7 @@ StepFunction_Reset:
 	push bc
 	call GetCoordTile
 	pop bc
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld [hl], a
 	call CopyCoordsTileToLastCoordsTile
@@ -691,7 +692,7 @@ MovementFunction_Strength:
 	dw .stop
 
 .start:
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	call CheckPitTile
@@ -912,12 +913,12 @@ MovementFunction_Shadow:
 	add hl, de
 	ld a, [hl]
 	maskbits NUM_DIRECTIONS
-	ld d, 1 * 8 + 6
+	ld d, 1 * TILE_WIDTH + 6
 	cp DOWN
 	jr z, .ok
 	cp UP
 	jr z, .ok
-	ld d, 1 * 8 + 4
+	ld d, 1 * TILE_WIDTH + 4
 .ok
 	ld hl, OBJECT_SPRITE_Y_OFFSET
 	add hl, bc
@@ -941,7 +942,7 @@ MovementFunction_Emote:
 	ld [hl], 0
 	ld hl, OBJECT_SPRITE_Y_OFFSET
 	add hl, bc
-	ld [hl], -2 * 8
+	ld [hl], -2 * TILE_WIDTH
 	ld hl, OBJECT_SPRITE_X_OFFSET
 	add hl, bc
 	ld [hl], 0
@@ -1107,7 +1108,6 @@ RandomStepDuration_Fast:
 	ldh a, [hRandomAdd]
 	and %00111110
 	jr z, RandomStepDuration_Fast
-
 _SetRandomStepDuration:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
@@ -1651,10 +1651,10 @@ StepFunction_Turn:
 	ld hl, OBJECT_STEP_FRAME
 	add hl, bc
 	ld a, [hl]
-	ld [hl], 2
+	ld [hl], 4
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
-	ld [hl], 2
+	ld [hl], 4
 	call ObjectStep_IncAnonJumptableIndex
 .step1
 	ld hl, OBJECT_STEP_DURATION
@@ -1671,7 +1671,7 @@ StepFunction_Turn:
 	ld [hl], a
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
-	ld [hl], 2
+	ld [hl], 4
 	call ObjectStep_IncAnonJumptableIndex
 .step2
 	ld hl, OBJECT_STEP_DURATION
@@ -2206,7 +2206,7 @@ CopyTempObjectData:
 
 UpdateAllObjectsFrozen::
 	ld a, [wVramState]
-	bit 0, a
+	bit SPRITE_UPDATES_DISABLED_F, a
 	ret z
 	ld bc, wObjectStructs
 	xor a
@@ -2318,7 +2318,7 @@ UpdateObjectTile:
 	ld e, [hl]
 	call GetCoordTile
 	pop bc
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld [hl], a
 	farcall UpdateTallGrassFlags ; no need to farcall
@@ -2506,6 +2506,7 @@ HandleNPCStep::
 	dec a
 	ld [wPlayerStepDirection], a
 	ret
+
 
 RefreshPlayerSprite:
 	ld a, movement_step_sleep
@@ -2756,7 +2757,7 @@ ResetObject:
 
 _UpdateSprites::
 	ld a, [wVramState]
-	bit 0, a
+	bit SPRITE_UPDATES_DISABLED_F, a
 	ret z
 	xor a
 	ldh [hUsedSpriteIndex], a
@@ -2772,7 +2773,7 @@ _UpdateSprites::
 
 .fill
 	ld a, [wVramState]
-	bit 1, a
+	bit LAST_12_SPRITE_OAM_STRUCTS_RESERVED_F, a
 	ld b, NUM_SPRITE_OAM_STRUCTS * SPRITEOAMSTRUCT_LENGTH
 	jr z, .ok
 	ld b, (NUM_SPRITE_OAM_STRUCTS - 12) * SPRITEOAMSTRUCT_LENGTH
@@ -2784,7 +2785,7 @@ _UpdateSprites::
 	ld h, HIGH(wShadowOAM)
 	ld de, SPRITEOAMSTRUCT_LENGTH
 	ld a, b
-	ld c, SCREEN_HEIGHT_PX + 2 * TILE_WIDTH
+	ld c, OAM_YCOORD_HIDDEN
 .loop
 	ld [hl], c ; y
 	add hl, de

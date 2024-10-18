@@ -1,5 +1,4 @@
 SECTION "Mon Icons 1", ROMX
-Icons: ; used only for BANK(Icons)
 
 NullIcon::
 EkansIcon::   INCBIN "gfx/icons/ekans.2bpp"
@@ -344,4 +343,4 @@ JirachiIcon::   INCBIN "gfx/icons/jirachi.2bpp"
 CelebiIcon::   INCBIN "gfx/icons/celebi.2bpp"
 DeoxysIcon::   INCBIN "gfx/icons/deoxys.2bpp"
 MewIcon::   INCBIN "gfx/icons/mew.2bpp"
-EggIcon:    INCBIN "gfx/icons/egg.2bpp"
+EggIcon::    INCBIN "gfx/icons/egg.2bpp"

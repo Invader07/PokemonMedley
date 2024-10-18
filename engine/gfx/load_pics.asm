@@ -95,15 +95,14 @@ _OldPrepareFrontPic::
 	ld b, a
 	push bc
 	call GetFrontpicPointer
-	ld a, BANK(wDecompressEnemyFrontpic)
+	ld a, BANK(wDecompressScratch)
 	ldh [rSVBK], a
 	ld a, b
-	ld de, wDecompressEnemyFrontpic
+	ld de, wDecompressScratch
 	call FarDecompress
 	pop bc
-	ld hl, wDecompressScratch
-	ld de, wDecompressEnemyFrontpic
-	call PadFrontpic
+	ld de, wDecompressScratch
+	call FarDecompress
 	pop hl
 	push hl
 	ld de, wDecompressScratch

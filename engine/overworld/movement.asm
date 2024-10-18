@@ -73,10 +73,10 @@ MovementPointers:
 	dw Movement_step_sleep_8          ; 45
 	dw Movement_step_sleep            ; 46
 	dw Movement_step_end              ; 47
-	dw Movement_48                    ; 48
+	dw Movement_step_wait_end         ; 48
 	dw Movement_remove_object         ; 49
 	dw Movement_step_loop             ; 4a
-	dw Movement_4b                    ; 4b
+	dw Movement_stop                  ; 4b
 	dw Movement_teleport_from         ; 4c
 	dw Movement_teleport_to           ; 4d
 	dw Movement_skyfall               ; 4e
@@ -210,14 +210,14 @@ Movement_step_end:
 	ld [hl], $0
 
 	ld hl, wVramState
-	res 7, [hl]
+	res SCRIPTED_MOVEMENT_STATE_F, [hl]
 
 	ld hl, OBJECT_STEP_TYPE
 	add hl, bc
 	ld [hl], STEP_TYPE_FROM_MOVEMENT
 	ret
 
-Movement_48:
+Movement_step_wait_end:
 	call RestoreDefaultMovement
 	ld hl, OBJECT_MOVEMENT_TYPE
 	add hl, bc
@@ -237,7 +237,7 @@ Movement_48:
 	ld [hl], STEP_TYPE_SLEEP
 
 	ld hl, wVramState
-	res 7, [hl]
+	res SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret
 
 Movement_remove_object:
@@ -250,10 +250,10 @@ Movement_remove_object:
 
 .not_leading
 	ld hl, wVramState
-	res 7, [hl]
+	res SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret
 
-Movement_4b:
+Movement_stop:
 	ld hl, OBJECT_ACTION
 	add hl, bc
 	ld [hl], OBJECT_ACTION_STAND
@@ -263,7 +263,7 @@ Movement_4b:
 	ld [hl], STEP_TYPE_STANDING
 
 	ld hl, wVramState
-	res 7, [hl]
+	res SCRIPTED_MOVEMENT_STATE_F, [hl]
 	ret
 
 Movement_step_sleep_1:
@@ -445,47 +445,47 @@ TurnHead:
 
 Movement_slow_step_down:
 	ld a, STEP_SLOW << 2 | DOWN
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_slow_step_up:
 	ld a, STEP_SLOW << 2 | UP
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_slow_step_left:
 	ld a, STEP_SLOW << 2 | LEFT
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_slow_step_right:
 	ld a, STEP_SLOW << 2 | RIGHT
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_bike_step_down:
 	ld a, STEP_BIKE << 2 | DOWN
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_bike_step_up:
 	ld a, STEP_BIKE << 2 | UP
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_bike_step_left:
 	ld a, STEP_BIKE << 2 | LEFT
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_bike_step_right:
 	ld a, STEP_BIKE << 2 | RIGHT
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_step_down:
 	ld a, STEP_WALK << 2 | DOWN
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_step_up:
 	ld a, STEP_WALK << 2 | UP
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_step_left:
 	ld a, STEP_WALK << 2 | LEFT
-	jp Movement_do_step
+	jr Movement_do_step
 
 Movement_step_right:
 	ld a, STEP_WALK << 2 | RIGHT
@@ -695,7 +695,7 @@ NormalStep:
 	pop de
 	ld [hl], d
 
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	call CheckSuperTallGrassTile

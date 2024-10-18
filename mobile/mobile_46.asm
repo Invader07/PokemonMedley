@@ -3958,7 +3958,7 @@ BattleTower_UbersCheck:
 	call GetPokemonIndexFromID
 	ld b, h
 	ld c, l
-	ld hl, .uber
+	ld hl, .ubers
 	ld de, 2
 	call IsInWordArray
 	pop hl
@@ -3996,6 +3996,11 @@ BattleTower_UbersCheck:
 	ldh [rSVBK], a
 	scf
 	ret
+
+.ubers
+	dw MEW
+	dw CELEBI
+	dw -1
 
 Function119e2b:
 	call MobileAPI

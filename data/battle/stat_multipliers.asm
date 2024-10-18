@@ -4,7 +4,6 @@
 ; This table is identical to data/battle/stat_multipliers_2.asm.
 ; This one is used by CalcBattleStats.
 
-StatLevelMultipliers:
 	db  25, 100 ; -6 =  25%
 	db  28, 100 ; -5 =  28%
 	db  33, 100 ; -4 =  33%

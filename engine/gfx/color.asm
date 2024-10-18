@@ -774,8 +774,7 @@ CGBCopyTwoPredefObjectPals: ; unreferenced
 	ret
 
 _GetMonPalettePointer:
-	ld l, a
-	ld h, 0
+	call GetPokemonIndexFromID
 	add hl, hl
 	add hl, hl
 	add hl, hl
@@ -992,8 +991,8 @@ PushSGBBorder:
 	ret
 
 SGB_ClearVRAM:
-	ld hl, VRAM_Begin
-	ld bc, VRAM_End - VRAM_Begin
+	ld hl, STARTOF(VRAM)
+	ld bc, SIZEOF(VRAM)
 	xor a
 	call ByteFill
 	ret
@@ -1213,7 +1212,7 @@ LoadMapPals:
 
 	; Which palette group is based on whether we're outside or inside
 	ld a, [wEnvironment]
-	and 7
+	maskbits NUM_ENVIRONMENTS + 1
 	ld e, a
 	ld d, 0
 	ld hl, EnvironmentColorsPointers
@@ -1278,8 +1277,6 @@ LoadMapPals:
 	ld a, BANK(wOBPals1)
 	call FarCopyWRAM
 
-	farcall LoadSpecialNPCPalette
-
 	ld a, [wEnvironment]
 	cp TOWN
 	jr z, .outside
@@ -1287,13 +1284,12 @@ LoadMapPals:
 	ret nz
 .outside
 	ld a, [wMapGroup]
-	add a
-	add a
-	ld e, a
-	ld d, 0
-	ld hl, RoofPals
-	add hl, de
-	add hl, de
+	ld l, a
+	ld h, 0
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	ld de, RoofPals
 	add hl, de
 	ld a, [wTimeOfDayPal]
 	maskbits NUM_DAYTIMES

@@ -61,6 +61,10 @@ CheckBadge:
 	text_far _BadgeRequiredText
 	text_end
 
+CheckPartyMoveIndex:
+; Check if a monster in your party has move hl.
+	call GetMoveIDFromIndex
+	ld d, a
 CheckPartyMove:
 ; Check if a monster in your party has move d.
 
@@ -506,8 +510,8 @@ TrySurfOW::
 	call CheckEngineFlag
 	jr c, .quit
 
-	ld d, SURF
-	call CheckPartyMove
+	ld hl, SURF
+	call CheckPartyMoveIndex
 	jr c, .quit
 
 	ld hl, wBikeFlags
@@ -705,8 +709,8 @@ Script_UsedWaterfall:
 	text_end
 
 TryWaterfallOW::
-	ld d, WATERFALL
-	call CheckPartyMove
+	ld hl, WATERFALL
+	call CheckPartyMoveIndex
 	jr c, .failed
 	ld de, ENGINE_RISINGBADGE
 	call CheckEngineFlag
@@ -1056,8 +1060,8 @@ BouldersMayMoveText:
 	text_end
 
 TryStrengthOW:
-	ld d, STRENGTH
-	call CheckPartyMove
+	ld hl, STRENGTH
+	call CheckPartyMoveIndex
 	jr c, .nope
 
 	ld de, ENGINE_CRUSHBADGE
@@ -1190,8 +1194,8 @@ DisappearWhirlpool:
 	ret
 
 TryWhirlpoolOW::
-	ld d, ROCK_SMASH
-	call CheckPartyMove
+	ld hl, ROCK_SMASH
+	call CheckPartyMoveIndex
 	jr c, .failed
 	ld de, ENGINE_GLACIERBADGE
 	call CheckEngineFlag
@@ -1285,8 +1289,8 @@ HeadbuttScript:
 	end
 
 TryHeadbuttOW::
-	ld d, HEADBUTT
-	call CheckPartyMove
+	ld hl, HEADBUTT
+	call CheckPartyMoveIndex
 	jr c, .no
 
 	ld a, BANK(AskHeadbuttScript)
@@ -1409,8 +1413,8 @@ AskRockSmashText:
 	text_end
 
 HasRockSmash:
-	ld d, ROCK_SMASH
-	call CheckPartyMove
+	ld hl, ROCK_SMASH
+	call CheckPartyMoveIndex
 	jr nc, .yes
 ; no
 	ld a, 1
@@ -1761,8 +1765,8 @@ GotOffBikeText:
 	text_end
 
 TryCutOW::
-	ld d, CUT
-	call CheckPartyMove
+	ld hl, CUT
+	call CheckPartyMoveIndex
 	jr c, .cant_cut
 
 	ld de, ENGINE_HIVEBADGE

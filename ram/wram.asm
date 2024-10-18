@@ -3261,13 +3261,10 @@ wPlayerMonSelection:: ds 3
 wdc5f:: db
 wdc60:: db
 
-	ds 18
-
 wStepCount:: db
 wPoisonStepCount:: db
 	ds 2
 wHappinessStepCount:: db
-	ds 1
 
 wParkBallsRemaining::
 wSafariBallsRemaining:: db
@@ -3670,8 +3667,7 @@ wScratchTilemap:: ds BG_MAP_WIDTH * BG_MAP_HEIGHT
 wScratchAttrmap:: ds BG_MAP_WIDTH * BG_MAP_HEIGHT
 
 NEXTU
-wDecompressScratch:: ds $80 tiles
-wDecompressEnemyFrontpic:: ds $80 tiles
+wDecompressScratch:: ds $100 tiles
 
 NEXTU
 ; unidentified uses

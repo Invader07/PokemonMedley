@@ -70,7 +70,7 @@ WillObjectBumpIntoWater:
 	add hl, bc
 	bit OAM_PRIORITY, [hl]
 	jp nz, WillObjectRemainOnWater
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	ld d, a
@@ -83,7 +83,7 @@ WillObjectBumpIntoWater:
 WillObjectBumpIntoLand:
 	call CanObjectLeaveTile
 	ret c
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	call GetTileCollision
@@ -93,7 +93,7 @@ WillObjectBumpIntoLand:
 	ret
 
 WillObjectBumpIntoTile:
-	ld hl, OBJECT_TILE
+	ld hl, OBJECT_TILE_COLLISION
 	add hl, bc
 	ld a, [hl]
 	call GetSideWallDirectionMask

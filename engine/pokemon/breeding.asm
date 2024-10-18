@@ -545,7 +545,6 @@ ld bc, TMHMMoves
 .done
 	pop de
 	pop bc
-	and a
 	ret
 
 LoadEggMove:
@@ -821,9 +820,9 @@ EggHatch_CrackShell:
 	ret nc
 	swap a
 	srl a
-	add 9 * 8 + 4
+	add 9 * TILE_WIDTH + 4
 	ld d, a
-	ld e, 11 * 8
+	ld e, 11 * TILE_WIDTH
 	ld a, SPRITE_ANIM_OBJ_EGG_CRACK
 	call InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_TILE_ID
@@ -879,8 +878,11 @@ Hatch_InitShellFragments:
 	ret
 
 MACRO shell_fragment
-; y tile, y pxl, x tile, x pxl, frameset offset, ???
-	db (\1 * 8) % $100 + \2, (\3 * 8) % $100 + \4, \5 - SPRITE_ANIM_FRAMESET_EGG_HATCH_1, \6
+; y tile, y pxl, x tile, x pxl, frameset, angle
+	db (\1) * TILE_WIDTH + (\2) ; y coord
+	db (\3) * TILE_WIDTH + (\4) ; x coord
+	db (\5) - SPRITE_ANIM_FRAMESET_EGG_HATCH_1 ; frameset offset
+	db \6 ; angle (6 bits)
 ENDM
 
 .SpriteData:

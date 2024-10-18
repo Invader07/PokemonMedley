@@ -2151,7 +2151,14 @@ CheckTimeCapsuleCompatibility:
 	ld c, NUM_MOVES
 .move_next
 	ld a, [hli]
-	cp STRUGGLE
+	push hl
+	call GetMoveIndexFromID
+	ld a, h
+	and a
+	ld a, l
+	pop hl
+	jr nz, .move_too_new
+	cp POUND + 1
 	jr nc, .move_too_new
 	dec c
 	jr nz, .move_next

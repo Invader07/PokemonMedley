@@ -1,5 +1,32 @@
-BattleAnimations::
 ; entries correspond to constants/move_constants.asm
+:
+	table_width 2, :-
+; negative entries first (see the constants file for details)
+	dw BattleAnim_ThrowPokeBall
+	dw BattleAnim_SendOutMon
+	dw BattleAnim_ReturnMon
+	dw BattleAnim_Confused
+	dw BattleAnim_Slp
+	dw BattleAnim_Brn
+	dw BattleAnim_Psn
+	dw BattleAnim_Sap
+	dw BattleAnim_Frz
+	dw BattleAnim_Par
+	dw BattleAnim_InLove
+	dw BattleAnim_InSandstorm
+	dw BattleAnim_InNightmare
+	dw BattleAnim_InWhirlpool
+	dw BattleAnim_Miss
+	dw BattleAnim_EnemyDamage
+	dw BattleAnim_EnemyStatDown
+	dw BattleAnim_PlayerStatDown
+	dw BattleAnim_PlayerDamage
+	dw BattleAnim_Wobble
+	dw BattleAnim_Shake
+	dw BattleAnim_HitConfusion
+	assert_table_length NUM_BATTLE_ANIMS
+
+BattleAnimations::
 	table_width 2, BattleAnimations
 	dw BattleAnim_0
 	dw BattleAnim_Pound
@@ -194,7 +221,6 @@ BattleAnimations::
 	dw BattleAnim_WaterPulse
 	dw BattleAnim_Spikes
 	dw BattleAnim_ZapCannon
-	dw BattleAnim_Foresight
 	dw BattleAnim_DestinyBond
 	dw BattleAnim_PerishSong
 	dw BattleAnim_IcyWind
@@ -249,7 +275,6 @@ BattleAnimations::
 	dw BattleAnim_Extremespeed
 	dw BattleAnim_Ancientpower
 	dw BattleAnim_ShadowBall
-	dw BattleAnim_FutureSight
 	dw BattleAnim_RockSmash
 	dw BattleAnim_Whirlpool
 	dw BattleAnim_Accelerock
@@ -257,36 +282,77 @@ BattleAnimations::
 	dw BattleAnim_RockPolish
 	dw BattleAnim_RockTomb
 	dw BattleAnim_Struggle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
+	dw BattleAnim_Tackle
 	assert_table_length NUM_ATTACKS + 1
 	dw BattleAnim_SweetScent2
-	assert_table_length $101
-; $100
-	dw BattleAnim_ThrowPokeBall
-	dw BattleAnim_SendOutMon
-	dw BattleAnim_ReturnMon
-	dw BattleAnim_Confused
-	dw BattleAnim_Slp
-	dw BattleAnim_Brn
-	dw BattleAnim_Psn
-	dw BattleAnim_Sap
-	dw BattleAnim_Frz
-	dw BattleAnim_Par
-	dw BattleAnim_InLove
-	dw BattleAnim_InSandstorm
-	dw BattleAnim_InNightmare
-	dw BattleAnim_InWhirlpool
-	dw BattleAnim_Miss
-	dw BattleAnim_EnemyDamage
-	dw BattleAnim_EnemyStatDown
-	dw BattleAnim_PlayerStatDown
-	dw BattleAnim_PlayerDamage
-	dw BattleAnim_Wobble
-	dw BattleAnim_Shake
-	dw BattleAnim_HitConfusion
-	assert_table_length NUM_BATTLE_ANIMS + 1
 
 BattleAnim_0:
-
 BattleAnim_MirrorMove:
 	anim_ret
 

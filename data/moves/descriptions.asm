@@ -197,7 +197,6 @@ MoveDescriptions1:
 	dw OctazookaDescription
 	dw SpikesDescription
 	dw ZapCannonDescription
-	dw ForesightDescription
 	dw DestinyBondDescription
 	dw PerishSongDescription
 	dw IcyWindDescription
@@ -252,17 +251,83 @@ MoveDescriptions1:
 	dw ExtremespeedDescription
 	dw AncientpowerDescription
 	dw ShadowBallDescription
-	dw FutureSightDescription
 	dw RockSmashDescription
 	dw WhirlpoolDescription
 	dw BeatUpDescription
 	dw Extra1Description
-	dw Extra2Description
-	dw Extra3Description
-	dw Extra4Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
 .IndirectEnd::
 
-
+InvalidMoveDescription:
 MoveFFDescription:
 Move00Description:
 	db "?@"

@@ -90,31 +90,38 @@ AI_Setup:
 
 	ld a, [wEnemyMoveStruct + MOVE_EFFECT]
 
-	cp EFFECT_CURSE
-	jr nz, .not_curse
-	ld de, wEnemyMonType1
-	ld a, [de]
-	cp GHOST
-	jr nz, .checkmove
-	jr .statup
-
-.not_curse
 	cp EFFECT_ATTACK_UP
 	jr c, .checkmove
-	cp EFFECT_ATTACK_DOWN
+	cp EFFECT_EVASION_UP + 1
 	jr c, .statup
 
-	; stat-down move
-	ld a, [wPlayerTurnsTaken]
-	and a
-	jr nz, .discourage
-	jr .encourage
+;	cp EFFECT_ATTACK_DOWN - 1
+	jr z, .checkmove
+	cp EFFECT_EVASION_DOWN + 1
+	jr c, .statdown
+
+	cp EFFECT_ATTACK_UP_2
+
+	jr c, .checkmove
+
+;	cp EFFECT_ATTACK_DOWN_2 - 1
+	jr z, .checkmove
+	cp EFFECT_EVASION_DOWN_2 + 1
+	jr c, .statdown
+
+	jr .checkmove
 
 .statup
 	ld a, [wEnemyTurnsTaken]
 	and a
 	jr nz, .discourage
+
 	jr .encourage
+
+.statdown
+	ld a, [wPlayerTurnsTaken]
+	and a
+	jr nz, .discourage
 
 .encourage
 	call AI_50_50
@@ -340,7 +347,6 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_FLAME_WHEEL,      AI_Smart_FlameWheel
 	dbw EFFECT_CURSE,            AI_Smart_Curse
 	dbw EFFECT_PROTECT,          AI_Smart_Protect
-	dbw EFFECT_FORESIGHT,        AI_Smart_Foresight
 	dbw EFFECT_PERISH_SONG,      AI_Smart_PerishSong
 	dbw EFFECT_SANDSTORM,        AI_Smart_Sandstorm
 	dbw EFFECT_ENDURE,           AI_Smart_Endure
@@ -366,7 +372,6 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_SKULL_BASH,       AI_Smart_SkullBash
 	dbw EFFECT_TWISTER,          AI_Smart_Twister
 	dbw EFFECT_EARTHQUAKE,       AI_Smart_Earthquake
-	dbw EFFECT_FUTURE_SIGHT,     AI_Smart_FutureSight
 	dbw EFFECT_GUST,             AI_Smart_Gust
 	dbw EFFECT_STOMP,            AI_Smart_Stomp
 	dbw EFFECT_SOLARBEAM,        AI_Smart_Solarbeam
@@ -627,8 +632,7 @@ AI_Smart_MirrorMove:
 .usedmove
 	push hl
 	ld hl, UsefulMoves
-	ld de, 1
-	call IsInArray
+	call AI_CheckMoveInList
 	pop hl
 
 ; ...do nothing if he didn't use a useful move.
@@ -1094,7 +1098,18 @@ AI_Smart_SpeedDownHit:
 ; Player is faster than enemy.
 
 	ld a, [wEnemyMoveStruct + MOVE_ANIM]
-	cp ICY_WIND
+	push hl
+	call GetMoveIDFromIndex
+	ld a, h
+	if HIGH(ICY_WIND)
+		cp HIGH(ICY_WIND)
+	else
+		and a
+	endc
+	ld a, l
+	pop hl
+	ret nz
+	cp LOW(ICY_WIND)
 	ret nz
 	call AICheckEnemyQuarterHP
 	ret nc
@@ -1324,8 +1339,7 @@ AI_Smart_Encore:
 	push hl
 	ld a, [wLastPlayerCounterMove]
 	ld hl, EncoreMoves
-	ld de, 1
-	call IsInArray
+	call AI_CheckMoveInList
 	pop hl
 	jr nc, .discourage
 
@@ -1607,8 +1621,7 @@ AI_Smart_Disable:
 	push hl
 	ld a, [wLastPlayerCounterMove]
 	ld hl, UsefulMoves
-	ld de, 1
-	call IsInArray
+	call AI_CheckMoveInList
 
 	pop hl
 	jr nc, .notencourage
@@ -1852,42 +1865,6 @@ AI_Smart_Protect:
 	inc [hl]
 	ret
 
-AI_Smart_Foresight:
-; 60% chance to encourage this move if the enemy's accuracy is sharply lowered.
-	ld a, [wEnemyAccLevel]
-	cp BASE_STAT_LEVEL - 2
-	jr c, .encourage
-
-; 60% chance to encourage this move if the player's evasion is sharply raised.
-	ld a, [wPlayerEvaLevel]
-	cp BASE_STAT_LEVEL + 3
-	jr nc, .encourage
-
-; 60% chance to encourage this move if the player is a Ghost type.
-	ld a, [wBattleMonType1]
-	cp GHOST
-	jr z, .encourage
-	ld a, [wBattleMonType2]
-	cp GHOST
-	jr z, .encourage
-
-; 92% chance to discourage this move otherwise.
-	call Random
-	cp 8 percent
-	ret c
-
-	inc [hl]
-	ret
-
-.encourage
-	call Random
-	cp 39 percent + 1
-	ret c
-
-	dec [hl]
-	dec [hl]
-	ret
-
 AI_Smart_PerishSong:
 	push hl
 	callfar FindAliveEnemyMons
@@ -2112,7 +2089,18 @@ AI_Smart_Magnitude:
 AI_Smart_Earthquake:
 ; Greatly encourage this move if the player is underground and the enemy is faster.
 	ld a, [wLastPlayerCounterMove]
-	cp DIG
+	push hl
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(DIG)
+		cp HIGH(DIG)
+	else
+		and a
+	endc
+	ld a, l
+	pop hl
+	ret nz
+	cp LOW(DIG)
 	ret nz
 
 	ld a, [wPlayerSubStatus3]
@@ -2509,7 +2497,18 @@ AI_Smart_Twister:
 AI_Smart_Gust:
 ; Greatly encourage this move if the player is flying and the enemy is faster.
 	ld a, [wLastPlayerCounterMove]
-	cp FLY
+	push hl
+	call GetMoveIndexFromID
+	ld a, h
+	if HIGH(FLY)
+		cp HIGH(FLY)
+	else
+		and a
+	endc
+	ld a, l
+	pop hl
+	ret nz
+	cp LOW(FLY)
 	ret nz
 
 	ld a, [wPlayerSubStatus3]
@@ -2531,21 +2530,6 @@ AI_Smart_Gust:
 	ret c
 	call AI_50_50
 	ret c
-	dec [hl]
-	ret
-
-AI_Smart_FutureSight:
-; Greatly encourage this move if the player is
-; flying or underground, and slower than the enemy.
-
-	call AICompareSpeed
-	ret nc
-
-	ld a, [wPlayerSubStatus3]
-	and 1 << SUBSTATUS_FLYING | 1 << SUBSTATUS_UNDERGROUND
-	ret z
-
-	dec [hl]
 	dec [hl]
 	ret
 
@@ -2774,34 +2758,36 @@ AIHasMoveEffect:
 AIHasMoveInArray:
 ; Return carry if the enemy has a move in array hl.
 
-	push hl
 	push de
 	push bc
-
-.next
-	ld a, [hli]
-	cp -1
-	jr z, .done
-
-	ld b, a
-	ld c, NUM_MOVES + 1
+	push hl
+	ld b, NUM_MOVES
 	ld de, wEnemyMonMoves
-
-.check
-	dec c
-	jr z, .next
-
+.loop
 	ld a, [de]
 	inc de
-	cp b
-	jr nz, .check
-
-	scf
-
+	and a
+	jr z, .next
+	call GetMoveIndexFromID
+	ld a, h
+	ld c, l
+	pop hl
+	push hl
+	push bc
+	push de
+	ld b, a
+	ld de, 2
+	call IsInWordArray
+	pop de
+	pop bc
+	jr c, .done
+.next
+	dec b
+	jr nz, .loop
 .done
+	pop hl
 	pop bc
 	pop de
-	pop hl
 	ret
 
 INCLUDE "data/battle/ai/useful_moves.asm"
@@ -2839,8 +2825,7 @@ AI_Opportunist:
 	push de
 	push bc
 	ld hl, StallMoves
-	ld de, 1
-	call IsInArray
+	call AI_CheckMoveInList
 
 	pop bc
 	pop de
@@ -2913,7 +2898,7 @@ AI_Aggressive:
 ; Nothing we can do if no attacks did damage.
 	ld a, c
 	and a
-	jr z, .done
+	ret z
 
 ; Discourage moves that do less damage unless they're reckless too.
 	ld hl, wEnemyAIMoveScores - 1
@@ -2923,7 +2908,7 @@ AI_Aggressive:
 	inc b
 	ld a, b
 	cp NUM_MOVES + 1
-	jr z, .done
+	ret z
 
 ; Ignore this move if it is the highest damaging one.
 	cp c
@@ -2958,8 +2943,6 @@ AI_Aggressive:
 	inc [hl]
 	jr .checkmove2
 
-.done
-	ret
 
 INCLUDE "data/battle/ai/reckless_moves.asm"
 
@@ -3006,8 +2989,7 @@ AI_Cautious:
 	push de
 	push bc
 	ld hl, ResidualMoves
-	ld de, 1
-	call IsInArray
+	call AI_CheckMoveInList
 
 	pop bc
 	pop de
@@ -3188,3 +3170,12 @@ AI_50_50:
 	call Random
 	cp 50 percent + 1
 	ret
+
+AI_CheckMoveInList:
+	push hl
+	call GetMoveIndexFromID
+	ld b, h
+	ld c, l
+	pop hl
+	ld de, 2
+	jp IsInWordArray

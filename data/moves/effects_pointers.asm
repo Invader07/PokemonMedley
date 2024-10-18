@@ -25,20 +25,18 @@ MoveEffectsPointers:
 	dw CalmMind
 	dw QuiverDance
 	dw AccuracyDown
+	dw EvasionDown
 	dw DarkVoid
 	dw ResetStats
 	dw ChargeBeam
-	dw ThunderFang
 	dw ForceSwitch
 	dw MultiHit
 	dw Conversion
 	dw FlinchHit
 	dw Heal
 	dw Toxic
-	dw FireFang
 	dw LightScreen
 	dw TriAttack
-	dw IceFang
 	dw Eruption
 	dw WillOWisp
 	dw Defog
@@ -56,12 +54,14 @@ MoveEffectsPointers:
 	dw SpeedUp2
 	dw SpecialAttackUp2
 	dw SpecialDefenseUp2
+	dw SuperFang
 	dw Brine
 	dw PhantomForce
 	dw Transform
 	dw AttackDown2
 	dw DefenseDown2
 	dw SpeedDown2
+	dw EvasionDown2
 	dw KnockOff
 	dw TrickRoom
 	dw Dive
@@ -75,6 +75,7 @@ MoveEffectsPointers:
 	dw SpecialAttackDown2User
 	dw SpecialDefenseDownHit
 	dw AccuracyDownHit
+	dw EvasionDownHit
 	dw Avalanche
 	dw Hail
 	dw ConfuseHit
@@ -113,7 +114,6 @@ MoveEffectsPointers:
 	dw NormalHit
 	dw Protect
 	dw Spikes
-	dw Foresight
 	dw PerishSong
 	dw Sandstorm
 	dw Endure
@@ -148,7 +148,6 @@ MoveEffectsPointers:
 	dw SkullBash
 	dw Twister
 	dw Earthquake
-	dw FutureSight
 	dw Gust
 	dw Stomp
 	dw Solarbeam

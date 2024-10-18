@@ -451,6 +451,19 @@ AccuracyDown:
 	statdownfailtext
 	endmove
 
+EvasionDown:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	evasiondown
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
 DarkVoid:
 	checkobedience
 	usedmovetext
@@ -509,6 +522,57 @@ SpeedDown2:
 	raisesub
 	statdownmessage
 	statdownfailtext
+	endmove
+
+EvasionDown2:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	evasiondown2
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
+Rampage:
+	checkrampage
+	checkobedience
+	doturn
+	rampage
+	usedmovetext
+	checkhit
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	clearmissdamage
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	kingsrock
+	endmove
+
+OHKOHit:
+	checkobedience
+	usedmovetext
+	doturn
+	stab
+	ohko
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
 	endmove
 
 KnockOff:
@@ -640,6 +704,28 @@ SpeedDownHit:
 	checkfaint
 	buildopponentrage
 	speeddown
+	statdownmessage
+	endmove
+
+EvasionDownHit:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	effectchance
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	evasiondown
 	statdownmessage
 	endmove
 
@@ -1174,6 +1260,21 @@ Rage:
 	kingsrock
 	endmove
 
+Mimic:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	mimic
+	endmove
+
+Splash:
+	checkobedience
+	usedmovetext
+	doturn
+	splash
+	endmove
+
 BlastBurn:
 	checkobedience
 	usedmovetext
@@ -1321,6 +1422,7 @@ Defog:
 	defog
 	endmove
 
+SuperFang:
 Psywave:
 StaticDamage:
 	checkobedience
@@ -1374,6 +1476,13 @@ Encore:
 	encore
 	endmove
 
+Nightmare:
+	checkobedience
+	usedmovetext
+	doturn
+	nightmare
+	endmove
+
 PainSplit:
 	checkobedience
 	usedmovetext
@@ -1402,6 +1511,27 @@ Snore:
 	checkfaint
 	buildopponentrage
 	flinchtarget
+	kingsrock
+	endmove
+
+Frustration:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	frustrationpower
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
 	kingsrock
 	endmove
 
@@ -1483,6 +1613,13 @@ HealBell:
 	usedmovetext
 	doturn
 	healbell
+	endmove
+
+Teleport:
+	checkobedience
+	usedmovetext
+	doturn
+	teleport
 	endmove
 
 TripleKick:
@@ -1583,14 +1720,6 @@ Spikes:
 	usedmovetext
 	doturn
 	spikes
-	endmove
-
-Foresight:
-	checkobedience
-	usedmovetext
-	doturn
-	checkhit
-	foresight
 	endmove
 
 PerishSong:
@@ -1984,23 +2113,6 @@ Earthquake:
 	applydamage
 	criticaltext
 	supereffectivetext
-	checkfaint
-	buildopponentrage
-	endmove
-
-FutureSight:
-	checkfuturesight
-	checkobedience
-	usedmovetext
-	doturn
-	damagestats
-	damagecalc
-	futuresight
-	damagevariation ; skip here if last turn
-	checkhit
-	moveanimnosub
-	failuretext
-	applydamage
 	checkfaint
 	buildopponentrage
 	endmove

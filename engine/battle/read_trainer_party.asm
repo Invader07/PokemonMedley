@@ -33,6 +33,9 @@ ReadTrainerParty:
 	ld hl, TrainerGroups
 	add hl, bc
 	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld [wTrainerGroupBank], a
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -43,31 +46,25 @@ ReadTrainerParty:
 	dec b
 	jr z, .got_trainer
 .loop
-	ld a, [hli]
-	cp -1
-	jr nz, .loop
+	ld a, [wTrainerGroupBank]
+	call GetFarByte
+	add a, l
+	ld l, a
+	jr nc, .skip_trainer
+	inc h
 	jr .skip_trainer
 .got_trainer
 
 .skip_name
-	ld a, [hli]
+	call GetNextTrainerDataByte
 	cp "@"
 	jr nz, .skip_name
 
-	ld a, [hli]
-	ld c, a
-	ld b, 0
+	call GetNextTrainerDataByte
+	ld [wOtherTrainerType], a
 	ld d, h
 	ld e, l
-	ld hl, TrainerTypes
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	ld bc, .done
-	push bc
-	jp hl
+	call ReadTrainerPartyPieces
 
 .done
 	jp ComputeTrainerReward
@@ -75,66 +72,74 @@ ReadTrainerParty:
 .cal2
 	ld a, BANK(sMysteryGiftTrainer)
 	call OpenSRAM
+	ld a, TRAINERTYPE_MOVES
+	ld [wOtherTrainerType], a
 	ld de, sMysteryGiftTrainer
-	call TrainerType2
+	call ReadTrainerPartyPieces
 	call CloseSRAM
 	jr .done
 
-TrainerTypes:
-; entries correspond to TRAINERTYPE_* constants
-	dw TrainerType1 ; level, species
-	dw TrainerType2 ; level, species, moves
-	dw TrainerType3 ; level, species, item
-	dw TrainerType4 ; level, species, item, moves
-
-TrainerType1:
-; normal (level, species)
+ReadTrainerPartyPieces:
 	ld h, d
 	ld l, e
 .loop
-	ld a, [hli]
+	call GetNextTrainerDataByte
 	cp $ff
 	ret z
 
 	ld [wCurPartyLevel], a
-	ld a, [hli]
+	call GetNextTrainerDataByte
+	push hl
+	push af
+	call GetNextTrainerDataByte
+	ld h, a
+	pop af
+	ld l, a
+	call GetPokemonIDFromIndex
 	ld [wCurPartySpecies], a
 	ld a, OTPARTYMON
 	ld [wMonType], a
-	push hl
 	predef TryAddMonToParty
 	pop hl
-	jr .loop
-
-TrainerType2:
-; moves
-	ld h, d
-	ld l, e
-.loop
-	ld a, [hli]
-	cp $ff
-	ret z
-
-	ld [wCurPartyLevel], a
-	ld a, [hli]
-	ld [wCurPartySpecies], a
-	ld a, OTPARTYMON
-	ld [wMonType], a
-
+	ld a, [wOtherTrainerType]
+	and TRAINERTYPE_ITEM
+	jr z, .no_item
 	push hl
-	predef TryAddMonToParty
 	ld a, [wOTPartyCount]
 	dec a
-	ld hl, wOTPartyMon1Moves
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
+	ld hl, wOTPartyMon1Item
+	call GetPartyLocation
 	ld d, h
 	ld e, l
 	pop hl
+	call GetNextTrainerDataByte
+	ld [de], a
 
+.no_item
+	ld a, [wOtherTrainerType]
+	rra ; TRAINERTYPE_MOVES_F == 0
+	jr nc, .no_moves
+	push hl
+	ld a, [wOTPartyCount]
+	dec a
+	ld hl, wOTPartyMon1Moves
+	call GetPartyLocation
+	ld d, h
+	ld e, l
+	pop hl
 	ld b, NUM_MOVES
+
 .copy_moves
-	ld a, [hli]
+	call GetNextTrainerDataByte
+	push hl
+	push af
+	call GetNextTrainerDataByte
+	ld h, a
+	pop af
+	ld l, a
+	call GetMoveIDFromIndex
+	pop hl
+	inc hl
 	ld [de], a
 	inc de
 	dec b
@@ -144,13 +149,13 @@ TrainerType2:
 
 	ld a, [wOTPartyCount]
 	dec a
-	ld hl, wOTPartyMon1Species
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
+	ld hl, wOTPartyMon1
+	call GetPartyLocation
 	ld d, h
 	ld e, l
 	ld hl, MON_PP
 	add hl, de
+
 	push hl
 	ld hl, MON_MOVES
 	add hl, de
@@ -172,129 +177,12 @@ TrainerType2:
 	inc de
 	dec b
 	jr nz, .copy_pp
+
 .copied_pp
-
-	pop hl
-	jr .loop
-
-TrainerType3:
-; item
-	ld h, d
-	ld l, e
-.loop
-	ld a, [hli]
-	cp $ff
-	ret z
-
-	ld [wCurPartyLevel], a
-	ld a, [hli]
-	ld [wCurPartySpecies], a
-	ld a, OTPARTYMON
-	ld [wMonType], a
-	push hl
-	predef TryAddMonToParty
-	ld a, [wOTPartyCount]
-	dec a
-	ld hl, wOTPartyMon1Item
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
-	ld d, h
-	ld e, l
-	pop hl
-	ld a, [hli]
-	ld [de], a
-	jr .loop
-
-TrainerType4:
-; item + moves
-	ld h, d
-	ld l, e
-.loop
-	ld a, [hli]
-	cp $ff
-	ret z
-
-	ld [wCurPartyLevel], a
-	ld a, [hli]
-	ld [wCurPartySpecies], a
-
-	ld a, OTPARTYMON
-	ld [wMonType], a
-
-	push hl
-	predef TryAddMonToParty
-	ld a, [wOTPartyCount]
-	dec a
-	ld hl, wOTPartyMon1Item
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
-	ld d, h
-	ld e, l
 	pop hl
 
-	ld a, [hli]
-	ld [de], a
-
-	push hl
-	ld a, [wOTPartyCount]
-	dec a
-	ld hl, wOTPartyMon1Moves
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
-	ld d, h
-	ld e, l
-	pop hl
-
-	ld b, NUM_MOVES
-.copy_moves
-	ld a, [hli]
-	ld [de], a
-	inc de
-	dec b
-	jr nz, .copy_moves
-
-	push hl
-
-	ld a, [wOTPartyCount]
-	dec a
-	ld hl, wOTPartyMon1
-	ld bc, PARTYMON_STRUCT_LENGTH
-	call AddNTimes
-	ld d, h
-	ld e, l
-	ld hl, MON_PP
-	add hl, de
-
-	push hl
-	ld hl, MON_MOVES
-	add hl, de
-	pop de
-
-	ld b, NUM_MOVES
-.copy_pp
-	ld a, [hli]
-	and a
-	jr z, .copied_pp
-
-	push hl
-	push bc
-	dec a
-	ld hl, Moves + MOVE_PP
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-	ld a, BANK(Moves)
-	call GetFarByte
-	pop bc
-	pop hl
-
-	ld [de], a
-	inc de
-	dec b
-	jr nz, .copy_pp
-.copied_pp
-
-	pop hl
-	jr .loop
+.no_moves
+	jp .loop
 
 ComputeTrainerReward:
 	ld hl, hProduct
@@ -320,12 +208,15 @@ Battle_GetTrainerName::
 	ld a, [wInBattleTowerBattle]
 	bit 0, a
 	ld hl, wOTPlayerName
+	ld a, BANK(@)
+	ld [wTrainerGroupBank], a
 	jp nz, CopyTrainerName
 
 	ld a, [wOtherTrainerID]
 	ld b, a
 	ld a, [wOtherTrainerClass]
 	ld c, a
+	; fallthrough
 
 GetTrainerName::
 	ld a, c
@@ -352,6 +243,9 @@ GetTrainerName::
 	ld hl, TrainerGroups
 	add hl, bc
 	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld [wTrainerGroupBank], a
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -359,19 +253,25 @@ GetTrainerName::
 
 .loop
 	dec b
-	jr z, CopyTrainerName
-
-.skip
-	ld a, [hli]
-	cp $ff
-	jr nz, .skip
+	jr z, .done
+	ld a, [wTrainerGroupBank]
+	call GetFarByte
+	add a, l
+	ld l, a
+	jr nc, .loop
+	inc h
 	jr .loop
+
+.done
+	inc hl
+	; fallthrough
 
 CopyTrainerName:
 	ld de, wStringBuffer1
 	push de
 	ld bc, NAME_LENGTH
-	call CopyBytes
+	ld a, [wTrainerGroupBank]
+	call FarCopyBytes
 	pop de
 	ret
 
@@ -381,6 +281,12 @@ IncompleteCopyNameFunction: ; unreferenced
 	push de
 	ld bc, NAME_LENGTH
 	pop de
+	ret
+
+GetNextTrainerDataByte:
+	ld a, [wTrainerGroupBank]
+	call GetFarByte
+	inc hl
 	ret
 
 INCLUDE "data/trainers/party_pointers.asm"

@@ -19,7 +19,7 @@ ObjectActionPairPointers:
 	dw SetFacingBoulderDust,           SetFacingStanding
 	dw SetFacingGrassShake,            SetFacingStanding
 	dw SetFacingSkyfall,               SetFacingCurrent
-	dw SetFacingRunAction, 						 SetFacingCurrent
+	dw SetFacingRunAction,					   SetFacingCurrent
 	assert_table_length NUM_OBJECT_ACTIONS
 
 SetFacingStanding:
@@ -48,7 +48,7 @@ SetFacingStepAction:
 	ld hl, OBJECT_FLAGS1
 	add hl, bc
 	bit SLIDING_F, [hl]
-	jr nz, SetFacingCurrent
+	jp nz, SetFacingCurrent
 
 	ld hl, OBJECT_STEP_FRAME
 	add hl, bc
@@ -63,27 +63,6 @@ SetFacingStepAction:
 	or d
 	ld hl, OBJECT_FACING
 	add hl, bc
-	ld hl, OBJECT_FLAGS1
-	add hl, bc
-	bit SLIDING_F, [hl]
-	jr nz, SetFacingCurrent
-
-	ld hl, OBJECT_STEP_FRAME
-	add hl, bc
-	inc [hl]
-
-	ld a, [hl]
-	rrca
-	rrca
-	rrca
-	maskbits NUM_DIRECTIONS
-	ld d, a
-
-	call GetSpriteDirection
-	or FACING_STEP_DOWN_0 ; useless
-	or d
-	ld hl, OBJECT_FACING
-	add hl, bc
 	ld [hl], a
 	ret
 
@@ -91,7 +70,7 @@ SetFacingSkyfall:
 	ld hl, OBJECT_FLAGS1
 	add hl, bc
 	bit SLIDING_F, [hl]
-	jp nz, SetFacingCurrent
+	jr nz, SetFacingCurrent
 
 	ld hl, OBJECT_STEP_FRAME
 	add hl, bc
@@ -157,7 +136,6 @@ CounterclockwiseSpinAction:
 ; Here, OBJECT_STEP_FRAME consists of two components,
 ; bits 0,1,2 form a 3-bit timer (6 overworld frames)
 ; and bits 4,5 form a 2-bit value that determines the facing - the direction is counterclockwise.
-
 	ld hl, OBJECT_STEP_FRAME
 	add hl, bc
 	ld a, [hl]
@@ -168,7 +146,7 @@ CounterclockwiseSpinAction:
 	inc a
 	and %00001111
 	ld d, a
-	cp 2
+	cp 6
 	jr c, .ok
 
 	ld d, 0
@@ -293,8 +271,8 @@ SetFacingBoulderDust:
 	and 2
 	ld a, FACING_BOULDER_DUST_1
 	jr z, .ok
-	inc a
 	assert FACING_BOULDER_DUST_1 + 1 == FACING_BOULDER_DUST_2
+	inc a
 .ok
 	ld [hl], a
 	ret
@@ -309,8 +287,8 @@ SetFacingGrassShake:
 	and 4
 	ld a, FACING_GRASS_1
 	jr z, .ok
-	inc a ; FACING_GRASS_2
-
+	assert FACING_GRASS_1 + 1 == FACING_GRASS_2
+	inc a
 .ok
 	ld [hl], a
 	ret

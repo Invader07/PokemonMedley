@@ -34,7 +34,6 @@ BattleCommandPointers:
 	dw BattleCommand_MirrorMove
 	dw BattleCommand_StatUp
 	dw BattleCommand_StatDown
-	dw BattleCommand_ThunderFang
 	dw BattleCommand_Conversion
 	dw BattleCommand_ResetStats
 	dw BattleCommand_Curl
@@ -42,7 +41,6 @@ BattleCommandPointers:
 	dw BattleCommand_ForceSwitch
 	dw BattleCommand_EndLoop
 	dw BattleCommand_FlinchTarget
-	dw BattleCommand_FireFang
 	dw BattleCommand_Recoil
 	dw BattleCommand_Mist
 	dw BattleCommand_FocusEnergy
@@ -55,7 +53,6 @@ BattleCommandPointers:
 	dw BattleCommand_Paralyze
 	dw BattleCommand_Substitute
 	dw BattleCommand_RechargeNextTurn
-	dw BattleCommand_IceFang
 	dw BattleCommand_Metronome
 	dw BattleCommand_LeechSeed
 	dw BattleCommand_Curl
@@ -90,7 +87,6 @@ BattleCommandPointers:
 	dw BattleCommand_Curse
 	dw BattleCommand_Protect
 	dw BattleCommand_Spikes
-	dw BattleCommand_Foresight
 	dw BattleCommand_PerishSong
 	dw BattleCommand_StartSandstorm
 	dw BattleCommand_Endure
@@ -158,8 +154,6 @@ BattleCommandPointers:
 	dw BattleCommand_DoubleFlyingDamage
 	dw BattleCommand_DoubleUndergroundDamage
 	dw BattleCommand_MirrorCoat
-	dw BattleCommand_CheckFutureSight
-	dw BattleCommand_FutureSight
 	dw BattleCommand_DoubleMinimizeDamage
 	dw BattleCommand_SkipSunCharge
 	dw BattleCommand_ThunderAccuracy
@@ -167,7 +161,6 @@ BattleCommandPointers:
 	dw BattleCommand_RageDamage
 	dw BattleCommand_ResetTypeMatchup
 	dw BattleCommand_AllStatsUp
-	dw BattleCommand_BideFailText
 	dw BattleCommand_RaiseSubNoAnim
 	dw BattleCommand_LowerSubNoAnim
 	dw BattleCommand_BeatUpFailText
@@ -180,4 +173,19 @@ BattleCommandPointers:
 	dw BattleCommand_Curl
 	dw BattleCommand_Hail
 	dw BattleCommand_Uturn
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
+	dw BattleCommand_Curl
 	assert_table_length NUM_EFFECT_COMMANDS

@@ -27,7 +27,6 @@ ResetMapLockedIDs:
 	jr nz, .mon_loop
 	ret
 
-
 EnterMapConnection:
 ; Return carry if a connection has been entered.
 	ld a, [wPlayerStepDirection]
@@ -186,15 +185,16 @@ EnterMapWarp:
 	call CheckIndoorMap
 	ret nz
 
-; TODO: Replace GROUP_NONE and MAP_NONE with the appropriate values for any outdoor maps within indoor maps.
+; MOUNT_MOON_SQUARE and TIN_TOWER_ROOF are outdoor maps within indoor maps.
 ; Dig and Escape Rope should not take you to them.
 	ld a, [wPrevMapGroup]
 	cp GROUP_NONE
-	jr nz, .not_outdoor_within_indoor
+	jr nz, .not_mt_moon_square_or_tin_tower_roof
+	assert GROUP_NONE == GROUP_NONE
 	ld a, [wPrevMapNumber]
 	cp MAP_NONE
 	ret z
-.not_outdoor_within_indoor
+.not_mt_moon_square_or_tin_tower_roof
 
 	ld a, [wPrevWarp]
 	ld [wDigWarpNumber], a

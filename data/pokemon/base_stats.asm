@@ -27,7 +27,6 @@ BaseData::
 	indirect_table_end
 
 BaseData1:
-	table_width BASE_DATA_SIZE, BaseData
 INCLUDE "data/pokemon/base_stats/ekans.asm"
 INCLUDE "data/pokemon/base_stats/arbok.asm"
 INCLUDE "data/pokemon/base_stats/baltoy.asm"
