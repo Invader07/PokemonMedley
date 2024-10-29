@@ -789,9 +789,9 @@ EncodeBufferMon:
 	ld [wEncodedBufferMonSpeciesHigh], a
 
 	; Convert 4 PP bytes to 1 PP Up byte.
-	ld hl, wBufferMonPP
+	ld hl, wEncodedBufferMonPPUps
 	ld b, NUM_MOVES
-	.pp_up_loop
+.pp_up_loop
 	ld a, PP_UP_MASK
 	and a, [hl]
 	ld [hli], a
@@ -815,8 +815,9 @@ EncodeBufferMon:
 	add e
 	ld e, a
 	adc d
+	sub e
+	ld d, a
 
-.loop
 	ld a, [de]
 	or h ; OR with already stored 2 PP-UP bits.
 	ld [de], a

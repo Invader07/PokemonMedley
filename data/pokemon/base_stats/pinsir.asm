@@ -1,4 +1,4 @@
-	db PINSIR ; 127
+	db 0 ; 127
 
 	db  65, 125, 115,  85,  40,  70
 	;   hp  atk  def  spd  sat  sdf

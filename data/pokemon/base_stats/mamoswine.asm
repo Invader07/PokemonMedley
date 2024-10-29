@@ -1,4 +1,4 @@
-	db MAMOSWINE ; 148
+	db 0 ; 148
 
 	db 100, 120,  80,  80,  70,  60
 	;   hp  atk  def  spd  sat  sdf

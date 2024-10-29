@@ -1,4 +1,4 @@
-	db PAWMO ; 063
+	db 0 ; 063
 
 	db  60,  75,  40,  85,  50,  40
 	;   hp  atk  def  spd  sat  sdf

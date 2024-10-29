@@ -325,6 +325,9 @@
 	const AQUA_RING
 	const HYPER_VOICE
 	const TAIL_GLOW
+	const WATER_SPOUT
+	const BULLDOZE
+	const FUTURE_SIGHT
 	const STRUGGLE     ; end
 DEF NUM_ATTACKS EQU const_value - 1
 

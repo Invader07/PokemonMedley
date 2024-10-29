@@ -1,4 +1,4 @@
-	db TORCHIC ; 224
+	db 0 ; 224
 
 	db  45,  60,  40,  45,  70,  50
 	;   hp  atk  def  spd  sat  sdf

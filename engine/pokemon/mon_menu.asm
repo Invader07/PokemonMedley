@@ -326,6 +326,7 @@ PCGiveItem:
 	ret nc
 	jp ComposeMailMessage
 
+
 TryGiveItemToPartymon:
 	call SpeechTextbox
 	call PartyMonItemName
@@ -650,8 +651,6 @@ TakeMail:
 	text_end
 
 OpenPartyStats:
-	call LoadStandardMenuHeader
-	call ClearSprites
 ; PartyMon
 	xor a
 	ld [wMonType], a

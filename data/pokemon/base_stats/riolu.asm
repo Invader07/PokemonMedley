@@ -1,4 +1,4 @@
-	db RIOLU ; 182
+	db 0 ; 182
 
 	db  40,  70,  40,  60,  35,  40
 	;   hp  atk  def  spd  sat  sdf

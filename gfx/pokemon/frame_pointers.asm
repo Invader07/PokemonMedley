@@ -1,6 +1,5 @@
 FramesPointers:
 	table_width 3, FramesPointers
-
 	dba EkansFrames
 	dba ArbokFrames
 	dba BaltoyFrames

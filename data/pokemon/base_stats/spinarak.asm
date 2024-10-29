@@ -1,4 +1,4 @@
-	db SPINARAK ; 167
+	db 0 ; 167
 
 	db  50,  65,  50,  30,  40,  40
 	;   hp  atk  def  spd  sat  sdf

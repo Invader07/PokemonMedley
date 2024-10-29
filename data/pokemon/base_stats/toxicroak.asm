@@ -1,4 +1,4 @@
-	db TOXICROAK ; 190
+	db 0 ; 190
 
 	db  83, 106,  65,  86,  85,  65
 	;   hp  atk  def  spd  sat  sdf

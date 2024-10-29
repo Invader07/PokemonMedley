@@ -244,22 +244,16 @@ SpecialDefenseUp:
 	statupfailtext
 	endmove
 
-Flatter:
+AccuracyUp:
 	checkobedience
 	usedmovetext
 	doturn
-	checkhit
-	switchturn
-	specialattackup2
-	switchturn
+	accuracyup
 	lowersub
 	statupanim
 	raisesub
-	failuretext
-	switchturn
 	statupmessage
-	switchturn
-	confusetarget
+	statupfailtext
 	endmove
 
 EvasionUp:
@@ -335,6 +329,48 @@ SpecialDefenseUp2:
 	statupfailtext
 	endmove
 
+AccuracyUp2:
+	checkobedience
+	usedmovetext
+	doturn
+	accuracyup2
+	lowersub
+	statupanim
+	raisesub
+	statupmessage
+	statupfailtext
+	endmove
+
+EvasionUp2:
+	checkobedience
+	usedmovetext
+	doturn
+	evasionup2
+	lowersub
+	statupanim
+	raisesub
+	statupmessage
+	statupfailtext
+	endmove
+
+Flatter:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	switchturn
+	specialattackup2
+	switchturn
+	lowersub
+	statupanim
+	raisesub
+	failuretext
+	switchturn
+	statupmessage
+	switchturn
+	confusetarget
+	endmove
+
 Roost:
 	checkobedience
 	usedmovetext
@@ -356,18 +392,6 @@ Brine:
 	checkfaint
 	buildopponentrage
 	kingsrock
-	endmove
-
-PhantomForce:
-	checkobedience
-	usedmovetext
-	doturn
-	evasionup2
-	lowersub
-	statupanim
-	raisesub
-	statupmessage
-	statupfailtext
 	endmove
 
 AttackDown:
@@ -409,6 +433,58 @@ SpeedDown:
 	statdownfailtext
 	endmove
 
+SpecialAttackDown:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	specialattackdown
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
+SpecialDefenseDown:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	specialdefensedown
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
+AccuracyDown:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	accuracydown
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
+EvasionDown:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	evasiondown
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
 CalmMind:
 	checkobedience
 	usedmovetext
@@ -436,32 +512,6 @@ QuiverDance:
 	raisesub
 	statupmessage
 	statupfailtext
-	endmove
-
-AccuracyDown:
-	checkobedience
-	usedmovetext
-	doturn
-	checkhit
-	accuracydown
-	lowersub
-	statdownanim
-	raisesub
-	statdownmessage
-	statdownfailtext
-	endmove
-
-EvasionDown:
-	checkobedience
-	usedmovetext
-	doturn
-	checkhit
-	evasiondown
-	lowersub
-	statdownanim
-	raisesub
-	statdownmessage
-	statdownfailtext
 	endmove
 
 DarkVoid:
@@ -517,6 +567,45 @@ SpeedDown2:
 	doturn
 	checkhit
 	speeddown2
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
+SpecialAttackDown2:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	specialattackdown2
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
+SpecialDefenseDown2:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	specialdefensedown2
+	lowersub
+	statdownanim
+	raisesub
+	statdownmessage
+	statdownfailtext
+	endmove
+
+AccuracyDown2:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	accuracydown2
 	lowersub
 	statdownanim
 	raisesub
@@ -729,7 +818,7 @@ EvasionDownHit:
 	statdownmessage
 	endmove
 
-SpecialAttackDown2User:
+SpecialAttackDownHit:
 	checkobedience
 	usedmovetext
 	doturn
@@ -747,8 +836,8 @@ SpecialAttackDown2User:
 	supereffectivetext
 	checkfaint
 	buildopponentrage
-	specialattackdown2
-	statupmessage
+	specialattackdown
+	statdownmessage
 	endmove
 
 SpecialDefenseDownHit:
@@ -793,6 +882,28 @@ AccuracyDownHit:
 	buildopponentrage
 	accuracydown
 	statdownmessage
+	endmove
+
+SpecialAttackDown2User:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	checkhit
+	effectchance
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	specialattackdown2
+	statupmessage
 	endmove
 
 Avalanche:
@@ -881,7 +992,7 @@ AllUpHit:
 	allstatsup
 	endmove
 
-FireFang:
+PayDay:
 	checkobedience
 	usedmovetext
 	doturn
@@ -896,29 +1007,10 @@ FireFang:
 	applydamage
 	criticaltext
 	supereffectivetext
+	payday
 	checkfaint
 	buildopponentrage
-	burntarget
-	endmove
-
-IceFang:
-	checkobedience
-	usedmovetext
-	doturn
-	critical
-	damagestats
-	damagecalc
-	stab
-	damagevariation
-	checkhit
-	moveanim
-	failuretext
-	applydamage
-	criticaltext
-	supereffectivetext
-	checkfaint
-	buildopponentrage
-	freezetarget
+	kingsrock
 	endmove
 
 Conversion:

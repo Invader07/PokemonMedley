@@ -2790,7 +2790,6 @@ wTempPP::
 wNextBoxOrPartyIndex::
 wChosenCableClubRoom::
 wBreedingCompatibility::
-wMoveGrammar::
 wApplyStatLevelMultipliersToEnemy::
 wUsePPUp::
 wd265:: ; mobile
@@ -3670,6 +3669,11 @@ NEXTU
 wDecompressScratch:: ds $100 tiles
 
 NEXTU
+
+	ds $80 tiles
+wDecompressEnemyFrontpic:: ds $80 tiles
+
+NEXTU
 ; unidentified uses
 w6_d000:: ds $1000
 ENDU
@@ -3679,3 +3683,5 @@ SECTION "Stack RAM", WRAMX
 
 wWindowStack:: ds $1000 - 1
 wWindowStackBottom:: ds 1
+
+ENDSECTION

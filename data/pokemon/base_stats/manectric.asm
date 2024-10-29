@@ -1,4 +1,4 @@
-	db MANECTRIC ; 195
+	db 0 ; 195
 
 	db  70,  75,  60, 105, 105,  60
 	;   hp  atk  def  spd  sat  sdf

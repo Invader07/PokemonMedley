@@ -1,4 +1,4 @@
-	db MOLTISH ; 043
+	db 0 ; 043
 
 	db  45,  45,  65,  55,  75,  35
 	;   hp  atk  def  spd  sat  sdf

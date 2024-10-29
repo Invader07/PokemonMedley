@@ -1,4 +1,4 @@
-	db HYPNO ; 097
+	db 0 ; 097
 
 	db  85,  53,  70,  67,  93, 115
 	;   hp  atk  def  spd  sat  sdf

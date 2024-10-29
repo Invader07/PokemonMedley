@@ -1,4 +1,4 @@
-	db PAWMI ; 063
+	db 0 ; 063
 
 	db  45,  50,  20,  60,  40,  25
 	;   hp  atk  def  spd  sat  sdf

@@ -1,4 +1,4 @@
-	db SLOWPOKE ; 079
+	db 0 ; 079
 
 	db  90,  65,  65,  15,  60,  40
 	;   hp  atk  def  spd  sat  sdf

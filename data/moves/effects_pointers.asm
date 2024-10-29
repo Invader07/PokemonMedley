@@ -16,33 +16,31 @@ MoveEffectsPointers:
 	dw SpeedUp
 	dw SpecialAttackUp
 	dw SpecialDefenseUp
-	dw Flatter
+	dw AccuracyUp
 	dw EvasionUp
 	dw NormalHit
 	dw AttackDown
 	dw DefenseDown
 	dw SpeedDown
-	dw CalmMind
-	dw QuiverDance
+	dw SpecialAttackDown
+	dw SpecialDefenseDown
 	dw AccuracyDown
 	dw EvasionDown
-	dw DarkVoid
 	dw ResetStats
-	dw ChargeBeam
+	dw Rampage
 	dw ForceSwitch
 	dw MultiHit
 	dw Conversion
 	dw FlinchHit
 	dw Heal
 	dw Toxic
+	dw PayDay
 	dw LightScreen
 	dw TriAttack
-	dw Eruption
-	dw WillOWisp
-	dw Defog
+	dw OHKOHit
+	dw SuperFang
 	dw StaticDamage
 	dw TrapTarget
-	dw Roost
 	dw MultiHit
 	dw NormalHit
 	dw Mist
@@ -54,40 +52,35 @@ MoveEffectsPointers:
 	dw SpeedUp2
 	dw SpecialAttackUp2
 	dw SpecialDefenseUp2
-	dw SuperFang
-	dw Brine
-	dw PhantomForce
+	dw AccuracyUp2
+	dw EvasionUp2
 	dw Transform
 	dw AttackDown2
 	dw DefenseDown2
 	dw SpeedDown2
+	dw SpecialAttackDown2
+	dw SpecialDefenseDown2
+	dw AccuracyDown2
 	dw EvasionDown2
-	dw KnockOff
-	dw TrickRoom
-	dw Dive
-	dw CosmicPower
 	dw Reflect
 	dw DoPoison
 	dw DoParalyze
 	dw AttackDownHit
 	dw DefenseDownHit
 	dw SpeedDownHit
-	dw SpecialAttackDown2User
+	dw SpecialAttackDownHit
 	dw SpecialDefenseDownHit
 	dw AccuracyDownHit
 	dw EvasionDownHit
-	dw Avalanche
-	dw Hail
 	dw ConfuseHit
 	dw PoisonMultiHit
-	dw BlastBurn
 	dw Substitute
 	dw HyperBeam
 	dw Rage
-	dw HydroCannon
+	dw Mimic
 	dw Metronome
 	dw LeechSeed
-	dw FrenzyPlant
+	dw Splash
 	dw Disable
 	dw StaticDamage
 	dw Psywave
@@ -109,9 +102,9 @@ MoveEffectsPointers:
 	dw TripleKick
 	dw Thief
 	dw MeanLook
+	dw Nightmare
 	dw FlameWheel
 	dw Curse
-	dw NormalHit
 	dw Protect
 	dw Spikes
 	dw PerishSong
@@ -122,16 +115,13 @@ MoveEffectsPointers:
 	dw FuryCutter
 	dw Attract
 	dw Return
-	dw NormalHit
-	dw NormalHit
+	dw Frustration
 	dw Safeguard
 	dw SacredFire
 	dw Magnitude
 	dw BatonPass
 	dw Pursuit
 	dw RapidSpin
-	dw NormalHit
-	dw NormalHit
 	dw MorningSun
 	dw Synthesis
 	dw Moonlight
@@ -152,9 +142,30 @@ MoveEffectsPointers:
 	dw Stomp
 	dw Solarbeam
 	dw Thunder
+	dw Teleport
 	dw BeatUp
 	dw Fly
 	dw DefenseCurl
 	dw FreezeHit
 	dw Uturn
+	dw Roost
+	dw Flatter
+	dw CalmMind
+	dw QuiverDance
+	dw DarkVoid
+	dw ChargeBeam
+	dw Eruption
+	dw WillOWisp
+	dw Defog
+	dw Brine
+	dw KnockOff
+	dw TrickRoom
+	dw Dive
+	dw CosmicPower
+	dw SpecialAttackDown2User
+	dw Avalanche
+	dw Hail
+	dw BlastBurn
+	dw HydroCannon
+	dw FrenzyPlant
 	assert_table_length NUM_MOVE_EFFECTS

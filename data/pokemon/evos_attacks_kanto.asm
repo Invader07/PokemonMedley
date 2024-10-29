@@ -162,10 +162,40 @@ EvosAttacksPointers1::
 .IndirectEnd::
 
 EkansEvosAttacks:
+	dbbw EVOLVE_LEVEL, 100, MEW
+	db 0 ; no more evolutions
+	dbw 1, POUND
+	dbw 1, GROWL
+	db 0 ; no more level-up moves
+
 ArbokEvosAttacks:
+	dbbw EVOLVE_LEVEL, 100, MEW
+	db 0 ; no more evolutions
+	dbw 1, POISON_STING
+	dbw 1, MAGNITUDE
+	db 0 ; no more level-up moves
+
 BaltoyEvosAttacks:
+	dbbw EVOLVE_LEVEL, 100, MEW
+	db 0 ; no more evolutions
+	dbw 1, POISON_STING
+	dbw 1, MAGNITUDE
+	db 0 ; no more level-up moves
+
 ClaydolEvosAttacks:
+	dbbw EVOLVE_LEVEL, 100, MEW
+	db 0 ; no more evolutions
+	dbw 1, POISON_STING
+	dbw 1, MAGNITUDE
+	db 0 ; no more level-up moves
+
 YanmaEvosAttacks:
+	dbbw EVOLVE_LEVEL, 100, MEW
+	db 0 ; no more evolutions
+	dbw 1, POISON_STING
+	dbw 1, MAGNITUDE
+	db 0 ; no more level-up moves
+
 YanmegaEvosAttacks:
 RattataEvosAttacks:
 RaticateEvosAttacks:
@@ -321,6 +351,6 @@ LuxioEvosAttacks:
 LuxrayEvosAttacks:
 	dbbw EVOLVE_LEVEL, 100, MEW
 	db 0 ; no more evolutions
-	dbw 1, TACKLE
-	dbw 1, GROWL
+	dbw 1, POISON_STING
+	dbw 1, MAGNITUDE
 	db 0 ; no more level-up moves

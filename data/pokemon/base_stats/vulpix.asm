@@ -1,4 +1,4 @@
-	db VULPIX ; 037
+	db 0 ; 037
 
 	db  40,  40,  40,  65,  50,  65
 	;   hp  atk  def  spd  sat  sdf

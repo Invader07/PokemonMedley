@@ -319,5 +319,8 @@ MoveNames::
 	li "AQUA RING"
 	li "HYPER VOICE"
 	li "TAIL GLOW"
+	li "WATER SPOUT"
+	li "BULLDOZE"
+	li "FUTURE SIGHT"
 	li "STRUGGLE"
 	assert_list_length NUM_ATTACKS

@@ -1,4 +1,4 @@
-	db PANGORO ; 063
+	db 0 ; 063
 
 	db  95, 124,  78,  58,  69,  71
 	;   hp  atk  def  spd  sat  sdf

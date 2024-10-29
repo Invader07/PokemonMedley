@@ -1,4 +1,4 @@
-	db WYNAUT ; 202
+	db 0 ; 202
 
 	db  95,  23,  48,  23,  23,  48
 	;   hp  atk  def  spd  sat  sdf

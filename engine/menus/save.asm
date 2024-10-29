@@ -27,8 +27,10 @@ SaveAfterLinkTrade:
 	farcall StageRTCTimeForSave
 	farcall BackupMysteryGift
 	call SavePokemonData
+	call SaveIndexTables
 	call SaveChecksum
 	call SaveBackupPokemonData
+	call SaveBackupIndexTables
 	call SaveBackupChecksum
 	farcall BackupPartyMonMail
 	farcall SaveRTC
@@ -71,20 +73,9 @@ AddHallOfFameEntry:
 	jr nz, .loop
 	ld hl, wHallOfFamePokemonList
 	ld de, sHallOfFame
-	ld bc, wHallOfFamePokemonListEnd - wHallOfFamePokemonList + 1
+	ld bc, HOF_LENGTH
 	call CopyBytes
 	call CloseSRAM
-; This vc_hook causes the Virtual Console to set [sMobileEventIndex] and [sMobileEventIndexBackup]
-; to MOBILE_EVENT_OBJECT_GS_BALL, which enables you to get the GS Ball, take it to Kurt, and
-; encounter Celebi. It assumes that sMobileEventIndex and sMobileEventIndexBackup are at their
-; original addresses.
-	vc_hook Enable_GS_Ball_mobile_event
-	vc_assert BANK(sMobileEventIndex) == $1 && sMobileEventIndex == $be3c, \
-		"sMobileEventIndex is no longer located at 01:be3c."
-	vc_assert BANK(sMobileEventIndexBackup) == $1 && sMobileEventIndexBackup == $be44, \
-		"sMobileEventIndexBackup is no longer located at 01:be44."
-	vc_assert MOBILE_EVENT_OBJECT_GS_BALL == $0b, \
-		"MOBILE_EVENT_OBJECT_GS_BALL is no longer equal to $0b."
 	ret
 
 AskOverwriteSaveFile:
@@ -92,7 +83,7 @@ AskOverwriteSaveFile:
 	and a
 	jr z, .erase
 	call CompareLoadedAndSavedPlayerID
-	ret z ; Dont ask the player if they want to save
+	ret z
 	ld hl, AnotherSaveFileText
 	call SaveTheGame_yesorno
 	jr nz, .refused
@@ -115,9 +106,6 @@ SaveTheGame_yesorno:
 	ld a, [wMenuCursorY]
 	dec a
 	call CloseWindow
-	push af
-	call GSReloadPalettes
-	pop af
 	and a
 	ret
 
@@ -145,24 +133,15 @@ SavedTheGame:
 	pop hl
 	res NO_TEXT_SCROLL, [hl]
 	call SaveGameData
-	; copy the original text speed setting to the stack
-	ld a, [wOptions]
-	push af
-	; set text speed to fast
-	ld a, TEXT_DELAY_FAST
-	ld [wOptions], a
 	; <PLAYER> saved the game!
 	ld hl, SavedTheGameText
 	call PrintText
-	; restore the original text speed setting
-	pop af
-	ld [wOptions], a
 	ld de, SFX_SAVE
 	call WaitPlaySFX
 	jp WaitSFX
 
 .saving_text
-	text "SAVING..."
+	text "Saving…"
 	done
 
 SaveGameData:
@@ -173,6 +152,8 @@ SaveGameData:
 	call SaveOptions
 	call SavePlayerData
 	call SavePokemonData
+	call SaveIndexTables
+	call SaveBackupIndexTables
 	ld a, BANK(sBattleTowerChallengeState)
 	call OpenSRAM
 	ld a, [sBattleTowerChallengeState]
@@ -182,6 +163,7 @@ SaveGameData:
 	ld [sBattleTowerChallengeState], a
 .ok
 	call CloseSRAM
+
 	; At this point, there is no longer any harm in setting this. We can't set
 	; it earlier, because it might confuse the load routine into using bad
 	; box/mail data, and we can't set it later because we need to set it
@@ -377,14 +359,6 @@ Function14d83: ; unreferenced
 	call CloseSRAM
 	ret
 
-Function14d93: ; unreferenced
-	ld a, BANK(s7_a000) ; MBC30 bank used by JP Crystal; inaccessible by MBC3
-	call OpenSRAM
-	xor a
-	ld [s7_a000], a ; address of MBC30 bank
-	call CloseSRAM
-	ret
-
 HallOfFame_InitSaveIfNeeded:
 	ld a, [wSavedAtLeastOnce]
 	and a
@@ -471,8 +445,8 @@ SaveChecksum:
 	ld a, e
 	ld [hli], a
 	ld [hl], d
-	ld hl, sGameData
-	ld bc, sGameDataEnd - sGameData
+	ld hl, sSaveData
+	ld bc, sSaveDataEnd - sSaveData
 	call Checksum
 	ld a, e
 	ld [sChecksum + 0], a
@@ -558,8 +532,8 @@ SaveBackupChecksum:
 	ld a, e
 	ld [hli], a
 	ld [hl], d
-	ld hl, sBackupGameData
-	ld bc, sBackupGameDataEnd - sBackupGameData
+	ld hl, sBackupSaveData
+	ld bc, sBackupSaveDataEnd - sBackupSaveData
 	call Checksum
 	ld a, e
 	ld [sBackupChecksum + 0], a
@@ -590,6 +564,8 @@ TryLoadSaveFile:
 	jr nz, .backup
 	call LoadPlayerData
 	call LoadPokemonData
+	call LoadIndexTables
+	call SaveBackupIndexTables
 	; If a mid-save was aborted but main save data is good, finish it.
 	call WasMidSaveAborted
 	call z, WriteBackupSave
@@ -608,6 +584,7 @@ TryLoadSaveFile:
 	jr nz, .corrupt
 	call LoadBackupPlayerData
 	call LoadBackupPokemonData
+	call LoadBackupIndexTables
 	farcall RestorePartyMonMail
 	farcall RestoreMobileEventIndex
 	farcall RestoreMysteryGift
@@ -752,10 +729,31 @@ LoadPokemonData:
 	call CloseSRAM
 	ret
 
+LoadIndexTables:
+	ldh a, [rSVBK]
+	push af
+	ld a, BANK("16-bit WRAM tables")
+	ldh [rSVBK], a
+	ld a, BANK(sPokemonIndexTable)
+	call OpenSRAM
+	ld hl, sPokemonIndexTable
+	ld de, wPokemonIndexTable
+	ld bc, wPokemonIndexTableEnd - wPokemonIndexTable
+	call CopyBytes
+	ld a, BANK(sMoveIndexTable)
+	call OpenSRAM
+	ld hl, sMoveIndexTable
+	ld de, wMoveIndexTable
+	ld bc, wMoveIndexTableEnd - wMoveIndexTable
+	call CopyBytes
+	pop af
+	ldh [rSVBK], a
+	jp CloseSRAM
+
 VerifyChecksum:
-	ld hl, sGameData
-	ld bc, sGameDataEnd - sGameData
-	ld a, BANK(sGameData)
+	ld hl, sSaveData
+	ld bc, sSaveDataEnd - sSaveData
+	ld a, BANK(sSaveData)
 	call OpenSRAM
 	call Checksum
 	ld a, [sChecksum + 0]
@@ -785,27 +783,6 @@ VerifyChecksum:
 	call CloseSRAM
 	pop af
 	ret
-
-	LoadIndexTables:
-		ldh a, [rSVBK]
-		push af
-		ld a, BANK("16-bit WRAM tables")
-		ldh [rSVBK], a
-		ld a, BANK(sPokemonIndexTable)
-		call OpenSRAM
-		ld hl, sPokemonIndexTable
-		ld de, wPokemonIndexTable
-		ld bc, wPokemonIndexTableEnd - wPokemonIndexTable
-		call CopyBytes
-		ld a, BANK(sMoveIndexTable)
-		call OpenSRAM
-		ld hl, sMoveIndexTable
-		ld de, wMoveIndexTable
-		ld bc, wMoveIndexTableEnd - wMoveIndexTable
-		call CopyBytes
-		pop af
-		ldh [rSVBK], a
-		jp CloseSRAM
 
 LoadBackupPlayerData:
 	ld a, BANK(sBackupPlayerData)
@@ -853,9 +830,9 @@ LoadBackupIndexTables:
 	jp CloseSRAM
 
 VerifyBackupChecksum:
-	ld hl, sBackupGameData
-	ld bc, sBackupGameDataEnd - sBackupGameData
-	ld a, BANK(sBackupGameData)
+	ld hl, sBackupSaveData
+	ld bc, sBackupSaveDataEnd - sBackupSaveData
+	ld a, BANK(sBackupSaveData)
 	call OpenSRAM
 	call Checksum
 	ld a, [sBackupChecksum + 0]

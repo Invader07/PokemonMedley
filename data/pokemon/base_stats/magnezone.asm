@@ -1,4 +1,4 @@
-	db MAGNEZONE ; 097
+	db 0 ; 097
 
 	db  70,  70, 115,  60, 130,  90
 	;   hp  atk  def  spd  sat  sdf

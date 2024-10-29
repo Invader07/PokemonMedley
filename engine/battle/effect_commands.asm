@@ -116,7 +116,7 @@ BattleCommand_CheckTurn:
 ; NO_MOVE immediately ends the turn.
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVar
-	inc a
+	and a
 	jp z, EndTurn
 
 	xor a
@@ -1152,10 +1152,59 @@ BattleCommand_Critical:
 	and a
 	ld hl, wEnemyMonItem
 	ld a, [wEnemyMonSpecies]
-	jr nz, .FocusEnergy
+	jr nz, .Item
 	ld hl, wBattleMonItem
 	ld a, [wBattleMonSpecies]
 
+.Item:
+	ld c, 0
+	ld b, [hl]
+	call GetPokemonIndexFromID
+
+	ld a, l
+	sub LOW(CHANSEY)
+	if HIGH(CHANSEY) == 0
+		or h
+	else
+		jr nz, .Farfetchd
+		if HIGH(CHANSEY) == 1
+			dec h
+		else
+			ld a, h
+			cp HIGH(CHANSEY)
+		endc
+	endc
+	jr nz, .Farfetchd
+	ld a, b
+	cp MASTER_BALL
+	jr nz, .FocusEnergy
+
+; +2 critical level
+	ld c, 2
+	jr .Tally
+
+.Farfetchd:
+	ld a, l
+	sub LOW(MEW)
+	if HIGH(MEW) == 0
+		or h
+	else
+		jr nz, .FocusEnergy
+		if HIGH(MEW) == 1
+			dec h
+		else
+			ld a, h
+			cp HIGH(MEW)
+		endc
+	endc
+	jr nz, .FocusEnergy
+	ld a, b
+	cp STICK
+	jr nz, .FocusEnergy
+
+; +2 critical level
+	ld c, 2
+	jr .Tally
 
 .FocusEnergy:
 	ld a, BATTLE_VARS_SUBSTATUS4
@@ -1163,9 +1212,9 @@ BattleCommand_Critical:
 	bit SUBSTATUS_FOCUS_ENERGY, a
 	jr z, .CheckCritical
 
-; +1 critical level
-	inc c
-	inc c
+; +2 critical level
+	ld c, 2
+	jr .Tally
 
 .CheckCritical:
 	ld a, BATTLE_VARS_MOVE_ANIM
@@ -1176,7 +1225,7 @@ BattleCommand_Critical:
 	push bc
 	ld b, h
 	ld c, l
-	call IsInArray
+	call IsInWordArray
 	pop bc
 	jr nc, .RazorClaw
 
@@ -2541,6 +2590,59 @@ EndMoveEffect:
 	ld [hl], a
 	ret
 
+DittoMetalPowder:
+	ld a, MON_SPECIES
+	call BattlePartyAttr
+	ldh a, [hBattleTurn]
+	and a
+	ld a, [hl]
+	jr nz, .got_species
+	ld a, [wTempEnemyMonSpecies]
+
+.got_species
+	push hl
+	call GetPokemonIndexFromID
+	ld a, l
+	sub LOW(DITTO)
+	if HIGH(DITTO) == 0
+		or h
+		pop hl
+	else
+		ld a, h
+		pop hl
+		ret nz
+		if HIGH(DITTO) == 1
+			dec a
+		else
+			cp HIGH(DITTO)
+		endc
+	endc
+	ret nz
+
+	push bc
+	call GetOpponentItem
+	ld a, [hl]
+	cp METAL_POWDER
+	pop bc
+	ret nz
+
+; BUG: Metal Powder can increase damage taken with boosted (Special) Defense (see docs/bugs_and_glitches.md)
+	ld a, c
+	srl a
+	add c
+	ld c, a
+	ret nc
+
+	srl b
+	ld a, b
+	and a
+	jr nz, .done
+	inc b
+.done
+	scf
+	rr c
+	ret
+
 BattleCommand_DamageStats:
 	ldh a, [hBattleTurn]
 	and a
@@ -2612,16 +2714,19 @@ PlayerAttackDamage:
 
 .thickclub
 ; Note: Returns player attack at hl in hl.
+	call ThickClubBoost
 	jr .done
 
 .lightball
 ; Note: Returns player special attack at hl in hl.
+	call LightBallBoost
 
 .done
 	call TruncateHL_BC
 
 	ld a, [wBattleMonLevel]
 	ld e, a
+	call DittoMetalPowder
 
 	ld a, 1
 	and a
@@ -2717,6 +2822,40 @@ CheckDamageStatsCritical:
 	cp b
 	pop bc
 	pop hl
+	ret
+
+ThickClubBoost:
+; Return in hl the stat value at hl.
+
+; If the attacking monster is Cubone or Marowak and
+; it's holding a Thick Club, double it.
+	push bc
+	push de
+	ld b, CUBONE
+	ld d, THICK_CLUB
+	call SpeciesItemBoost
+	if MAROWAK == (CUBONE + 1)
+		inc bc
+	else
+		ld bc, MAROWAK
+	endc
+	call DoubleStatIfSpeciesHoldingItem
+	pop de
+	pop bc
+	ret
+
+LightBallBoost:
+; Return in hl the stat value at hl.
+
+; If the attacking monster is Pikachu and it's
+; holding a Light Ball, double it.
+	push bc
+	push de
+	ld b, PIKACHU
+	ld d, LIGHT_BALL
+	call SpeciesItemBoost
+	pop de
+	pop bc
 	ret
 
 SpeciesItemBoost:
@@ -2827,15 +2966,18 @@ EnemyAttackDamage:
 	ld hl, wEnemySpAtk
 
 .lightball
+	call LightBallBoost
 	jr .done
 
 .thickclub
+	call ThickClubBoost
 
 .done
 	call TruncateHL_BC
 
 	ld a, [wEnemyMonLevel]
 	ld e, a
+	call DittoMetalPowder
 
 	ld a, 1
 	and a

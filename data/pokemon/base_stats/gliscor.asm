@@ -1,4 +1,4 @@
-	db GLISCOR ; 145
+	db 0 ; 145
 
 	db  75,  95, 125,  95,  45,  75
 	;   hp  atk  def  spd  sat  sdf

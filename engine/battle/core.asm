@@ -252,6 +252,9 @@ HandleBetweenTurnEffects:
 	jr z, .CheckEnemyFirst
 	call CheckFaint_PlayerThenEnemy
 	ret c
+	call HandleFutureSight
+	call CheckFaint_PlayerThenEnemy
+	ret c
 	call HandleWeather
 	call CheckFaint_PlayerThenEnemy
 	ret c
@@ -267,6 +270,9 @@ HandleBetweenTurnEffects:
 	jr .NoMoreFaintingConditions
 
 .CheckEnemyFirst:
+	call CheckFaint_EnemyThenPlayer
+	ret c
+	call HandleFutureSight
 	call CheckFaint_EnemyThenPlayer
 	ret c
 	call HandleWeather
@@ -1550,6 +1556,67 @@ HandleMysteryberry:
 	call SwitchTurnCore
 	ld hl, BattleText_UserRecoveredPPUsing
 	jp StdBattleTextbox
+
+HandleFutureSight:
+	ldh a, [hSerialConnectionStatus]
+	cp USING_EXTERNAL_CLOCK
+	jr z, .enemy_first
+	call SetPlayerTurn
+	call .do_it
+	call SetEnemyTurn
+	jp .do_it
+
+.enemy_first
+	call SetEnemyTurn
+	call .do_it
+	call SetPlayerTurn
+
+.do_it
+	ld hl, wPlayerFutureSightCount
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .okay
+	ld hl, wEnemyFutureSightCount
+
+.okay
+	ld a, [hl]
+	and a
+	ret z
+	dec a
+	ld [hl], a
+	cp $1
+	ret nz
+
+	ld hl, BattleText_TargetWasHitByFutureSight
+	call StdBattleTextbox
+
+	ld a, BATTLE_VARS_MOVE
+	call GetBattleVarAddr
+	push af
+	push hl
+	ld hl, FUTURE_SIGHT
+	call GetMoveIDFromIndex
+	pop hl
+	ld [hl], a
+
+	callfar UpdateMoveData
+	xor a
+	ld [wAttackMissed], a
+	ld [wAlreadyDisobeyed], a
+	ld a, EFFECTIVE
+	ld [wTypeModifier], a
+	callfar DoMove
+	xor a
+	ld [wCurDamage], a
+	ld [wCurDamage + 1], a
+
+	ld a, BATTLE_VARS_MOVE
+	call GetBattleVarAddr
+	pop af
+	ld [hl], a
+
+	call UpdateBattleMonInParty
+	jp UpdateEnemyMonInParty
 
 HandleDefrost:
 	ldh a, [hSerialConnectionStatus]
@@ -3391,6 +3458,7 @@ IsThePlayerMonTypesEffectiveAgainstOTMon:
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
+
 	call GetPokemonIndexFromID
 	ld b, h
 	ld c, l

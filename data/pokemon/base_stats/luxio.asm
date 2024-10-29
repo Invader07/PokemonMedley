@@ -1,4 +1,4 @@
-	db LUXIO ; 029
+	db 0 ; 029
 
 	db  60,  80,  45,  60,  70,  45
 	;   hp  atk  def  spd  sat  sdf

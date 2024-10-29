@@ -1,4 +1,4 @@
-	db TALONFLAME ; 011
+	db 0 ; 011
 
 	db  70,  80,  65,  120,  80,  65
 	;   hp  atk  def  spd  sat  sdf

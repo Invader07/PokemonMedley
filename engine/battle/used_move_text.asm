@@ -25,7 +25,7 @@ UsedMoveText:
 
 	ld a, BATTLE_VARS_MOVE_ANIM
 	call GetBattleVar
-	ld [wMoveGrammar], a
+	ld [wTempByteValue], a
 
 	push hl
 	farcall CheckUserIsCharging
@@ -33,7 +33,7 @@ UsedMoveText:
 	jr nz, .ok
 
 	; update last move
-	ld a, [wMoveGrammar]
+	ld a, [wTempByteValue]
 	ld [hl], a
 	ld [de], a
 
@@ -42,7 +42,7 @@ UsedMoveText:
 	ret
 
 UsedMoveInsteadText:
-	text_far _UsedMove1Text
+	text_far _UsedMoveText
 	text_asm
 ; check obedience
 	ld a, [wAlreadyDisobeyed]

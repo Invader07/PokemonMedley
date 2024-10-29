@@ -1,4 +1,4 @@
-	db VENOMOTH ; 049
+	db 0 ; 049
 
 	db  70,  75,  60, 100, 100,  75
 	;   hp  atk  def  spd  sat  sdf

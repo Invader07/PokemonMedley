@@ -1,4 +1,4 @@
-	db SWAMPERT ; 229
+	db 0 ; 229
 
 	db  100, 110,  90,  60,  85,  90
 	;   hp  atk  def  spd  sat  sdf

@@ -1,4 +1,4 @@
-	db ONIX ; 095
+	db 0 ; 095
 
 	db  50,  60, 160,  80,  30,  45
 	;   hp  atk  def  spd  sat  sdf

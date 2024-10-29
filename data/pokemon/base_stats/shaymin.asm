@@ -1,4 +1,4 @@
-	db SHAYMIN ; 243
+	db 0 ; 243
 
 	db  110,  80,  80,  30,  90,  80
 	;   hp  atk  def  spd  sat  sdf

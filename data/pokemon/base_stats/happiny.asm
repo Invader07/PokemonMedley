@@ -1,4 +1,4 @@
-	db HAPPINY ; 063
+	db 0 ; 063
 
 	db 100,  05,  05,  30,  15,  65
 	;   hp  atk  def  spd  sat  sdf

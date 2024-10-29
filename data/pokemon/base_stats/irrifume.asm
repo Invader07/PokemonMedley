@@ -1,4 +1,4 @@
-	db IRRIFUME ; 044
+	db 0 ; 044
 
 	db  60,  55,  80,  70,  85,  45
 	;   hp  atk  def  spd  sat  sdf

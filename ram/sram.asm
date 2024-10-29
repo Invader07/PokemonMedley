@@ -6,6 +6,7 @@ sScratch:: ds $60 tiles
 NEXTU
 sEnemyFrontPicTileCount:: db
 sPaddedEnemyFrontPic:: ds 7 * 7 tiles
+
 ENDU
 
 SECTION "SRAM Bank 0", SRAM
@@ -417,3 +418,5 @@ s7_a001:: db
 	ds $7fe
 
 s7_a800:: db
+
+ENDSECTION

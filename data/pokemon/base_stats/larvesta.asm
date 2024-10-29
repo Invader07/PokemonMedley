@@ -1,4 +1,4 @@
-	db LARVESTA ; 198
+	db 0 ; 198
 
 	db  55,  65,  55,  55,  50,  40
 	;   hp  atk  def  spd  sat  sdf

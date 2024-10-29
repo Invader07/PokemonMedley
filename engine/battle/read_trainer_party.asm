@@ -101,6 +101,7 @@ ReadTrainerPartyPieces:
 	ld [wMonType], a
 	predef TryAddMonToParty
 	pop hl
+	inc hl ;because hl was pushed before the last call to GetNextTrainerDataByte
 	ld a, [wOtherTrainerType]
 	and TRAINERTYPE_ITEM
 	jr z, .no_item

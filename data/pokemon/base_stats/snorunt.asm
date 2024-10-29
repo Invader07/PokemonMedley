@@ -1,4 +1,4 @@
-	db SNORUNT ; 149
+	db 0 ; 149
 
 	db  50,  50,  50,  50,  50,  50
 	;   hp  atk  def  spd  sat  sdf

@@ -1,4 +1,4 @@
-	db SCEPTILE ; 223
+	db 0 ; 223
 
 	db  70,  85,  65, 120, 105,  85
 	;   hp  atk  def  spd  sat  sdf

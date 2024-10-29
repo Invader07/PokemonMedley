@@ -1,4 +1,4 @@
-	db SNOM ; 200
+	db 0 ; 200
 
 	db  55,  55,  40,  55,  50,  65
 	;   hp  atk  def  spd  sat  sdf

@@ -1,4 +1,4 @@
-	db LUCARIO ; 183
+	db 0 ; 183
 
 	db  70, 110,  70,  90, 115,  70
 	;   hp  atk  def  spd  sat  sdf

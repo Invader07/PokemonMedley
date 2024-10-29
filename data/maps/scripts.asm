@@ -121,3 +121,5 @@ SECTION "Map Scripts 24", ROMX
 
 
 SECTION "Map Scripts 25", ROMX
+
+ENDSECTION

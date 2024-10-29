@@ -1,4 +1,4 @@
-	db TYROGUE ; 236
+	db 0 ; 236
 
 	db  55,  45,  45,  40,  35,  55
 	;   hp  atk  def  spd  sat  sdf

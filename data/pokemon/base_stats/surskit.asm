@@ -1,4 +1,4 @@
-	db SURSKIT ; 023
+	db 0 ; 023
 
 	db  40,  40,  30,  75,  60,  50
 	;   hp  atk  def  spd  sat  sdf

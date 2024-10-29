@@ -1,4 +1,4 @@
-	db JEWELENCE ; 182
+	db 0 ; 182
 
 	db  75,  60, 105,  60, 100, 100
 	;   hp  atk  def  spd  sat  sdf

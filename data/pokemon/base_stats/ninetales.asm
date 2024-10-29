@@ -1,4 +1,4 @@
-	db NINETALES ; 038
+	db 0 ; 038
 
 	db  75,  65,  70, 110,  85, 100
 	;   hp  atk  def  spd  sat  sdf

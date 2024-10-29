@@ -158,3 +158,5 @@ MountainGymBreak_Blocks:
 
 MountainGymArena_Blocks:
 	INCBIN "maps/MountainGymArena.blk"
+
+ENDSECTION

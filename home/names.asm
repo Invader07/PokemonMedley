@@ -13,8 +13,10 @@ GetName::
 	push hl
 	push bc
 	push de
+
 	ld a, [wCurSpecies]
 	ld [wNamedObjectIndex], a
+
 	ld a, [wNamedObjectType]
 	dec a ; MON_NAME
 	ld hl, GetPokemonName

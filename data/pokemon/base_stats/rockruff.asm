@@ -1,4 +1,4 @@
-	db ROCKRUFF ; 059
+	db 0 ; 059
 
 	db  45,  65,  40,  60,  30,  40
 	;   hp  atk  def  spd  sat  sdf

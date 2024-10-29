@@ -1,4 +1,4 @@
-	db LUNATONE ; 187
+	db 0 ; 187
 
 	db  90,  55,  65,  70,  95,  85
 	;   hp  atk  def  spd  sat  sdf

@@ -1,4 +1,4 @@
-	db PIDGEOTTO ; 017
+	db 0 ; 017
 
 	db  60,  65,  55,  75,  45,  60
 	;   hp  atk  def  spd  sat  sdf

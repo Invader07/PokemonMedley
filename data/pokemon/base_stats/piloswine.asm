@@ -1,4 +1,4 @@
-	db PILOSWINE ; 221
+	db 0 ; 221
 
 	db 100, 100,  80,  50,  70,  50
 	;   hp  atk  def  spd  sat  sdf

@@ -325,6 +325,9 @@ MoveDescriptions1:
 	dw Extra1Description
 	dw Extra1Description
 	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
+	dw Extra1Description
 .IndirectEnd::
 
 InvalidMoveDescription:

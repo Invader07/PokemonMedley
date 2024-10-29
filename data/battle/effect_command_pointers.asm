@@ -182,10 +182,4 @@ BattleCommandPointers:
 	dw BattleCommand_Curl
 	dw BattleCommand_Curl
 	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
-	dw BattleCommand_Curl
 	assert_table_length NUM_EFFECT_COMMANDS

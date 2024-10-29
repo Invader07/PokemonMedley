@@ -1,4 +1,4 @@
-	db PYREPLUME ; 045
+	db 0 ; 045
 
 	db  75,  65,  95,  85, 110,  60
 	;   hp  atk  def  spd  sat  sdf

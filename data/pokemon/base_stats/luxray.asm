@@ -1,4 +1,4 @@
-	db LUXRAY ; 030
+	db 0 ; 030
 
 	db  75,  110,  80,  75,  100,  80
 	;   hp  atk  def  spd  sat  sdf

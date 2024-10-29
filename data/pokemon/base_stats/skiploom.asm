@@ -1,4 +1,4 @@
-	db SKIPLOOM ; 188
+	db 0 ; 188
 
 	db  60,  45,  50,  80,  45,  65
 	;   hp  atk  def  spd  sat  sdf

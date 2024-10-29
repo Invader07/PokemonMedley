@@ -1,4 +1,4 @@
-	db PIDGEY ; 016
+	db 0 ; 016
 
 	db  40,  55,  40,  55,  35,  45
 	;   hp  atk  def  spd  sat  sdf

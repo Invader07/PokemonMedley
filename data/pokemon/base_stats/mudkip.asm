@@ -1,4 +1,4 @@
-	db MUDKIP ; 227
+	db 0 ; 227
 
 	db  50,  70,  80,  40,  50,  50
 	;   hp  atk  def  spd  sat  sdf

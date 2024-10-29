@@ -1,4 +1,4 @@
-	db SHINX ; 028
+	db 0 ; 028
 
 	db  45,  60,  35,  45,  50,  30
 	;   hp  atk  def  spd  sat  sdf

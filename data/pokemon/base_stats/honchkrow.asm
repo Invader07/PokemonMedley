@@ -1,4 +1,4 @@
-	db HONCHKROW ; 166
+	db 0 ; 166
 
 	db  100, 125,  52,  71, 105,  52
 	;   hp  atk  def  spd  sat  sdf

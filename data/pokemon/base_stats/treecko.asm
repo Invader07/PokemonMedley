@@ -1,4 +1,4 @@
-	db TREECKO ; 221
+	db 0 ; 221
 
 	db  40,  45,  35,  70,  65,  55
 	;   hp  atk  def  spd  sat  sdf

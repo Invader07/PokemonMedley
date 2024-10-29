@@ -1,4 +1,4 @@
-	db PANCHAM ; 063
+	db 0 ; 063
 
 	db  67,  82,  62,  43,  46,  48
 	;   hp  atk  def  spd  sat  sdf

@@ -1,4 +1,4 @@
-	db PAWMOT ; 063
+	db 0 ; 063
 
 	db  70, 115,  70, 105,  70,  60
 	;   hp  atk  def  spd  sat  sdf

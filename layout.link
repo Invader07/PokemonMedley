@@ -313,9 +313,9 @@ ROMX $78
 	"Debug Room"
 	"Tileset Data 8"
 ROMX $79
-	"Pics 25"
+	"Pics 20"
 ROMX $7a
-	"Pics 26"
+	"Pics 21"
 ROMX $7b
 	"Battle Tower Text"
 ROMX $7c
@@ -329,23 +329,23 @@ ROMX $7f
 	"Stadium 2 Checksums"
 	
 ROMX $80
-	"Pics 27"
+	"Pics 22"
 ROMX $81
-	"Pics 28"
+	"Pics 23"
 ROMX $82
-	"Pics 29"
+	"Pics 24"
 ROMX $83
-	"Pics 30"
+	"Pics 25"
 ROMX $84
-	"Pics 31"
+	"Pics 26"
 ROMX $85
-	"Pics 32"
+	"Pics 27"
 ROMX $86
-	"Pics 33"
+	"Pics 28"
 ROMX $87
-	"Pics 34"
+	"Pics 29"
 ROMX $88
-	"Pics 35"
+	"Pics 30"
 	
 	
 WRAM0

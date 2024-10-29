@@ -1,4 +1,4 @@
-	db SHROOMISH ; 083
+	db 0 ; 083
 
 	db  60,  40,  60,  35,  40,  60
 	;   hp  atk  def  spd  sat  sdf

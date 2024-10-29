@@ -1,4 +1,4 @@
-	db LUDICOLO ; 159
+	db 0 ; 159
 
 	db  80,  70,  70,  70,  90,  100
 	;   hp  atk  def  spd  sat  sdf

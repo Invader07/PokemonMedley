@@ -1,4 +1,4 @@
-	db MARACTUS ; 196
+	db 0 ; 196
 
 	db  75,  85,  65,  60,  105,  65
 	;   hp  atk  def  spd  sat  sdf

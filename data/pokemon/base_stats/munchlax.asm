@@ -1,4 +1,4 @@
-	db MUNCHLAX ; 230
+	db 0 ; 230
 
 	db  135,  85,  40,  05,  40,  85
 	;   hp  atk  def  spd  sat  sdf

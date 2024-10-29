@@ -1,4 +1,4 @@
-	db SOLROCK ; 188
+	db 0 ; 188
 
 	db  90,  95,  85,  70,  55,  65
 	;   hp  atk  def  spd  sat  sdf

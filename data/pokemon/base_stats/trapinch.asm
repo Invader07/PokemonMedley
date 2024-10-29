@@ -1,4 +1,4 @@
-	db TRAPINCH ; 191
+	db 0 ; 191
 
 	db  45, 100,  45,  10,  45,  45
 	;   hp  atk  def  spd  sat  sdf

@@ -23,7 +23,7 @@ Moves1:
 	move EFFECT_ALWAYS_HIT,         60, NORMAL,       100, 20,   0
 	move EFFECT_SPEED_UP_2,          0, FLYING,       100, 30,   0
 	move EFFECT_FLATTER,             0, DARK,          90, 15, 100
-	move EFFECT_DEFENSE_DOWN_HIT,    90, BUG,         100, 15,  10
+	move EFFECT_DEFENSE_DOWN_HIT,   90, BUG,          100, 15,  10
 	move EFFECT_BURN_HIT,           75, FIRE,         100, 15,  10
 	move EFFECT_FREEZE_HIT,         75, ICE,          100, 15,  10
 	move EFFECT_PARALYZE_HIT,       75, ELECTRIC,     100, 15,  10
@@ -271,6 +271,9 @@ Moves1:
 	move EFFECT_SPEED_UP_2,          0, ROCK,         100, 20,   0
 	move EFFECT_SPEED_DOWN_HIT,     60, ROCK,          90, 20, 100
 	move EFFECT_RECOIL_HIT,         50, NORMAL,       100,  1,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
+	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
 	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
 	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0
 	move EFFECT_NORMAL_HIT,         40, NORMAL,       100, 35,   0

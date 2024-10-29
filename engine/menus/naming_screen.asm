@@ -100,9 +100,6 @@ NamingScreen:
 	inc de
 	ld a, [hl]
 	ld [de], a
-	ld a, [wMonType]
-	cp BOXMON
-	call z, CloseSRAM
 	ld hl, LoadMenuMonIcon
 	ld a, BANK(LoadMenuMonIcon)
 	ld e, MONICON_NAMINGSCREEN

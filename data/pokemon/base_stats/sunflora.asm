@@ -1,4 +1,4 @@
-	db SUNFLORA ; 192
+	db 0 ; 192
 
 	db  85,  65,  95,  20, 135,  65
 	;   hp  atk  def  spd  sat  sdf

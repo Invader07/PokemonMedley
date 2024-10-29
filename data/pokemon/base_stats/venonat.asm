@@ -1,4 +1,4 @@
-	db VENONAT ; 048
+	db 0 ; 048
 
 	db  60,  55,  50,  45,  60,  55
 	;   hp  atk  def  spd  sat  sdf

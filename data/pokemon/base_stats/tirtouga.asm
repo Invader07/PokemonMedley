@@ -1,4 +1,4 @@
-	db TIRTOUGA ; 179
+	db 0 ; 179
 
 	db  54,  78, 103,  22,  53,  45
 	;   hp  atk  def  spd  sat  sdf

@@ -314,7 +314,17 @@ ChooseWildEncounter:
 	call ValidateTempWildMonSpecies
 	jr c, .nowildbattle
 
-	cp UNOWN
+	sub LOW(UNOWN)
+	jr nz, .load_species
+	if HIGH(UNOWN) > 1
+		ld a, h
+		cp HIGH(UNOWN)
+	elif HIGH(UNOWN) == 1
+		ld a, h
+		dec a
+	else
+		or h
+	endc
 	jr nz, .load_species
 
 	ld a, [wUnlockedUnowns]
@@ -324,6 +334,7 @@ ChooseWildEncounter:
 	ld a, b
 
 .load_species
+	call GetPokemonIDFromIndex
 	ld [wTempWildMonSpecies], a
 
 ; Min level
@@ -476,6 +487,9 @@ CopyCurrMapDE:
 	ld e, a
 	ret
 
+LookUpGrassJohtoWildmons::
+	ld hl, JohtoGrassWildMons
+	ld bc, GRASS_WILDDATA_LENGTH
 LookUpWildmonsForMapDE:
 .loop
 	push hl
@@ -509,10 +523,9 @@ InitRoamMons:
 ; initialize wRoamMon structs
 
 ; species
-	ld a, EGG
+	ld hl, MEW
+	call GetPokemonIDFromIndex
 	ld [wRoamMon1Species], a
-	ld a, EGG
-	ld [wRoamMon2Species], a
 
 ; level
 	ld a, 40
@@ -788,27 +801,32 @@ ValidateTempWildMonSpecies:
 	ccf
 	ret
 
-; Finds a rare wild Pokemon in the route of the trainer calling, then checks if it's been Seen already.
-; The trainer will then tell you about the Pokemon if you haven't seen it.
-RandomUnseenWildMon:
+GetCallerRouteWildGrassMons::
 	farcall GetCallerLocation
 	ld d, b
 	ld e, c
 	ld hl, JohtoGrassWildMons
 	ld bc, GRASS_WILDDATA_LENGTH
 	call LookUpWildmonsForMapDE
-	jr c, .GetGrassmon
+	jr c, .found
 	ld hl, KantoGrassWildMons
 	call LookUpWildmonsForMapDE
-	jr nc, .done
-
-.GetGrassmon:
-	push hl
-	ld bc, 5 + 4 * 5 ; Location of the level of the 5th wild Pokemon in that map
+	ret nc ; no carry = no grass wild mons for that route
+.found
+	ld bc, 5 ; skip the map ID and encounter rates
 	add hl, bc
-	call GetTimeOfDayNotEve
-	ld bc, NUM_GRASSMON * 5
+	ld a, [wTimeOfDay]
+	ld bc, NUM_GRASSMON * 3
 	call AddNTimes
+	scf
+	ret
+
+; Finds a rare wild Pokemon in the route of the trainer calling, then checks if it's been Seen already.
+; The trainer will then tell you about the Pokemon if you haven't seen it.
+RandomUnseenWildMon:
+	call GetCallerRouteWildGrassMons
+	jr nc, .done
+	push hl
 .randloop1
 	call Random
 	and %11
@@ -818,9 +836,12 @@ RandomUnseenWildMon:
 	ld b, 0
 	add hl, bc
 	add hl, bc
-; We now have the pointer to one of the last (rarest) three wild Pokemon found in that area.
-	inc hl
-	ld c, [hl] ; Contains the species index of this rare Pokemon
+	add hl, bc
+	; We now have the pointer to one of the last (rarest) three wild Pokemon found in that area.
+	; Load the species index of this rare Pokemon
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
 	pop hl
 	ld de, 5 + 0 * 4
 	add hl, de
@@ -828,22 +849,26 @@ RandomUnseenWildMon:
 	ld b, 4
 .loop2
 	ld a, [hli]
-	cp c ; Compare this most common Pokemon with the rare one stored in c.
+	cp e ; Compare this common Pokemon with the rare one stored in de.
+	ld a, [hli]
+	jr nz, .next
+	cp d
 	jr z, .done
+.next
 	inc hl
 	dec b
 	jr nz, .loop2
 ; This Pokemon truly is rare.
-	push bc
-	dec c
-	ld a, c
-	call CheckSeenMon
+	push de
+	call CheckSeenMonIndex
 	pop bc
 	jr nz, .done
 ; Since we haven't seen it, have the caller tell us about it.
 	ld de, wStringBuffer1
 	call CopyName1
-	ld a, c
+	ld h, b
+	ld l, c
+	call GetPokemonIDFromIndex
 	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld hl, .JustSawSomeRareMonText
@@ -862,29 +887,7 @@ RandomUnseenWildMon:
 	text_end
 
 RandomPhoneWildMon:
-	farcall GetCallerLocation
-	ld d, b
-	ld e, c
-	ld hl, JohtoGrassWildMons
-	ld bc, GRASS_WILDDATA_LENGTH
-	call LookUpWildmonsForMapDE
-	jr c, .ok
-	ld hl, KantoGrassWildMons
-	call LookUpWildmonsForMapDE
-
-.ok
-	ld bc, 5 + 0 * 5
-	add hl, bc
-	call GetTimeOfDayNotEve
-	inc a
-	ld bc, NUM_GRASSMON * 5
-.loop
-	dec a
-	jr z, .done
-	add hl, bc
-	jr .loop
-
-.done
+	call GetCallerRouteWildGrassMons
 	call Random
 	and %11
 	ld c, a
@@ -892,7 +895,10 @@ RandomPhoneWildMon:
 	add hl, bc
 	add hl, bc
 	inc hl
-	ld a, [hl]
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call GetPokemonIDFromIndex
 	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld hl, wStringBuffer1
@@ -910,6 +916,11 @@ RandomPhoneMon:
 	ld b, 0
 	add hl, bc
 	add hl, bc
+	add hl, bc
+	ld a, BANK(TrainerGroups)
+	call GetFarByte
+	ld [wTrainerGroupBank], a
+	inc hl
 	ld a, BANK(TrainerGroups)
 	call GetFarWord
 
@@ -917,43 +928,45 @@ RandomPhoneMon:
 	dec e
 	jr z, .skipped
 .skip
-	ld a, BANK(Trainers)
+	ld a, [wTrainerGroupBank]
 	call GetFarByte
-	inc hl
-	cp -1
-	jr nz, .skip
+	add a, l
+	ld l, a
+	jr nc, .skip_trainer
+	inc h
 	jr .skip_trainer
 .skipped
+	inc hl
 
 .skip_name
-	ld a, BANK(Trainers)
+	ld a, [wTrainerGroupBank]
 	call GetFarByte
 	inc hl
 	cp "@"
 	jr nz, .skip_name
 
-	ld a, BANK(Trainers)
+	ld a, [wTrainerGroupBank]
 	call GetFarByte
 	inc hl
-	ld bc, 2 ; level, species
-	cp TRAINERTYPE_NORMAL
-	jr z, .got_mon_length
-	ld bc, 2 + NUM_MOVES ; level, species, moves
-	cp TRAINERTYPE_MOVES
-	jr z, .got_mon_length
-	ld bc, 2 + 1 ; level, species, item
-	cp TRAINERTYPE_ITEM
-	jr z, .got_mon_length
-	; TRAINERTYPE_ITEM_MOVES
-	ld bc, 2 + 1 + NUM_MOVES ; level, species, item, moves
-.got_mon_length
+	ld c, a
+	ld a, 3
+	bit TRAINERTYPE_ITEM_F, c
+	jr z, .no_item
+	inc a
+.no_item
+	bit TRAINERTYPE_MOVES_F, c
+	jr z, .no_moves
+	add a, NUM_MOVES
+.no_moves
+	ld c, a
+	ld b, 0
 
-	ld e, 0
+	ld e, b
 	push hl
 .count_mon
 	inc e
 	add hl, bc
-	ld a, BANK(Trainers)
+	ld a, [wTrainerGroupBank]
 	call GetFarByte
 	cp -1
 	jr nz, .count_mon
@@ -974,8 +987,9 @@ RandomPhoneMon:
 .got_mon
 
 	inc hl ; species
-	ld a, BANK(Trainers)
-	call GetFarByte
+	ld a, [wTrainerGroupBank]
+	call GetFarWord
+	call GetPokemonIDFromIndex
 	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld hl, wStringBuffer1

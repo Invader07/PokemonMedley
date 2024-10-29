@@ -34,7 +34,6 @@ ENDM
 	command mirrormove              ; 1b
 	command statup                  ; 1c
 	command statdown                ; 1d
-	command thunderfang             ; 1e
 	command conversion              ; 1f
 	command resetstats              ; 20
 	command storeenergy             ; 21
@@ -42,7 +41,6 @@ ENDM
 	command forceswitch             ; 23
 	command endloop                 ; 24
 	command flinchtarget            ; 25
-	command firefang                ; 26
 	command recoil                  ; 27
 	command mist                    ; 28
 	command focusenergy             ; 29
@@ -55,7 +53,6 @@ ENDM
 	command paralyze                ; 30
 	command substitute              ; 31
 	command rechargenextturn        ; 32
-	command icefang                 ; 33
 	command metronome               ; 34
 	command leechseed               ; 35
 	command eruption                ; 36
@@ -90,7 +87,6 @@ ENDM
 	command curse                   ; 54
 	command protect                 ; 55
 	command spikes                  ; 56
-	command foresight               ; 57
 	command perishsong              ; 58
 	command startsandstorm          ; 59
 	command endure                  ; 5a
@@ -158,8 +154,6 @@ ENDM
 	command doubleflyingdamage      ; 98
 	command doubleundergrounddamage ; 99
 	command mirrorcoat              ; 9a
-	command checkfuturesight        ; 9b
-	command futuresight             ; 9c
 	command doubleminimizedamage    ; 9d
 	command skipsuncharge           ; 9e
 	command thunderaccuracy         ; 9f
@@ -167,7 +161,6 @@ ENDM
 	command ragedamage              ; a2
 	command resettypematchup        ; a3
 	command allstatsup              ; a4
-	command bidefailtext            ; a5
 	command raisesubnoanim          ; a6
 	command lowersubnoanim          ; a7
 	command beatupfailtext          ; a8
@@ -188,6 +181,7 @@ ENDM
 	command nightmare               ; b7
 	command frustrationpower        ; b8
 	command teleport               	; b9
+	command payday									; ba
 DEF NUM_EFFECT_COMMANDS EQU const_value - 1
 
 	const_def -1, -1

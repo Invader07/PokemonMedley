@@ -1,4 +1,4 @@
-	db GROVYLE ; 222
+	db 0 ; 222
 
 	db  50,  65,  45,  95,  85,  65
 	;   hp  atk  def  spd  sat  sdf

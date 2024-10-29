@@ -1,4 +1,4 @@
-	db LOTAD ; 157
+	db 0 ; 157
 
 	db  40,  30,  30,  30,  40,  50
 	;   hp  atk  def  spd  sat  sdf

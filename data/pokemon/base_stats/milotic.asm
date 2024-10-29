@@ -1,4 +1,4 @@
-	db MILOTIC ; 126
+	db 0 ; 126
 
 	db  95,  60,  80,  80,  100,  125
 	;   hp  atk  def  spd  sat  sdf

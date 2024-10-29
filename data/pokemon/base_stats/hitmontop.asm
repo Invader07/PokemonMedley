@@ -1,4 +1,4 @@
-	db HITMONTOP ; 237
+	db 0 ; 237
 
 	db  65,  95,  95,  70,  35, 110
 	;   hp  atk  def  spd  sat  sdf

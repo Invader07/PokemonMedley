@@ -1,4 +1,4 @@
-	db VIBRAVA ; 192
+	db 0 ; 192
 
 	db  50,  70,  50,  70,  50,  50
 	;   hp  atk  def  spd  sat  sdf

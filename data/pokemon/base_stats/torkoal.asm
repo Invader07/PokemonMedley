@@ -1,4 +1,4 @@
-	db TORKOAL ; 063
+	db 0 ; 063
 
 	db  70,  85, 140,  20,  85,  70
 	;   hp  atk  def  spd  sat  sdf

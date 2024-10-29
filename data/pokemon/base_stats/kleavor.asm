@@ -1,4 +1,4 @@
-	db KLEAVOR ; 091
+	db 0 ; 091
 
 	db   85, 140,  85,  80,  30,  80
 	;   hp  atk  def  spd  sat  sdf

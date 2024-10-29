@@ -1,4 +1,4 @@
-	db LILEEP ; 177
+	db 0 ; 177
 
 	db  66,  41,  77,  23,  61,  87
 	;   hp  atk  def  spd  sat  sdf

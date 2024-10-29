@@ -1,4 +1,4 @@
-	db PIDGEOT ; 018
+	db 0 ; 018
 
 	db  80,  85,  75, 100,  55,  90
 	;   hp  atk  def  spd  sat  sdf

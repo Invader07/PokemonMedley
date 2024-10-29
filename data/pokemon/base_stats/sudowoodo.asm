@@ -1,4 +1,4 @@
-	db SUDOWOODO ; 185
+	db 0 ; 185
 
 	db  80, 105, 120,  30,  30,  85
 	;   hp  atk  def  spd  sat  sdf

@@ -1,4 +1,4 @@
-	db VOLCARONA ; 199
+	db 0 ; 199
 
 	db  80,  80,  65, 100, 135,  65
 	;   hp  atk  def  spd  sat  sdf

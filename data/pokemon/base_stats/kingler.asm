@@ -1,4 +1,4 @@
-	db KINGLER ; 099
+	db 0 ; 099
 
 	db  55, 130,  50,  85,  50, 105
 	;   hp  atk  def  spd  sat  sdf

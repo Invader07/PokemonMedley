@@ -1,4 +1,4 @@
-	db NUMEL ; 075
+	db 0 ; 075
 
 	db  60,  60,  40,  35,  65,  45
 	;   hp  atk  def  spd  sat  sdf

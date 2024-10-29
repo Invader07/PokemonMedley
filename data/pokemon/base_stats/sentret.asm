@@ -1,4 +1,4 @@
-	db SENTRET ; 161
+	db 0 ; 161
 
 	db  45,  56,  44,  30,  35,  55
 	;   hp  atk  def  spd  sat  sdf

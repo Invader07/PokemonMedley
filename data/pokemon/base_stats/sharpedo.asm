@@ -1,4 +1,4 @@
-	db SHARPEDO ; 185
+	db 0 ; 185
 
 	db   70, 120,  40, 105,  95,  40
 	;   hp  atk  def  spd  sat  sdf

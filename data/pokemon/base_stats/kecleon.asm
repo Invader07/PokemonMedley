@@ -1,4 +1,4 @@
-	db KECLEON ; 187
+	db 0 ; 187
 
 	db   60,  90,  70,  40,  75, 120
 	;   hp  atk  def  spd  sat  sdf

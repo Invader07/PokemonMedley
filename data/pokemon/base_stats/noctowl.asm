@@ -1,4 +1,4 @@
-	db NOCTOWL ; 164
+	db 0 ; 164
 
 	db 100,  50,  65,  70,  86,  96
 	;   hp  atk  def  spd  sat  sdf

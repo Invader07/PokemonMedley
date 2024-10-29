@@ -1,4 +1,4 @@
-	db HOOTHOOT ; 163
+	db 0 ; 163
 
 	db  60,  30,  35,  50,  46,  56
 	;   hp  atk  def  spd  sat  sdf

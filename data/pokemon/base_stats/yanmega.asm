@@ -1,4 +1,4 @@
-	db YANMEGA ; 004
+	db 0 ; 004
 
 	db  80,  90,  75,  100,  100,  55
 	;   hp  atk  def  spd  sat  sdf

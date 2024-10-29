@@ -1,4 +1,4 @@
-	db LOPUNNY ; 086
+	db 0 ; 086
 
 	db   65,  86,  76, 105,  54,  96
 	;   hp  atk  def  spd  sat  sdf

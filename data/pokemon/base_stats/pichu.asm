@@ -1,4 +1,4 @@
-	db PICHU ; 172
+	db 0 ; 172
 
 	db  20,  40,  15,  60,  45,  35
 	;   hp  atk  def  spd  sat  sdf

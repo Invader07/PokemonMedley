@@ -1,4 +1,4 @@
-	db PARASECT ; 047
+	db 0 ; 047
 
 	db  90,  95,  90,  30,  80,  90
 	;   hp  atk  def  spd  sat  sdf
