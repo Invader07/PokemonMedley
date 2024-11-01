@@ -242,7 +242,7 @@ endr
 	cp EVE_F
 	jr z, .loop2
 
-	ld bc, 5 * NUM_GRASSMON
+	ld bc, 3 * NUM_GRASSMON
 	call AddNTimes
 .loop3
 	; Choose one of the middle three Pokemon.

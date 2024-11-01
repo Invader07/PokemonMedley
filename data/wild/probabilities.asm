@@ -23,3 +23,19 @@ WaterMonProbTable:
 	mon_prob 95,  2 ; 15% chance
 	mon_prob 100, 3 ; 5% chance
 	assert_table_length NUM_WATERMON
+
+MaxLevelGrass:
+	db 2
+	db 3
+	db 2
+	db 2
+	db 1
+	db 2
+	db 3
+	db 2
+
+MaxLevelWater:
+	db 2
+	db 3
+	db 4
+	db 3

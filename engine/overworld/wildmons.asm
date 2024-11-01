@@ -5,7 +5,6 @@ LoadWildMonData:
 	xor a
 	ld [hli], a
 	ld [hli], a
-	ld [hli], a
 	ld [hl], a
 	jr .done_copy
 
@@ -129,8 +128,6 @@ FindNest:
 	cp b
 	jr z, .found
 .next_mon
-	inc hl
-	inc hl
 	inc hl
 	pop af
 	dec a
@@ -287,68 +284,56 @@ ChooseWildEncounter:
 	inc hl
 	inc hl
 	call CheckOnWater
+	ld de, WaterMonProbTable
 	jr z, .watermon
 	inc hl
 	inc hl
 	call GetTimeOfDayNotEve
-	ld bc, NUM_GRASSMON * 5
+	ld bc, NUM_GRASSMON * 3
 	call AddNTimes
 
 .watermon
+; hl contains the pointer to the wild mon data, let's save that to the stack
+	push hl
 .randomloop
 	call Random
 	cp 100
 	jr nc, .randomloop
-	ld de, 4
+	inc a ; 1 <= a <= 100
+	ld b, a
+	ld h, d
+	ld l, e
+	call CheckOnWater
+	ld de, MaxLevelWater
+	jr z, .prob_bracket_loop
+	ld de, MaxLevelGrass
 ; This next loop chooses which mon to load up.
 .prob_bracket_loop
-	sub [hl]
-	jr c, .got_it
-	add hl, de
+	ld a, [hli]
+	cp b
+	jr nc, .got_it
+	inc hl
+	inc de
 	jr .prob_bracket_loop
 
 .got_it
-	inc hl
+	ld c, [hl]
+	ld b, 0
+	pop hl
+	add hl, bc ; this selects our mon
+; Min Level
 	ld a, [hli]
 	ld b, a
-	call ValidateTempWildMonSpecies
-	jr c, .nowildbattle
-
-	sub LOW(UNOWN)
-	jr nz, .load_species
-	if HIGH(UNOWN) > 1
-		ld a, h
-		cp HIGH(UNOWN)
-	elif HIGH(UNOWN) == 1
-		ld a, h
-		dec a
-	else
-		or h
-	endc
-	jr nz, .load_species
-
-	ld a, [wUnlockedUnowns]
+; Max Level
+	ld a, [de]
+; Min Level
+	ld d, b
+	ld b, a
 	and a
-	jr z, .nowildbattle
-
-	ld a, b
-
-.load_species
-	call GetPokemonIDFromIndex
-	ld [wTempWildMonSpecies], a
-
-; Min level
-	ld a, [hli]
-	ld d, a
-
-; Max level
-	ld a, [hl]
-	sub d
 	jr nz, .RandomLevel
-
 ; If min and max are the same.
-	ld a, d
-	jr .GotLevel
+	ld b, d
+	jr .ok
 
 .RandomLevel:
 ; Get a random level between the min and max.
@@ -358,9 +343,38 @@ ChooseWildEncounter:
 	ldh a, [hRandomAdd]
 	call SimpleDivide
 	add d
-
-.GotLevel:
+	ld b, a
+; Store the level
+.ok
+	ld a, b
 	ld [wCurPartyLevel], a
+
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call ValidateTempWildMonSpecies
+	jr c, .nowildbattle
+
+	sub LOW(UNOWN)
+	jr nz, .done
+	if HIGH(UNOWN) > 1
+		ld a, h
+		cp HIGH(UNOWN)
+	elif HIGH(UNOWN) == 1
+		ld a, h
+		dec a
+	else
+		or h
+	endc
+	jr nz, .done
+
+	ld a, [wUnlockedUnowns]
+	and a
+	jr z, .nowildbattle
+
+.done
+	call GetPokemonIDFromIndex
+	ld [wTempWildMonSpecies], a
 
 .startwildbattle
 	xor a
@@ -371,6 +385,7 @@ ChooseWildEncounter:
 	and a
 	ret
 
+INCLUDE "data/wild/probabilities.asm"
 
 CheckRepelEffect::
 ; If there is no active Repel, there's no need to be here.
@@ -831,7 +846,8 @@ RandomUnseenWildMon:
 	call Random
 	and %11
 	jr z, .randloop1
-	dec a
+	ld bc, 10 ; skip three mons plus the level of the fourth
+	add hl, bc
 	ld c, a
 	ld b, 0
 	add hl, bc
@@ -843,8 +859,6 @@ RandomUnseenWildMon:
 	ld d, [hl]
 	ld e, a
 	pop hl
-	ld de, 5 + 0 * 4
-	add hl, de
 	inc hl ; Species index of the most common Pokemon on that route
 	ld b, 4
 .loop2
@@ -892,6 +906,7 @@ RandomPhoneWildMon:
 	and %11
 	ld c, a
 	ld b, 0
+	add hl, bc
 	add hl, bc
 	add hl, bc
 	inc hl
