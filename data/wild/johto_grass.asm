@@ -248,6 +248,41 @@ JohtoGrassWildMons:
 
 	end_grass_wildmons
 
+	def_grass_wildmons RUGGED_CLIFF_GROTTO
+		db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
+		; morn
+		;	 Level,  Species
+		dbw 12,  PIDGEY
+		dbw 11,  ROCKRUFF
+		dbw 11,  SENTRET
+		dbw 12,  GLIGAR
+		dbw 12,  EXEGGCUTE
+		dbw 13,  SENTRET
+		dbw 14,  PIDGEOTTO
+		dbw 13,  GLIGAR
+
+		; day
+		dbw 12,  PIDGEY
+		dbw 11,  ROCKRUFF
+		dbw 11,  SENTRET
+		dbw 12,  GLIGAR
+		dbw 12,  EXEGGCUTE
+		dbw 13,  SENTRET
+		dbw 14,  PIDGEOTTO
+		dbw 13,  GLIGAR
+
+		; nite
+		dbw 12,  PIDGEY
+		dbw 11,  ROCKRUFF
+		dbw 11,  SENTRET
+		dbw 12,  GLIGAR
+		dbw 12,  EXEGGCUTE
+		dbw 13,  SENTRET
+		dbw 14,  PIDGEOTTO
+		dbw 13,  GLIGAR
+
+		end_grass_wildmons
+
 	def_grass_wildmons BERRY_FOREST
 	db 10 percent, 10 percent, 10 percent ; encounter rates: morn/day/nite
 	; morn

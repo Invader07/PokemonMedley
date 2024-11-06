@@ -22,7 +22,6 @@ SpriteMons:
 	dw ZUBAT
 	dw MAGIKARP
 	dw SQUIRTLE
-	dw BUTTERFREE
 	dw PIKACHU
 	dw CHARMANDER
 	dw STARMIE

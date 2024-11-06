@@ -1,6 +1,7 @@
 	object_const_def
 	const RUGGED_CLIFF_RANGER
 	const RUGGED_CLIFF_SURVIVALIST
+	const RUGGED_CLIFF_GIOVANNI
 	const RUGGED_CLIFF_RESCUE_BALL
 	const RUGGED_CLIFF_MUSCLE_BAND
 
@@ -35,6 +36,41 @@ TrainerSurvivalistJohn:
 		waitbutton
 		closetext
 		end
+
+RuggedCliffGiovanni:
+	checkevent EVENT_RUGGED_CLIFF_MEET_GIOVANNI
+	iftrue .MetAlready
+	opentext
+	writetext RuggedCliffGiovanniDistracted
+	waitbutton
+	closetext
+	faceplayer
+	opentext
+	writetext RuggedCliffGiovanniIntro
+	waitbutton
+	closetext
+	wait 5
+	turnobject RUGGED_CLIFF_GIOVANNI, UP
+	opentext
+	writetext RuggedCliffGiovanniGrotto
+	waitbutton
+	closetext
+	wait 10
+	faceplayer
+	opentext
+	writetext RuggedCliffGiovanniGoInside
+	waitbutton
+	closetext
+	setevent EVENT_RUGGED_CLIFF_MEET_GIOVANNI
+	end
+
+.MetAlready
+	faceplayer
+	opentext
+	writetext RuggedCliffGiovanniGoInside
+	waitbutton
+	closetext
+	end
 
 	RuggedCliffRescueBall:
 		itemball RESCUE_BALL
@@ -103,6 +139,13 @@ RuggedCliffGrottoEntryText:
 	line "step inside?"
 	done
 
+RuggedCliffGiovanniDistracted:
+RuggedCliffGiovanniIntro:
+RuggedCliffGiovanniGrotto:
+RuggedCliffGiovanniGoInside:
+	text "TEST"
+	done
+
 RuggedCliff_MapEvents:
 	db 0, 0 ; filler
 
@@ -124,5 +167,6 @@ RuggedCliff_MapEvents:
 	def_object_events
 	object_event 15, 23, SPRITE_YOUNGSTER, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 3, TrainerRangerGerald, -1
 	object_event 16, 10, SPRITE_YOUNGSTER, SPRITEMOVEDATA_SPINRANDOM_SLOW, 0, 0, -1, -1, 0, OBJECTTYPE_TRAINER, 3, TrainerSurvivalistJohn, -1
-	object_event 8,  8, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, RuggedCliffRescueBall, EVENT_RUGGED_CLIFF_RESCUE_BALL
+	object_event 29, 38, SPRITE_GIOVANNI_HAT, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, RuggedCliffGiovanni, EVENT_RUGGED_CLIFF_GROTTO_FINISH
+	object_event 8,  8,  SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, RuggedCliffRescueBall, EVENT_RUGGED_CLIFF_RESCUE_BALL
 	object_event 27, 11, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, RuggedCliffMuscleBand, EVENT_RUGGED_CLIFF_MUSCLE_BAND

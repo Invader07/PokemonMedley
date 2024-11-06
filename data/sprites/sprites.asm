@@ -124,4 +124,5 @@ OverworldSprites:
 	overworld_sprite HoundourSpriteGFX, 4, STILL_SPRITE, PAL_OW_RED
 	overworld_sprite BaltoySpriteGFX, 4, STILL_SPRITE, PAL_OW_RED
 	overworld_sprite KenjiSpriteGFX, 12, WALKING_SPRITE, PAL_OW_BROWN
+	overworld_sprite ButterfreeSpriteGFX, 4, STILL_SPRITE, PAL_OW_BLUE
 	assert_table_length NUM_OVERWORLD_SPRITES

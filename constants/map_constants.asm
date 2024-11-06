@@ -103,7 +103,7 @@ ENDM
 	map_const BERRY_FOREST,																 16, 16 ; 1
 	map_const BERRY_FOREST_HOUSE, 													5,  4 ; 2
 	map_const HERALD_BAY_GROTTO, 														5,  5 ; 3
-	map_const RUGGED_CLIFF_GROTTO, 													5,  5 ; 4
+	map_const RUGGED_CLIFF_GROTTO, 												 12, 11 ; 4
 	endgroup
 
 DEF NUM_MAP_GROUPS EQU const_value ; 7
