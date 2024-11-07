@@ -45,7 +45,7 @@ IndigoGroupSprites:
 		db 0 ; end
 
 HeraldCoveGroupSprites:
-	; HeraldCove, HeraldRoute
+	; HeraldCove, HeraldRoute, HeraldBay, RuggedCliffGrotto
 		db SPRITE_COOLTRAINER_F
 		db SPRITE_LASS
 		db SPRITE_ROCKET
@@ -65,11 +65,12 @@ HeraldCoveGroupSprites:
 		db SPRITE_SAILOR
 		db SPRITE_GRAMPS
 		db SPRITE_GRANNY
+		db SPRITE_BUTTERFREE
 		db SPRITE_FRUIT_TREE
 		db 0 ; end
 
 CraggyCoastGroupSprites:
-	; CraggyBeach, CraggyCoast, ScenicBluff
+	; CraggyBeach, CraggyCoast, ScenicBluff, RuggedCliff, Mt. Monego
 		db SPRITE_TEACHER
 		db SPRITE_LASS
 		db SPRITE_KENJI
@@ -88,6 +89,7 @@ CraggyCoastGroupSprites:
 		db SPRITE_GRAMPS
 		db SPRITE_GRANNY
 		db SPRITE_BLUE
+		db SPRITE_GIOVANNI_HAT
 		db SPRITE_FRUIT_TREE
 		db 0 ; end
 

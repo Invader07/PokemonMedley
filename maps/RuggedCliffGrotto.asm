@@ -53,8 +53,8 @@ RuggedCliffGrotto_MapEvents:
 	def_warp_events
 	warp_event 2,  21, RUGGED_CLIFF, 5
 	warp_event 3,  21, RUGGED_CLIFF, 5
-	warp_event 4,  0, RUGGED_CLIFF_GROTTO, 5
-	warp_event 5,  0, RUGGED_CLIFF_GROTTO, 6
+	warp_event 2,  0, RUGGED_CLIFF_GROTTO, 5
+	warp_event 3,  0, RUGGED_CLIFF_GROTTO, 6
 	warp_event 10, 0, RUGGED_CLIFF_GROTTO, 3
 	warp_event 11, 0, RUGGED_CLIFF_GROTTO, 4
 	warp_event 10, 7, RUGGED_CLIFF_GROTTO, 9
@@ -81,4 +81,4 @@ RuggedCliffGrotto_MapEvents:
 
 	def_object_events
 	object_event 21, 15, SPRITE_BUTTERFREE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, PAL_NPC_PURPLE, OBJECTTYPE_ITEMBALL, 0, RuggedCliffGrottoButterfree, EVENT_RUGGED_CLIFF_GROTTO_FINISH
-	object_event 15, 21, SPRITE_GIOVANNI_HAT, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, RuggedCliffGiovanni, EVENT_RUGGED_CLIFF_MEET_GIOVANNI
+	object_event 15, 21, SPRITE_GIOVANNI_HAT, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_RUGGED_CLIFF_MEET_GIOVANNI

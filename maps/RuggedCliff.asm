@@ -96,7 +96,7 @@ RuggedCliffGiovanni:
 		closetext
 		playsound SFX_ENTER_DOOR
 		pause 5
-		warp RUGGED_CLIFF_GROTTO, 4, 7
+		warp RUGGED_CLIFF_GROTTO, 2, 21
 		end
 
 RangerGeraldSeenText:
