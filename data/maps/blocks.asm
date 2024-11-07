@@ -149,7 +149,7 @@ HeraldBayGrotto_Blocks:
 	INCBIN "maps/ForestGrotto.blk"
 
 RuggedCliffGrotto_Blocks:
-	INCBIN "maps/ForestGrotto.blk"
+	INCBIN "maps/RuggedCliffGrotto.blk"
 
 SECTION "Map Blocks 6", ROMX
 

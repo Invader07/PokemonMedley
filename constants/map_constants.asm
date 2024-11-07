@@ -79,6 +79,7 @@ ENDM
 	map_const HERALD_BAY,																	 29, 20 ; 12
 	map_const HERALD_BAY_HOUSE,														 5,  4  ; 13
 	map_const CRAGGY_BEACH,																 12, 40 ; 14
+	map_const RUGGED_CLIFF_GROTTO, 												 12, 11 ; 15
 	endgroup
 
 	newgroup CRAGGY_COAST																					; 6
@@ -103,7 +104,6 @@ ENDM
 	map_const BERRY_FOREST,																 16, 16 ; 1
 	map_const BERRY_FOREST_HOUSE, 													5,  4 ; 2
 	map_const HERALD_BAY_GROTTO, 														5,  5 ; 3
-	map_const RUGGED_CLIFF_GROTTO, 													5,  5 ; 4
 	endgroup
 
 DEF NUM_MAP_GROUPS EQU const_value ; 7
