@@ -76,7 +76,7 @@ ENDM
 	map_const PLAYERS_HOUSE_2F,                             4,  3 ;  9
 	map_const REGISTRATION_CENTER,							 						5,  5 ; 10
 	map_const HERALD_GROTTO,																4,  8 ; 11
-	map_const HERALD_BAY,																	 29, 20 ; 12
+	map_const HERALD_BAY,																	 17, 20 ; 12
 	map_const HERALD_BAY_HOUSE,														 5,  4  ; 13
 	map_const CRAGGY_BEACH,																 12, 40 ; 14
 	map_const RUGGED_CLIFF_GROTTO, 												 12, 11 ; 15
