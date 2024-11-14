@@ -380,7 +380,7 @@ BerryBoxDesc:
 	next "for someone...@"
 
 CalciumDesc:
-	db   "Ups SPECIAL stats"
+	db   "Raises SPCL.ATK"
 	next "of one #MON.@"
 
 RareCandyDesc:
