@@ -1445,7 +1445,7 @@ VitaminEffect:
 	ld b, a
 	ld e, d
 .decrease_evs_gained
-	farcall IsEvsGreaterThan510
+	farcall IsEvsGreaterThan600
 	jr nc, .check_ev_overflow
 	dec e
 	dec bc
