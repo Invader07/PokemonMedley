@@ -280,6 +280,7 @@ InitializeNPCNames:
 InitializeWorld:
 	farcall SpawnPlayer
 	farcall _InitializeStartDay
+	farcall InitializeEvents
 	ret
 
 LoadOrRegenerateLuckyIDNumber:
